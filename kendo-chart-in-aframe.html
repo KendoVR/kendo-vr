@@ -1,0 +1,114 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <base href="https://demos.telerik.com/kendo-ui/bar-charts/index">
+    <style>html { font-size: 14px; font-family: Arial, Helvetica, sans-serif; }</style>
+    <title></title>
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2018.3.911/styles/kendo.common-material.min.css" />
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2018.3.911/styles/kendo.material.min.css" />
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2018.3.911/styles/kendo.material.mobile.min.css" />
+
+    <script src="https://kendo.cdn.telerik.com/2018.3.911/js/jquery.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2018.3.911/js/kendo.all.min.js"></script>
+
+    <script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
+
+  </head>
+  <body>
+
+    <div id="chart" style="width:1024px;height:512px"></div>
+
+    <a-scene>
+      <a-entity id="mario"></a-entity>
+      <a-plane position="0 0 -4" rotation="-90 0 0" width="4" height="4" color="#7BC8A4"></a-plane>
+      <a-sky color="#ECECEC"></a-sky>
+    </a-scene>
+
+
+    <script>
+      function createChart() {
+        $("#chart").kendoChart({
+          renderAs: "canvas",
+          title: {
+            text: "Site Visitors Stats \n /thousands/"
+          },
+          legend: {
+            visible: false
+          },
+          seriesDefaults: {
+            type: "bar"
+          },
+          series: [{
+            name: "Total Visits",
+            data: [56000, 63000, 74000, 91000, 117000, 138000]
+          }, {
+            name: "Unique visitors",
+            data: [52000, 34000, 23000, 48000, 67000, 83000]
+          }],
+          valueAxis: {
+            max: 140000,
+            line: {
+              visible: false
+            },
+            minorGridLines: {
+              visible: true
+            },
+            labels: {
+              rotation: "auto"
+            }
+          },
+          categoryAxis: {
+            categories: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+            majorGridLines: {
+              visible: false
+            }
+          },
+          tooltip: {
+            visible: true,
+            template: "#= series.name #: #= value #"
+          }
+        });
+      }
+
+      $(document).ready(function() {
+        createChart();
+
+        setTimeout(function copyCnavas() {
+          var sourceCanvas = document.querySelector('#chart canvas');
+          //var destinationCanvas = document.getElementById('destination');
+          //debugger;
+          //destinationCanvas.width = sourceCanvas.width;
+          //destinationCanvas.height = sourceCanvas.height;
+
+          //var destCtx = destinationCanvas.getContext('webgl');
+          //destCtx.drawImage(sourceCanvas, 0, 0);
+
+          // Create a texture loader so we can load our image file
+          var loader = new THREE.TextureLoader();
+					var texture = THREE.ImageUtils.loadTexture(sourceCanvas.toDataURL('image/png'));
+          
+          // Load an image file into a custom material
+          var material = new THREE.MeshLambertMaterial({
+            map: texture
+          });
+
+          // create a plane geometry for the image with a width of 10
+          // and a height that preserves the image's aspect ratio
+          var geometry = new THREE.PlaneGeometry(5.12, 2.56);
+
+          // combine our image geometry and material into a mesh
+          var mesh = new THREE.Mesh(geometry, material);
+
+          // set the position of the image mesh in the x,y,z dimensions
+          mesh.position.set(0,1.4,-3)
+
+          // add the image to the scene
+          var scene = document.querySelector('a-scene');
+          scene.object3D.add(mesh)
+
+        }, 1000);
+      });
+    </script>
+  </body>
+</html>
