@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Hello, WebVR! • A-Frame</title>
+	<meta name="description" content="Hello, WebVR! • A-Frame">
+	<script src="https://kendo.cdn.telerik.com/2018.3.911/js/jquery.min.js"></script>
+	<script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script>
+</head>
+<body>
+	<a-scene background="color: #ECECEC">
+		<a-entity position="5 35 20" rotation="0 -30 0">
+			<a-camera fov="100" far="1000"></a-camera>
+		</a-entity>
+
+		<a-entity id="container">
+
+		</a-entity>		
+		<a-sky color="#ECECEC"></a-sky>
+	</a-scene>
+	<script>
+		window.onload = function() {
+			$.getJSON("ProgressNasdaqJsonData.json", function(json) {
+				var container = document.getElementById('container');
+				
+				for(var i = 2600; i < json.length; i ++) {
+					var previous = json[i - 1];
+					var next = json[i];
+					
+					var first = document.createElement('a-triangle');
+					var second = document.createElement('a-triangle');
+					
+					var startBackPoint = (i/10 - 261).toString() + " " + previous.high + " " + (-0.000005 * previous.volume / 2);
+					var startFrontPoint = (i/10 - 261).toString() + " " + previous.high + " " + (0.000005 * previous.volume / 2);
+					var endBackPint = (i/10 - 260).toString() + " " + next.high + " " + (-0.000005 * next.volume / 2);
+					var endFrontPoint = (i/10 - 260).toString() + " " + next.high + " " + (0.000005 * next.volume / 2)
+					
+					first.setAttribute('vertex-a', startBackPoint);
+					first.setAttribute('vertex-b', startFrontPoint);
+					first.setAttribute('vertex-c', endBackPint);
+					first.setAttribute('color', "#F0F");
+					first.setAttribute('material', "side: double");
+					
+					second.setAttribute('vertex-a', startFrontPoint);
+					second.setAttribute('vertex-b', endBackPint);
+					second.setAttribute('vertex-c', endFrontPoint);
+					second.setAttribute('color', "#F0F");
+					second.setAttribute('material', "side: double");
+					
+					container.appendChild(first);
+					container.appendChild(second);
+				}
+			});
+		}
+	</script>
+</body>
+</html>
