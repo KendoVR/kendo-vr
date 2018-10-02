@@ -25,13 +25,14 @@
                 
                 for(var i = 2600; i < json.length; i ++) {
                     var point = json[i];
-                    
                     var column = document.createElement('a-box');
+                    var xPosition = ((i - 2600)/5).toString();
+                    var yPosition = ((point.high - point.low) / 2 + point.low);
                     
                     column.setAttribute('depth', 0.00001 * point.volume);
                     column.setAttribute('width', .2);
                     column.setAttribute('height', point.high - point.low);
-                    column.setAttribute('position', ((i - 2600)/5).toString() + ', ' + ((point.high - point.low) / 2 + point.low) + ', 0');
+                    column.setAttribute('position', xPosition + ', ' + yPosition + ', 0');
                     column.setAttribute('color', "#F0F");
                     column.setAttribute('shadow', "");
                     
