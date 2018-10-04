@@ -1,0 +1,26 @@
+#9ab342 - Paysafe
+#7cb342 - Telerik
+#43a047 - VM Ware
+#00897b - SAP
+#11909f - Visteon
+#00acc1 - BulPros
+#039be5 - Sigma
+#1976d2 - DXC
+#3949ab - Chaos
+#5e35b1 - Atos
+#7f32c1 - Mussala
+#8e24aa - Scale
+#8d1269 - Luxsoft
+#7d0f3b - Codix
+#9d0441 - Axway
+#c2185b - Software AG
+#e53935 - Playtech
+#f4511e - Software Group
+#fb8c00 - GVC
+#ffb300 - Nemechek
+#fdd835 - Adastra
+#fff443 - Proxyadd
+#d7d931 - Tec
+#c0ca33 - Intelligent Systems
+#afb42b - Enigma
+ 
