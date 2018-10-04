@@ -1,0 +1,151 @@
+[{
+    "income": 101811000,
+    "profit": 5743000,
+    "incomeChange": 23.21,
+    "employees": 883,
+    "company": "Paysafe"
+},{
+    "income": 91877000,
+    "profit": 12963000,
+    "incomeChange": 12.68,
+    "employees": 508,
+    "company": "Telerik"
+},{
+    "income": 89066000,
+    "profit": -8374000,
+    "incomeChange": 24.8,
+    "employees": 642,
+    "company": "VM Ware"
+},{
+    "income": 79449000,
+    "profit": 5125000,
+    "incomeChange": 20.9,
+    "employees": 713,
+    "company": "SAP"
+},{
+    "income": 61865000,
+    "profit": 1912000,
+    "incomeChange": 17.77,
+    "employees": 720,
+    "company": "Visteon"
+},{
+    "income": 60187000,
+    "profit": 999000,
+    "incomeChange": 88.84,
+    "employees": 840,
+    "company": "BulPros"
+},{
+    "income": 52036000,
+    "profit": 4300000,
+    "incomeChange": 25.14,
+    "employees": 400,
+    "company": "Sirma"
+},{
+    "income": 31994000,
+    "profit": 57500000,
+    "incomeChange": -1.78,
+    "employees": 512,
+    "company": "DXC"
+},{
+    "income": 31620000,
+    "profit": 3493000,
+    "incomeChange": 15.33,
+    "employees": 219,
+    "company": "Chaos"
+},{
+    "income": 31607000,
+    "profit": 2805000,
+    "incomeChange": 10.3,
+    "employees": 414,
+    "company": "Atos"
+},{
+    "income": 26746000,
+    "profit": 2172000,
+    "incomeChange": 24.97,
+    "employees": 344,
+    "company": "Mussala"
+},{
+    "income": 25677000,
+    "profit": 2147000,
+    "incomeChange": 27.23,
+    "employees": 326,
+    "company": "Scale"
+},{
+    "income": 21292000,
+    "profit": 1747000,
+    "incomeChange": 13.07,
+    "employees": 267,
+    "company": "Luxsoft"
+},{
+    "income": 20365000,
+    "profit": 788000,
+    "incomeChange": 11.33,
+    "employees": 375,
+    "company": "Codix"
+},{
+    "income": 20306000,
+    "profit": 1451000,
+    "incomeChange": 32.17,
+    "employees": 224,
+    "company": "Axway"
+},{
+    "income": 17999000,
+    "profit": 1066000,
+    "incomeChange": 29.48,
+    "employees": 200,
+    "company": "Software AG"
+},{
+    "income": 16955000,
+    "profit": 1133000,
+    "incomeChange": 8.01,
+    "employees": 194,
+    "company": "Playtech"
+},{
+    "income": 16753000,
+    "profit": -2050000,
+    "incomeChange": -8.11,
+    "employees": 212,
+    "company": "Software Group"
+},{
+    "income": 15955000,
+    "profit": 1518000,
+    "incomeChange": -11.3,
+    "employees": 261,
+    "company": "GVC"
+},{
+    "income": 15423000,
+    "profit": 1384000,
+    "incomeChange": 15.36,
+    "employees": 223,
+    "company": "Nemechek"
+},{
+    "income": 15382000,
+    "profit": 4853000,
+    "incomeChange": 23.54,
+    "employees": 186,
+    "company": "Adastra"
+},{
+    "income": 14729000,
+    "profit": 1733000,
+    "incomeChange": 23.79,
+    "employees": 219,
+    "company": "Proxyadd"
+},{
+    "income": 14647000,
+    "profit": 191000,
+    "incomeChange": 31.9,
+    "employees": 325,
+    "company": "Tec"
+},{
+    "income": 13618000,
+    "profit": 2519000,
+    "incomeChange": 15.37,
+    "employees": 118,
+    "company": "Inteligent Systems"
+},{
+    "income": 13318000,
+    "profit": 5739000,
+    "incomeChange": -37.54,
+    "employees": 56,
+    "company": "Enigma"
+}]
