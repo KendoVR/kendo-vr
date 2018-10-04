@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script>
+        <script src="https://unpkg.com/aframe-animation-component@^4.1.2/dist/aframe-animation-component.min.js"></script> 
+        <script src="https://unpkg.com/aframe-debug-cursor-component/dist/aframe-debug-cursor-component.min.js"></script>
+        <script src="./aframe-switch.js"></script>
+    </head>
+    <body>
+        <a-scene>
+            <a-entity id="mouseCursor" cursor="rayOrigin: mouse" debug-cursor></a-entity>
+
+            <a-entity camera  
+                        look-controls
+                        position="0 0 0">
+            </a-entity>
+            
+            <kendo-webvr-switch position="0 0 -5">
+                
+            </kendo-webvr-switch>
+
+            
+
+            <a-sky color="#ECECEC"></a-sky>
+        </a-scene>
+    </body>
+</html>
