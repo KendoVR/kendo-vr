@@ -1,53 +1,94 @@
+const _buttonOffset = 0.05;
+
 AFRAME.registerComponent('switch', {
     schema: {
-        enabled: { type: 'boolean', default: true }
+        width: { type: 'number', default: 0.72 },
+        height: { type: 'number', default: 0.32 },
+        checked: { type: 'boolean', default: false },
+        fillColor: { type: 'color', default: '#fff'  },
+        checkedColor: { type: 'color', default: '#42a9b8' },
+        uncheckedColor: { type: 'color', default: '#bebebe' }
     },
-    init: function() {
+    init: function() {     
+        var that = this;
+        
         // Wrapper
-        this.wrapper = document.createElement('a-entity');
-        this.wrapper.setAttribute('position', '0 0 0.01');
+        this.wrapper = document.createElement('a-entity');   
         this.wrapper.setAttribute('geometry', {
             primitive: "plane",
-            width: 0.72, 
-            height: 0.32,
+            width: this.data.width, 
+            height: this.data.height,
         });
+
         this.wrapper.setAttribute('material', {
             side: "double",
-            color: "#bababa"
+            color: this.data.fillColor
         });
         this.el.appendChild(this.wrapper);
 
         // Button Handle
         this.btn = document.createElement('a-entity');
-        this.btn.setAttribute('position', '0.195 0 0.02');
+        this.btn.setAttribute('position', {
+             x: (this.wrapper.getAttribute("position").x - (this.data.width / 2) - _buttonOffset) / 2 + _buttonOffset, 
+             y: 0, 
+             z: 0 
+        });
         this.btn.setAttribute('geometry', {
             primitive: "plane",
-            width: 0.30,
-            height: 0.24
+            width: (this.data.width / 2) - _buttonOffset,
+            height: this.data.height - (_buttonOffset * 2)
         });
         this.btn.setAttribute('material', {
             side: "double",
-            color: "red"
+            color: this.data.uncheckedColor
         });
         this.el.appendChild(this.btn);
 
-        // Toggle
-        var that = this;
-
+        // Events                
         this.el.addEventListener('click', function(ev) {
             that.toggle();
-            that.el.dispatchEvent( new CustomEvent("change", { state: that.enabled }) );
+            that.el.dispatchEvent( new CustomEvent("change", { 
+                detail: { 
+                    width: that.data.width,
+                    height: that.data.height,
+                    checked: that.data.checked,
+                    fillColor: that.data.fillColor,
+                    checkedColor: that.data.checkedColor,
+                    uncheckedColor: that.data.uncheckedColor
+                }
+            }));
         });
     },
     toggle: function(ev) {
-        var isEnabled = this.enabled;
-console.log(isEnabled);
-        if(isEnabled) {
-            this.btn.setAttribute('position', '-0.2 0 0.02');
-        } else {
-            this.btn.setAttribute('position', '0.195 0 0.02');
+        var isChecked = this.data.checked;
+        
+        if(isChecked) {
+            this.setHandlePosition("right");                       
+            this.btn.setAttribute('material', { color: this.data.uncheckedColor });              
+        } else {            
+            this.setHandlePosition("left");
+            this.btn.setAttribute('material', { color: this.data.checkedColor });
         }
-        that.setAttribute('enabled', !isEnabled);
+
+        this.data.checked = !isChecked;
+    },
+    setHandlePosition: function(direction) {
+        var wrapperPosition = this.wrapper.getAttribute('position');
+        var buttonPosition = this.btn.getAttribute('position');
+
+        if(direction == 'left') {
+            this.btn.setAttribute('position', {
+                x: buttonPosition.x + (this.data.width / 2) - _buttonOffset,
+                y: wrapperPosition.y,
+                z: 0
+            });
+        } else {
+            this.btn.setAttribute('position', {
+                x: buttonPosition.x - (this.data.width / 2) + _buttonOffset,
+                y: wrapperPosition.y,
+                z: 0
+            });
+        }
     }
 });
 
@@ -56,6 +97,11 @@ AFRAME.registerPrimitive('kendo-webvr-switch', {
         switch: {}
     },
     mappings: {
-        enabled: 'switch.enabled'
+        width: 'switch.width',
+        height: 'switch.height',
+        checked: 'switch.checked',
+        'fill-color': 'switch.fillColor',
+        'checked-color': 'switch.checkedColor',
+        'unchecked-color': 'switch.uncheckedColor'
     }
 });
