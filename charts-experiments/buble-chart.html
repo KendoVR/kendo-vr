@@ -10,15 +10,74 @@
 <body>
 <a-scene background="color: #ECECEC">
   <a-entity position="0 0 250" rotation="0 0 0">
-	<a-camera fov="60" far="1000"></a-camera>
+	<a-camera fov="60" far="1000" id="camera-entity">
+		<a-entity cursor="fuse: false;"
+            position="0 0 -1"
+            geometry="primitive: ring; radiusInner: 0.005; radiusOuter: 0.01"
+            material="color: #888; shader: flat">
+  		</a-entity>
+	</a-camera>
   </a-entity>
 
   <a-entity id="container" rotation="30 -45 -20">
-  </a-entity>		
-  <a-sky color="#ECECEC"></a-sky>
+	
+  </a-entity>	
+  <a-entity id="navigator" rotation="30 -45 -20">
+		<a-sphere class="navigation-segment" data-navigation="90 0 0" theta-length="14" radius="150" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
+		<a-sphere class="navigation-segment" data-navigation="0 90 0" theta-length="14" radius="150" rotation="0 0 90" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
+		<a-sphere class="navigation-segment" data-navigation="-90 0 0" theta-length="14" radius="150" rotation="0 0 180" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
+		<a-sphere class="navigation-segment" data-navigation="0 -90 0" theta-length="14" radius="150" rotation="0 0 -90" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
+
+		<a-sphere class="navigation-segment" data-navigation="0 0 0" theta-length="14" radius="150" rotation="90 0 0" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
+		<a-sphere class="navigation-segment" data-navigation="0 180 0" theta-length="14" radius="150" rotation="90 180 0" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
+
+		<a-sphere class="navigation-segment" data-navigation="30 -45 -20" theta-length="14" radius="150" rotation="0 132 55" visible="false" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
+		<a-sphere class="navigation-segment" data-navigation="-30 -135 -20" theta-length="14" radius="150" rotation="0 -132 55" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
+		<a-sphere class="navigation-segment" data-navigation="-30 135 20" theta-length="14" radius="150" rotation="0 -48 55" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
+		<a-sphere class="navigation-segment" data-navigation="30 45 20" theta-length="14" radius="150" rotation="0 48 55" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
+
+		<a-sphere class="navigation-segment" data-navigation="-30 45 -20" theta-length="14" radius="150" rotation="-19 35 126" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
+		<a-sphere class="navigation-segment" data-navigation="-30 -45 20" theta-length="14" radius="150" rotation="-19 118 126" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
+		<a-sphere class="navigation-segment" data-navigation="30 135 -20" theta-length="14" radius="150" rotation="-19 -62 126" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
+		<a-sphere class="navigation-segment" data-navigation="30 -135 20" theta-length="14" radius="150" rotation="-19 -145 126" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
+
+	</a-entity>	
+
+  	<a-sky color="#ECECEC"></a-sky>
 </a-scene>
 <script>
+
 	window.onload = function() {
+		var segments = document.querySelectorAll('.navigation-segment');
+		
+		for(var i = 0; i < segments.length; i ++) {
+			segments[i].addEventListener('mouseenter', function(e) {
+				var segment = e.target;
+				segment.setAttribute('color', '#daa');
+			});
+
+			segments[i].addEventListener('mouseleave', function(e) {
+				var segment = e.target;
+				segment.setAttribute('color', '#fff');
+			});
+
+			segments[i].addEventListener('click', function(e) {
+				var segment = e.target;
+				var navigationPosition = segment.getAttribute('data-navigation');
+				var navigator = document.getElementById('navigator');
+				var chart = document.getElementById('container');
+
+				for(var i = 0; i < segments.length; i ++) {
+					segments[i].setAttribute('visible', 'true');
+				}
+
+				segment.setAttribute('visible', 'false');
+				navigator.setAttribute('rotation', navigationPosition);
+				chart.setAttribute('rotation', navigationPosition);
+			});
+		}
+		
+
 		var generateGrid = function() {
 			var container = document.getElementById('container');
 
