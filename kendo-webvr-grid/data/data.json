@@ -1,0 +1,28 @@
+{
+    "rows": [{
+        "cells": ["Name", "Job Title"],
+        "height": 20
+    },{
+        "cells": ["Veselin Tsvetanov", "Senior Support Engineer"],
+        "height": 20
+    },{
+        "cells": ["Yanko Djemerenov", "Software Engineer"],
+        "height": 20
+    },{
+        "cells": ["Joana Ivanova", "Software Engineer"],
+        "height": 20
+    },{
+        "cells": ["Dimitar Kalaydzhiev", "Support Engineer"],
+        "height": 20
+    },{
+        "cells": ["Lilia Karakoleva", "Principal UX Designer"],
+        "height": 20
+    }],
+    "columns": [{
+        "width": 200,
+        "color": "grey"
+    },{
+        "width": 300,
+        "color": "grey"
+    }]
+}
