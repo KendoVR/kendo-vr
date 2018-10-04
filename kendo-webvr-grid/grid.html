@@ -8,35 +8,20 @@
     </head>
     <body>
         <a-scene>
+            <a-assets>
+                <script id="checkbox" type="text/html">
+                    <a-entity
+                        geometry="primitive: plane; height: 1; width: 1"
+                        text="value: blio"></a-entity>
+                </script>
+            </a-assets>
             <a-entity id="mouseCursor" cursor="rayOrigin: mouse" debug-cursor></a-entity>
-            <a-entity position="0 20 100">
+            <a-entity position="180 -50 100">
                 <a-camera></a-camera>
             </a-entity>            
-            <kendo-webvr-grid id="grid" position="0 -0.6 -0.1" data="./data/data.json">
-                <a-entity id="sort-button" geometry="primitive: box; width:20;height:10" material="color: blue" text="value: Blio" position="50 -10 -0.3" ></a>
+            <kendo-webvr-grid id="grid" position="0 -0.6 -0.1" data="../companies-data.json" height="275" sortable="true">    
             </kendo-webvr-grid>
             <a-sky color="#ECECEC"></a-sky>
         </a-scene>
-
-        <script>
-            document.querySelector('#sort-button').addEventListener('click', function() {
-                let allCells = this.parentEl.getChildEntities().filter(function (item) { return parseInt(item.getAttribute("rowindex")) > 0});
-                let oldCells = allCells.filter(item => item.getAttribute("colindex") == 0);
-
-                let sortedCells = allCells.filter(item => item.getAttribute("colindex") == 0).sort(function(a, b) {
-                    return a.getAttribute("text").value == b.getAttribute("text").value
-                        ? 0
-                        : (a.getAttribute("text").value > b.getAttribute("text").value ? 1 : -1);
-                });
-                    
-                for (let i=0; i< sortedCells.length; i++) {
-                    sortedCells[i].setAttribute("animation", {
-                        property: "position",
-                        dur: 500,
-                        to: oldCells[i].getAttribute("position").toArray().toString().replace(",", " ")
-                    })
-                }
-            });
-        </script>
     </body>
 </html>

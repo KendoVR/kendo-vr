@@ -151,24 +151,27 @@
         "company": "Enigma"
     }],
     "columns": [{
-        "field": "company",
-        "title": "Company Name",
-        "width": 200
+        "template": "checkbox",
+        "width": 20
     }, {
-        "field": "employees",
-        "title": "Employees Count",
+        "field": "company",
+        "title": "Company",
         "width": 50
     }, {
-        "field": "income",
-        "title": "Income",
+        "field": "employees",
+        "title": "Employees",
         "width": 50
     }, {
         "field": "profit",
         "title": "Profit",
         "width": 50
     }, {
+        "field": "income",
+        "title": "Income",
+        "width": 50
+    }, {
         "field": "incomeChange",
-        "title": "Income Change",
+        "title": "IncomeCh",
         "width": 50
     }]
 }

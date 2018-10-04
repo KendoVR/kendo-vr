@@ -1,8 +1,17 @@
 AFRAME.registerComponent('grid', {
     schema: {
-        data: { type: 'asset' }
+        data: { type: 'asset' },
+        sortable: {type: 'boolean', default: true},
+        height: {type: 'number', default: 400},
+        pageSize: {type: 'number', default: 3}
     }, 
     init: function () {
+        this.lineColor = "#bbb5c0";
+        this.gridBackColor = "#ffffff";
+        this.gridForeColor = "#29313c";
+        this.headerHeight = 12;
+        this.headerBackColor = "#42a9b8";
+        this.headerForeColor = "#ffffff";
         this.loader = new THREE.FileLoader();
     },
     update: function () {
@@ -15,81 +24,249 @@ AFRAME.registerComponent('grid', {
     onDataLoaded: function (file) {
         const el = this.el,
               opts = this.data,
-              data = this.dataSource = JSON.parse(file);
+              json = JSON.parse(file);
 
-        let totalWidth = sumSettingTo(data.columns, "width", data.columns.length);
-        let totalHeight = sumSettingTo(data.rows, "height", data.rows.length);
+        this.dataSource = json.data;
+        this.columns = json.columns;
+        this.sortable = opts.sortable;
+        this.rowHeight = opts.height / this.dataSource.length;
+        this.totalWidth = sumSettingTo(this.columns, "width", this.columns.length);
+        this.totalHeight = opts.height + this.headerHeight;
 
-        for (let j = 0; j < data.rows.length; j++) {
-            let row = data.rows[j];
-            let relativePositionY = sumSettingTo(data.rows, "height", j);
+        this.buildHeaderColumns();
 
-            let line = buildLine("0, " + -relativePositionY.toString() + ", 0",
-                                totalWidth.toString() + ", " + -relativePositionY.toString() + ", 0", 
-                                "red");
-
-            this.el.appendChild(line);
+        //this.buildContainerLines();
+        
+        //this.buildTemplateColumns();
+        this.buildColumns();
+    },
+    buildHeaderColumns () {
+        for (let i = 0; i < this.columns.length; i++) {
+            let line;
+            let column = this.columns[i];
+            let relativePositionX = sumSettingTo(this.columns, "width", i);
             
-            for (let i = 0; i < row.cells.length; i++) {
-                let relativePositionX =  sumSettingTo(data.columns, "width", i);
-                let width = data.columns[i].width;
-                let cell = buildCell({
-                                text: row.cells[i],
+            let aCell = this.buildCell({
+                text: column.title || "",
+                field: column.field || "",
+                color: this.headerBackColor,
+                textColor: this.headerForeColor,
+                width: column.width,
+                height: this.headerHeight,
+                position: (column.width / 2 + relativePositionX).toString() + " " +
+                          -this.headerHeight.toString() + " 0.5"
+            });
+
+            if (this.sortable && column.field) {
+                let position = aCell.getAttribute("position");
+                let sortIconWidth = 10;
+                position.x = position.x - sortIconWidth + column.width/ 2;
+                let sortButton = this.buildImage({
+                    height: this.headerHeight,
+                    position: position,
+                    width: sortIconWidth
+                });
+
+                aCell.addEventListener("click", function () {
+                    let sortField = this.getAttribute("field");
+                    let sortIcon = this.getElementsByTagName("a-image")[0];
+                    let sortDirection = sortIcon.getAttribute("direction");
+
+                    for (let element of this.parentEl.getElementsByTagName("a-image")) {
+                        element.setAttribute("visible", false);
+                        element.removeAttribute("direction");
+                    }
+
+                    if (sortDirection === "desc") {
+                        sortIcon.setAttribute("visible", false);
+                        sortIcon.removeAttribute("direction");
+
+                        sort.call(this, "");
+                    } else if (sortDirection === "asc") {
+                        sortIcon.setAttribute("visible", true);
+                        sortIcon.setAttribute("direction", "desc");
+                        sortIcon.setAttribute("src", "./images/down.png");
+                        
+                        sort.call(this, "desc");
+                    } else {
+                        sortIcon.setAttribute("visible", true);
+                        sortIcon.setAttribute("direction", "asc");
+                        sortIcon.setAttribute("src", "./images/up.png");
+                        
+                        sort.call(this, "asc");
+                    }
+                });
+
+                aCell.appendChild(sortButton);
+            }
+                          
+            line = this.buildLine(relativePositionX.toString() + ", " + -this.totalHeight.toString() + ", 0",
+                            relativePositionX.toString() + ", 0, 0", 
+                            this.lineColor);
+
+            //this.el.appendChild(line);
+            this.el.appendChild(aCell);
+        }
+    },
+    buildTemplateColumns () {
+        let templateCols = this.columns.filter(e => e.template);
+        for (let j = 0; j < templateCols.length; j++) {
+            let columnIndex = this.columns.indexOf(templateCols[j]);
+            for (let i = 0; j < this.dataSource.length; i++) {
+                let relativePositionX = sumSettingTo(this.columns, "width", columnIndex);
+                let cell = this.buildTemplateCell({
+                    template: templateCols[j].template,
+                    width: templateCols[j].width,
+                    color: this.gridBackColor,
+                    height: this.rowHeight,
+                    position: (templateCols[j].width / 2 + relativePositionX).toString() + " " + 
+                              (-this.rowHeight / 2 - this.rowHeight * (j+1) - this.headerHeight/2).toString() +
+                              " 0"
+                });                          
+                // cell.setAttribute("rowIndex", i);
+                // this.el.appendChild(cell);
+            }
+        }  
+
+    },
+    buildColumns () {        
+        for (let j = 0; j < this.dataSource.length; j++) {
+            let row = this.dataSource[j];
+
+            let line = this.buildLine("0, " + -(((j + 1) * this.rowHeight) + this.headerHeight / 2).toString() + ", 0",
+                                this.totalWidth.toString() + ", " + -(((j + 1) * this.rowHeight) + this.headerHeight / 2).toString() + ", 0", 
+                                this.lineColor);
+            
+            for (let column in row) {
+                let columnIndex = this.columns.map(e => e.field).indexOf(column); 
+                let relativePositionX =  sumSettingTo(this.columns, "width", columnIndex);
+                let width = this.columns[columnIndex].width;
+                let cell = this.buildCell({
+                                text: row[column].toString(),
                                 width: width,
-                                height: row.height,
+                                color: this.gridBackColor,
+                                textColor: this.gridForeColor,
+                                field: column,
+                                height: this.rowHeight,
                                 position: (width / 2 + relativePositionX).toString() + " " + 
-                                          (-row.height / 2 - relativePositionY).toString() +
+                                          (-this.rowHeight / 2 - this.rowHeight * (j+1) - this.headerHeight/2).toString() +
                                           " 0"
-                            });                  
-                cell.setAttribute("rowIndex", j); 
-                cell.setAttribute("colIndex", i);               
-                let line = buildLine(relativePositionX.toString() + ", " + -totalHeight.toString() + ", 0",
-                                    relativePositionX.toString() + ", 0, 0", 
-                                    "red");
+                            });                          
+                cell.setAttribute("rowIndex", j);
+                //external method
+                cell.addEventListener("mouseenter", function () {
+                    let rowIndex = this.getAttribute("rowIndex");
+                    let cols = this.parentEl.getChildEntities().filter(item => item.getAttribute("rowIndex") == rowIndex);
+
+                    for(let col of cols) {
+                        let position = col.getAttribute("position");
+                        position.z = 1;
+                        col.setAttribute("position", position);
+                    }
+                });
+                cell.addEventListener("mouseleave", function () {
+                    let rowIndex = this.getAttribute("rowIndex");
+                    let cols = this.parentEl.getChildEntities().filter(item => item.getAttribute("rowIndex") == rowIndex);
+
+                    for(let col of cols) {
+                        let position = col.getAttribute("position");
+                        position.z = 0;
+                        col.setAttribute("position", position);
+                    }
+                });
 
                 this.el.appendChild(cell);
-                this.el.appendChild(line);
             }
 
-        }        
-    }
+            if (j > 0) {
+                this.el.appendChild(line);
+            }
+        } 
+    },
+    buildContainerLines () {
+        this.el.appendChild(this.buildLine("0, 0, 0", this.totalWidth + ", 0, 0", this.lineColor));
+        this.el.appendChild(this.buildLine(this.totalWidth + ", " + -this.totalHeight.toString() + ", 0", this.totalWidth + ", 0, 0", this.lineColor));
+        this.el.appendChild(this.buildLine("0, " + -this.totalHeight.toString() + ", 0", "0, 0, 0", this.lineColor));
+        this.el.appendChild(this.buildLine("0, " + -this.totalHeight.toString() + ", 0", this.totalWidth + ", " + -this.totalHeight.toString() + ", 0", this.lineColor));
+    },
+    buildCell (cell) {
+        let aCell = document.createElement('a-entity');
+    
+        aCell.setAttribute("geometry", {
+            primitive: "plane",
+            width: cell.width,
+            height: cell.height
+        });
+        aCell.setAttribute("material", {
+            color: cell.color
+        });
+        aCell.setAttribute("text", {
+            value: cell.text,
+            color: cell.textColor,
+            xOffset: cell.width * 0.7,
+            width: cell.width * 2
+        });
+        aCell.setAttribute("field", cell.field);
+        aCell.setAttribute("position", cell.position);
+    
+        return aCell;
+    },
+    buildTemplateCell (cell) {
+        let templateCell = document.createElement('a');
+    
+        // aCell.setAttribute("geometry", {
+        //     primitive: "plane",
+        //     width: cell.width,
+        //     height: cell.height
+        // });
+        // aCell.setAttribute("material", {
+        //     color: cell.color
+        // });
+        // aCell.setAttribute("template", {
+        //     src: "#" + cell.template
+        // });
+        // aCell.setAttribute("position", cell.position);
+    
+        return templateCell;
+    },
+    buildImage (image) {
+        let aImage = document.createElement('a-image');
+    
+        aImage.setAttribute("width", image.width);
+        aImage.setAttribute("height", image.height);
+        aImage.setAttribute("transparent", true);
+        aImage.setAttribute("position", image.position);
+
+        if (image.src) {
+            aImage.setAttribute("src", image.src);
+        }
+
+        aImage.setAttribute("visible", false);
+        aImage.setAttribute("color", this.gridBackColor);
+    
+        return aImage;
+    },
+    buildLine (start, end, color) {
+        let aLine = document.createElement('a-entity');        
+        aLine.setAttribute('line', {
+            start: start,
+            end: end,
+            color: color
+        });
+        return aLine;
+    }    
 });
 AFRAME.registerPrimitive('kendo-webvr-grid', {
     defaultComponents: {
         grid: {}
     },
     mappings: {
-        data: 'grid.data'
+        data: 'grid.data',
+        sortable: 'grid.sortable',
+        height: 'grid.height',
+        pagesize: 'grid.pageSize'
     }
 });
-
-function buildCell (cell) {
-    var column = document.createElement('a-entity');
-    column.setAttribute("geometry", {
-        primitive: "plane",
-        width: cell.width,
-        height: cell.height
-    });
-    column.setAttribute("material", {
-        color: "grey"
-    });
-    column.setAttribute("text", {
-        value: cell.text
-    });
-    column.setAttribute("position", cell.position);
-
-    return column;
-}
-
-function buildLine (start, end, color ) {
-    var line = document.createElement('a-entity');        
-    line.setAttribute('line', {
-        start: start,
-        end: end,
-        color: color
-    });
-    return line;
-}
 
 function sumSettingTo (array, setting, index) {
     if (index === 0) {
@@ -102,4 +279,50 @@ function sumSettingTo (array, setting, index) {
             return sum;
         }
     })
+}
+
+function sort (direction) {
+    let allCells = this.parentEl.getChildEntities().filter(function (item) { return item.getAttribute("rowindex") });
+    let oldCells = allCells.filter(item => item.getAttribute("field") == this.getAttribute("field"));
+    let directionMultiplier = direction === "asc" ? 1 : -1;
+    let sortedCells;
+
+    oldCells.sort(function (a, b) {
+        return a.getAttribute("position").y > b.getAttribute("position").y ? -1 : 1;
+    });
+
+    if (direction) {
+        sortedCells = allCells.filter(item => item.getAttribute("field") == this.getAttribute("field")).sort(function(a, b) {
+            if (isNaN(parseInt(a.getAttribute("text").value))) {
+                return a.getAttribute("text").value == b.getAttribute("text").value
+                ? 0
+                : (a.getAttribute("text").value > b.getAttribute("text").value ? 1*directionMultiplier : -1*directionMultiplier);
+            } else {
+                return parseInt(a.getAttribute("text").value) == parseInt(b.getAttribute("text").value)
+                ? 0
+                : (parseInt(a.getAttribute("text").value) > parseInt(b.getAttribute("text").value) ? 1*directionMultiplier : -1*directionMultiplier);
+            }
+        });
+    } else {
+        sortedCells = allCells.filter(item => item.getAttribute("field") == this.getAttribute("field")).sort(function(a, b) {
+            return a.getAttribute("rowIndex") > b.getAttribute("rowIndex") ? 1 : -1;
+        });
+    }
+            
+    for (let i=0; i< sortedCells.length; i++) {
+        let cellsByRow = allCells.filter(function (cell) {
+            return cell.getAttribute("rowIndex") === sortedCells[i].getAttribute("rowIndex");
+        });
+
+        for (let cell of cellsByRow) {
+            let xyz = cell.getAttribute("position").toArray();
+            xyz[1] = oldCells[i].getAttribute("position").toArray()[1];
+
+            cell.setAttribute("animation", {
+                property: "position",
+                dur: 400,
+                to: xyz.toString().replace(",", " ")
+            })
+        }
+    }
 }
