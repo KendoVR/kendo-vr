@@ -1,151 +1,51 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<title>Hello, WebVR! • A-Frame</title>
-<meta name="description" content="Hello, WebVR! • A-Frame">
-<script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script>
+	<meta charset="utf-8">
+	<title>Hello, WebVR! • A-Frame</title>
+	<meta name="description" content="Hello, WebVR! • A-Frame">
+	<script src="https://kendo.cdn.telerik.com/2018.3.911/js/jquery.min.js"></script>
+	<script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script>
 </head>
 <body>
 <a-scene background="color: #ECECEC">
-  <a-entity position="10 20 130">
-	<a-camera fov="100" far="1000"></a-camera>
+  <a-entity position="160 70 200" rotation="-12 40 0">
+	<a-camera fov="60" far="1000"></a-camera>
   </a-entity>
 
   <a-entity id="container">
-	<a-animation attribute="rotation"
+	<!-- <a-animation attribute="rotation"
 		   dur="10000"
 		   fill="forwards"
 		   to="0 360 0"
-		   repeat="indefinite"></a-animation>
-	  <a-sphere position="101.811 57.43 23.21" 
-				radius="8.83" 
-				color="#00805d"
-				material="transparent:true; opacity:0.95"></a-sphere>
-	  <a-sphere position="91.877 129.63 12.68" 
-				radius="5.08" 
-				color="#00402e"
-				material="transparent:true; opacity:0.95"></a-sphere>
-	  <a-sphere position="89.066 -83.74 24.8" 
-				radius="6.42" 
-				color="#686868"
-				material="transparent:true; opacity:0.95"></a-sphere>
-	  <a-sphere position="79.449 51.25 20.9" 
-				radius="7.13" 
-				color="#282828"
-				material="transparent:true; opacity:0.95"></a-sphere>
-	  <a-sphere position="61.865 19.12 17.77" 
-				radius="7.2" 
-				color="#ffa500"
-				material="transparent:true; opacity:0.95"></a-sphere>
-	  <a-sphere position="60.187 9.99 88.84" 
-				radius="8.4" 
-				color="#7d3d00"
-				material="transparent:true; opacity:0.95"></a-sphere>
-	  <a-sphere position="52.036 43 25.14" 
-				radius="4" 
-				color="#8c632a"
-				material="transparent:true; opacity:0.95"></a-sphere>
-	  <a-sphere position="31.994 5.75 -1.78" 
-				radius="5.12" 
-				color="#bd5200"
-				material="transparent:true; opacity:0.95"></a-sphere>
-	  <a-sphere position="31.620 34.93 15.33" 
-				radius="2.19" 
-				color="#b58f59"
-				material="transparent:true; opacity:0.95"></a-sphere>
-	  <a-sphere position="31.607 28.05 10.3" 
-				radius="4.14" 
-				color="#351c5f"
-				material="transparent:true; opacity:0.95"></a-sphere>
-	  
-	  
-	  <a-sphere position="26.746 21.72 24.97" 
-				radius="3.44" 
-				color="#0a2966"
-				material="transparent:true; opacity:0.95"></a-sphere>
-	  <a-sphere position="25.677 21.47 27.23" 
-				radius="3.26" 
-				color="#8b0000"
-				material="transparent:true; opacity:0.95"></a-sphere>
-	  <a-sphere position="21.292 17.47 13.07" 
-				radius="2.67" 
-				color="#6b5151"
-				material="transparent:true; opacity:0.95"></a-sphere>
-	  <a-sphere position="20.365 7.88 11.33" 
-				radius="3.75" 
-				color="#9f7c7c"
-				material="transparent:true; opacity:0.95"></a-sphere>
-	  <a-sphere position="20.306 14.51 32.17" 
-				radius="2.24" 
-				color="#42005c"
-				material="transparent:true; opacity:0.95"></a-sphere>
-	  <a-sphere position="17.999 10.66 29.48" 
-				radius="2" 
-				color="#6c0051"
-				material="transparent:true; opacity:0.95"></a-sphere>
-	  <a-sphere position="16.955 11.33 8.01" 
-				radius="1.94" 
-				color="#af006a"
-				material="transparent:true; opacity:0.95"></a-sphere>
-	  <a-sphere position="16.753 -20.50 -8.11" 
-				radius="2.12" 
-				color="#e00062"
-				material="transparent:true; opacity:0.95"></a-sphere>
-	  <a-sphere position="15.955 15.18 -11.3" 
-				radius="2.61" 
-				color="#ea3575"
-				material="transparent:true; opacity:0.95"></a-sphere>
-	  <a-sphere position="15.423 13.84 15.36" 
-				radius="2.23" 
-				color="#f8de8d"
-				material="transparent:true; opacity:0.95"></a-sphere>
-	  
-	  <a-sphere position="15.382 48.53 23.54" 
-				radius="1.86" 
-				color="#ab1313"
-				material="transparent:true; opacity:0.95"></a-sphere>
-	  <a-sphere position="14.729 17.33 23.79" 
-				radius="2.19" 
-				color="#901010"
-				material="transparent:true; opacity:0.95"></a-sphere>
-	  <a-sphere position="14.647 1.91 31.9" 
-				radius="3.25" 
-				color="#0b4a58"
-				material="transparent:true; opacity:0.95"></a-sphere>
-	  <a-sphere position="13.618 25.19 15.37" 
-				radius="1.18" 
-				color="#658288"
-				material="transparent:true; opacity:0.95"></a-sphere>
-	  <a-sphere position="13.318 57.39 -37.54" 
-				radius="0.56" 
-				color="#753337"
-				material="transparent:true; opacity:0.95"></a-sphere>
+		   repeat="indefinite"></a-animation> -->
 
-	  <a-box position="0 0 0" 
+	  <!-- <a-plane position="0 0 0" 
 			   rotation="-90 0 0" 
 			   depth=".1" 
-			   height="1000" 
-			   width="1000"
+			   height="240" 
+			   width="240"
 			   color="#AAA"
-			   material="transparent:true; opacity:0.5">
-	  </a-box>
-	  <a-box position="0 0 0" 
+			   material="transparent:true; opacity:0.1"
+			   visible="false">
+			   <a-animation attribute="visible" delay="1000" to="true"></a-animation>
+	  </a-plane> -->
+	  <!-- <a-plane position="0 0 0" 
 			   rotation="0 90 0" 
 			   depth=".1" 
-			   width="1000" 
-			   height="1000"
+			   width="240" 
+			   height="240"
 			   color="#AAA"
-			   material="transparent:true; opacity:0.5">
-	  </a-box>
-	  <a-box position="0 0 0" 
+			   material="transparent:true; opacity:0.1">
+	  </a-plane> -->
+	  <!-- <a-plane position="0 0 0" 
 			   rotation="0 0 0" 
 			   depth=".1" 
-			   width="1000" 
-			   height="1000"
+			   width="240" 
+			   height="240"
 			   color="#AAA"
-			   material="transparent:true; opacity:0.5">
-	  </a-box>
+			   material="transparent:true; opacity:0.1">
+	  </a-plane> -->
   </a-entity>		
   <a-sky color="#ECECEC"></a-sky>
 </a-scene>
@@ -153,56 +53,176 @@
 	window.onload = function() {
 		var container = document.getElementById('container');
 		
-		for(var i = -100; i <= 100; i ++) {
+		// var plane1 = document.createElement('a-plane');
+
+		// plane1.setAttribute('position', '0 0 0');
+		// plane1.setAttribute('rotation', '-90 0 0');
+		// plane1.setAttribute('height', '240');
+		// plane1.setAttribute('width', '240');
+		// plane1.setAttribute('color', 'red');
+		// plane1.setAttribute('material', 'transparent:true; opacity:0.5');
+
+		// //container.appendChild(plane1);
+		
+		// var plane2 = document.createElement('a-plane');
+
+		// plane2.setAttribute('position', '0 0 0');
+		// plane2.setAttribute('rotation', '0 90 0');
+		// plane2.setAttribute('height', '240');
+		// plane2.setAttribute('width', '240');
+		// plane2.setAttribute('color', 'red');
+		// plane2.setAttribute('material', 'transparent:true; opacity:0.5');
+
+		// //container.appendChild(plane2);
+
+		// var plane3 = document.createElement('a-plane');
+
+		// plane3.setAttribute('position', '0 0 0');
+		// plane3.setAttribute('rotation', '0 0 0');
+		// plane3.setAttribute('height', '240');
+		// plane3.setAttribute('width', '240');
+		// plane3.setAttribute('color', 'red');
+		// plane3.setAttribute('material', 'transparent:true; opacity:0.5');
+
+		// //container.appendChild(plane3);
+
+		$.getJSON("../companies-data.json", function(json) {
+			for(var i = 0; i < json.length; i ++) {
+				var item = json[i];
+				
+				var element = document.createElement('a-sphere');
+				var xPoint = item.income / 1000000;
+				var yPoint = item.profit / 100000;
+				var zPoint = item.incomeChange;
+				var position = xPoint.toString() + ' ' + yPoint + ' ' + zPoint.toString();
+				
+				//console.log(position)
+
+				if (item.profit > 0) {
+					var profitInMilions = item.profit / 1000000;
+					var green = Math.floor(128 + profitInMilions * 8);
+					var redAndBlue = Math.floor(128 - profitInMilions * 8);
+
+					element.setAttribute('color', 'rgb(' + redAndBlue + ', ' + green + ', ' + redAndBlue + ')');
+				} else {
+					element.setAttribute('color', 'red');
+				}
+
+				element.setAttribute('position', position );
+				element.setAttribute('radius', item.employees / 100 );
+				element.setAttribute('material', 'transparent:true; opacity:0.75');
+				
+				container.appendChild(element);
+			}
+		});
+
+		for(var i = -140; i <= 140; i ++) {
 			var xy1 = document.createElement('a-entity');
-			var xy2 = document.createElement('a-entity');
-			
 			var xz1 = document.createElement('a-entity');
-			var xz2 = document.createElement('a-entity');
-			
 			var yz1 = document.createElement('a-entity');
+
+			var xy2 = document.createElement('a-entity');
+			var xz2 = document.createElement('a-entity');
 			var yz2 = document.createElement('a-entity');
 			
-			xy1.setAttribute('line', {
-				start: "-500, " + i*10 + ", 0",
-				end: "500, " + i*10 + ", 0",
-				color: "#AAA"
-			});
-			xy2.setAttribute('line', {
-				start: (i*10).toString() + ", -500, 0",
-				end: (i*10).toString() + ", 500, 0",
-				color: "#AAA"
-			});
-			
-			xz1.setAttribute('line', {
-				start: "-500, 0, " + i*10,
-				end: "500, 0, " + i*10,
-				color: "#AAA"
-			});
-			xz2.setAttribute('line', {
-				start: (i*10).toString() + ", 0, -500",
-				end: (i*10).toString() + ", 0, 500",
-				color: "#AAA"
-			});
+			if (i === 0) {
+				xy1.setAttribute('line', {
+					start: "0, 0, -140",
+					end: "0, 0, 140",
+					color: "#777"
+				});
+				
+				xz1.setAttribute('line', {
+					start: "0, -140, 0",
+					end: "0, 140, 0",
+					color: "#777"
+				});
 
-			yz1.setAttribute('line', {
-				start: "0, " + i*10 + ", -500",
-				end: "0, " + i*10 + ", 500",
-				color: "#AAA"
-			});
-			yz2.setAttribute('line', {
-				start: "0, -500, " + i*10,
-				end: "0, 500, " + i*10,
-				color: "#AAA"
-			});
+				yz1.setAttribute('line', {
+					start: "-140, 0, 0",
+					end: "140, 0, 0",
+					color: "#777"
+				});
+			} else if(i % 20 === 0) {
+				xy1.setAttribute('line', {
+					start: (i).toString() + ", -140, 0",
+					end: (i).toString() + ", 140, 0",
+					color: "#bbb"
+				});
+
+				xz1.setAttribute('line', {
+					start: "-140, 0, " + i,
+					end: "140, 0, " + i,
+					color: "#bbb"
+				});
+				
+				yz1.setAttribute('line', {
+					start: "0, " + i + ", -140",
+					end: "0, " + i + ", 140",
+					color: "#bbb"
+				});
+
+				xy2.setAttribute('line', {
+					start: "-140, " + (i).toString() + ", 0",
+					end: "140, " + (i).toString() + ", 0",
+					color: "#bbb"
+				});
+
+				xz2.setAttribute('line', {
+					start: (i).toString() + ", 0, -140",
+					end: (i).toString() + ", 0, 140",
+					color: "#bbb"
+				});
+				
+				yz2.setAttribute('line', {
+					start: "0, -140, " + i,
+					end: "0, 140, " + i,
+					color: "#bbb"
+				});
+			}else {			
+				xy1.setAttribute('line', {
+					start: (i).toString() + ", -140, 0",
+					end: (i).toString() + ", 140, 0",
+					color: "#ddd"
+				});
+
+				xz1.setAttribute('line', {
+					start: "-140, 0, " + i,
+					end: "140, 0, " + i,
+					color: "#ccc"
+				});
+				
+				yz1.setAttribute('line', {
+					start: "0, " + i + ", -140",
+					end: "0, " + i + ", 140",
+					color: "#ddd"
+				});
+
+				xy2.setAttribute('line', {
+					start: "-140, " + (i).toString() + ", 0",
+					end: "140, " + (i).toString() + ", 0",
+					color: "#ddd"
+				});
+
+				xz2.setAttribute('line', {
+					start: (i).toString() + ", 0, -140",
+					end: (i).toString() + ", 0, 140",
+					color: "#ccc"
+				});
+				
+				yz2.setAttribute('line', {
+					start: "0, -140, " + i,
+					end: "0, 140, " + i,
+					color: "#ddd"
+				});
+			}
 			
 			container.appendChild(xy1);
-			container.appendChild(xy2);
-			
 			container.appendChild(xz1);
-			container.appendChild(xz2);
-			
 			container.appendChild(yz1);
+
+			container.appendChild(xy2);
+			container.appendChild(xz2);
 			container.appendChild(yz2);
 		}
 	}
