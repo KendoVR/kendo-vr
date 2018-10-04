@@ -218,7 +218,7 @@
 
 					element.setAttribute('position', position );
 					element.setAttribute('radius', 0 );
-					element.setAttribute('material', 'transparent:true; opacity:0.8');
+					element.setAttribute('material', 'transparent:true; opacity:0.7');
 
 					var animation = document.createElement('a-animation');
 					animation.setAttribute('attribute', 'radius');
@@ -226,6 +226,21 @@
 					animation.setAttribute('dur', 1000);
 
 					element.appendChild(animation);
+					element.addEventListener('mouseenter', function(e) {
+						var point = e.target;
+						point.setAttribute('material', 'transparent:true; opacity:1');
+					});
+
+					element.addEventListener('mouseleave', function(e) {
+						var point = e.target;
+						point.setAttribute('material', 'transparent:true; opacity:0.7');
+					});
+
+					element.addEventListener('click', function(e) {
+						var point = e.target;
+						console.log(point)
+					});
+
 					container.appendChild(element);
 				}
 			});
