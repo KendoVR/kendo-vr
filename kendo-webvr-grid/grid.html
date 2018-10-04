@@ -5,21 +5,20 @@
         <script src="https://unpkg.com/aframe-animation-component@^4.1.2/dist/aframe-animation-component.min.js"></script> 
         <script src="https://unpkg.com/aframe-debug-cursor-component/dist/aframe-debug-cursor-component.min.js"></script>
         <script src="./aframe-grid.js"></script>
+        <script src="../kendo-webvr-switch/aframe-switch.js"></script>
     </head>
     <body>
         <a-scene>
-            <a-assets>
-                <script id="checkbox" type="text/html">
-                    <a-entity
-                        geometry="primitive: plane; height: 1; width: 1"
-                        text="value: blio"></a-entity>
-                </script>
-            </a-assets>
             <a-entity id="mouseCursor" cursor="rayOrigin: mouse" debug-cursor></a-entity>
-            <a-entity position="180 -50 100">
+            <a-assets>
+                <kendo-webvr-switch id="checkbox" width="15" height="8" fill-color="black"></kendo-webvr-switch>
+                <img id="desc" src="./images/down.png">
+                <img id="asc" src="./images/up.png">
+            </a-assets>
+            <a-entity position="100 -50 100">
                 <a-camera></a-camera>
             </a-entity>            
-            <kendo-webvr-grid id="grid" position="0 -0.6 -0.1" data="../companies-data.json" height="275" sortable="true">    
+            <kendo-webvr-grid id="grid" pageSize="5" position="0 -0.6 -0.1" data="../companies-data.json" height="275" sortable="true">    
             </kendo-webvr-grid>
             <a-sky color="#ECECEC"></a-sky>
         </a-scene>

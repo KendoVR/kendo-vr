@@ -11,25 +11,22 @@ AFRAME.registerComponent('switch', {
     },
     init: function() {     
         var that = this;
-        
-        // Wrapper
-        this.wrapper = document.createElement('a-entity');   
-        this.wrapper.setAttribute('geometry', {
+
+        this.el.setAttribute('geometry', {
             primitive: "plane",
             width: this.data.width, 
             height: this.data.height,
         });
 
-        this.wrapper.setAttribute('material', {
+        this.el.setAttribute('material', {
             side: "double",
             color: this.data.fillColor
         });
-        this.el.appendChild(this.wrapper);
 
         // Button Handle
         this.btn = document.createElement('a-entity');
         this.btn.setAttribute('position', {
-             x: (this.wrapper.getAttribute("position").x - (this.data.width / 2) - _buttonOffset) / 2 + _buttonOffset, 
+             x: (this.el.getAttribute("position").x - (this.data.width / 2) - _buttonOffset) / 2 + _buttonOffset, 
              y: 0, 
              z: 0 
         });
@@ -73,7 +70,7 @@ AFRAME.registerComponent('switch', {
         this.data.checked = !isChecked;
     },
     setHandlePosition: function(direction) {
-        var wrapperPosition = this.wrapper.getAttribute('position');
+        var wrapperPosition = this.el.getAttribute('position');
         var buttonPosition = this.btn.getAttribute('position');
 
         if(direction == 'left') {

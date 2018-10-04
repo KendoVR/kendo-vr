@@ -37,7 +37,7 @@ AFRAME.registerComponent('grid', {
 
         //this.buildContainerLines();
         
-        //this.buildTemplateColumns();
+        this.buildTemplateColumns();
         this.buildColumns();
     },
     buildHeaderColumns () {
@@ -85,13 +85,13 @@ AFRAME.registerComponent('grid', {
                     } else if (sortDirection === "asc") {
                         sortIcon.setAttribute("visible", true);
                         sortIcon.setAttribute("direction", "desc");
-                        sortIcon.setAttribute("src", "./images/down.png");
+                        sortIcon.setAttribute("src", "#desc");
                         
                         sort.call(this, "desc");
                     } else {
                         sortIcon.setAttribute("visible", true);
                         sortIcon.setAttribute("direction", "asc");
-                        sortIcon.setAttribute("src", "./images/up.png");
+                        sortIcon.setAttribute("src", "#asc");
                         
                         sort.call(this, "asc");
                     }
@@ -112,7 +112,7 @@ AFRAME.registerComponent('grid', {
         let templateCols = this.columns.filter(e => e.template);
         for (let j = 0; j < templateCols.length; j++) {
             let columnIndex = this.columns.indexOf(templateCols[j]);
-            for (let i = 0; j < this.dataSource.length; i++) {
+            for (let i = 0; i < this.dataSource.length; i++) {
                 let relativePositionX = sumSettingTo(this.columns, "width", columnIndex);
                 let cell = this.buildTemplateCell({
                     template: templateCols[j].template,
@@ -120,11 +120,11 @@ AFRAME.registerComponent('grid', {
                     color: this.gridBackColor,
                     height: this.rowHeight,
                     position: (templateCols[j].width / 2 + relativePositionX).toString() + " " + 
-                              (-this.rowHeight / 2 - this.rowHeight * (j+1) - this.headerHeight/2).toString() +
+                              (-this.rowHeight / 2 - this.rowHeight * (i+1) - this.headerHeight/2).toString() +
                               " 0"
                 });                          
-                // cell.setAttribute("rowIndex", i);
-                // this.el.appendChild(cell);
+                cell.setAttribute("rowIndex", i);
+                this.el.appendChild(cell);
             }
         }  
 
@@ -147,6 +147,7 @@ AFRAME.registerComponent('grid', {
                                 color: this.gridBackColor,
                                 textColor: this.gridForeColor,
                                 field: column,
+                                visible: j < this.data.pageSize - 1 ? true : false,
                                 height: this.rowHeight,
                                 position: (width / 2 + relativePositionX).toString() + " " + 
                                           (-this.rowHeight / 2 - this.rowHeight * (j+1) - this.headerHeight/2).toString() +
@@ -198,7 +199,29 @@ AFRAME.registerComponent('grid', {
             height: cell.height
         });
         aCell.setAttribute("material", {
-            color: cell.color
+            color: cell.color,
+        });
+        aCell.setAttribute("text", {
+            value: cell.text,
+            color: cell.textColor,
+            xOffxOffset: cell.width * 0.7,
+            width: cell.width * 2
+        });
+        aCell.setAttribute("field", cell.field);
+        aCell.setAttribute("position", cell.position);
+    
+        return aCell;
+    },
+    buildCell (cell) {
+        let aCell = document.createElement('a-entity');
+    
+        aCell.setAttribute("geometry", {
+            primitive: "plane",
+            width: cell.width,
+            height: cell.height
+        });
+        aCell.setAttribute("material", {
+            color: cell.color,
         });
         aCell.setAttribute("text", {
             value: cell.text,
@@ -212,20 +235,20 @@ AFRAME.registerComponent('grid', {
         return aCell;
     },
     buildTemplateCell (cell) {
-        let templateCell = document.createElement('a');
+        let templateCell = document.createElement('a-entity');
     
-        // aCell.setAttribute("geometry", {
-        //     primitive: "plane",
-        //     width: cell.width,
-        //     height: cell.height
-        // });
-        // aCell.setAttribute("material", {
-        //     color: cell.color
-        // });
-        // aCell.setAttribute("template", {
-        //     src: "#" + cell.template
-        // });
-        // aCell.setAttribute("position", cell.position);
+        templateCell.setAttribute("geometry", {
+            primitive: "plane",
+            width: cell.width,
+            height: cell.height
+        });
+        templateCell.setAttribute("material", {
+            color: cell.color
+        });
+        
+        templateCell.setAttribute("position", cell.position);
+        
+        templateCell.appendChild(document.getElementById(cell.template).cloneNode(true));
     
         return templateCell;
     },

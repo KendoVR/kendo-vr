@@ -152,7 +152,7 @@
     }],
     "columns": [{
         "template": "checkbox",
-        "width": 20
+        "width": 30
     }, {
         "field": "company",
         "title": "Company",
