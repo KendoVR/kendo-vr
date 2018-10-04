@@ -26,14 +26,8 @@
                         
                     </a-entity> -->
                 </a-entity>
-            <!-- <a-entity>
-                <a-camera></a-camera>
-            </a-entity>             -->
-            <!-- <a-box width="6" height="6" depth="0.1" position="0 0 -10" color="tomato" ></a-box> -->
-            <kendo-webvr-dropdownlist position="0 2 -5" width="4" dataSource="[1,2,3]"></kendo-webvr-dropdownlist>
-            <!-- <a-entity light="type:directional; castShadow:true;" position="1 1 1"></a-entity>
-            <a-entity light="type: ambient; color: #CCC"></a-entity> -->
-                            <a-box color="tomato" depth="2" height="4" width="4" position="0 0 0"></a-box>
+           
+            <kendo-webvr-dropdownlist value="Polychrome" position="0 1 -5" width="4"></kendo-webvr-dropdownlist>
             <a-sky color="#ECECEC"></a-sky>
         </a-scene>
 
@@ -45,6 +39,9 @@
                 "Bichrome",
                 "Bihrome Shades"
             ]);
+            ddl.addEventListener("change", function (ev) {
+                console.log(ev.detail.newValue);
+            })
         </script>
     </body>
 </html>
