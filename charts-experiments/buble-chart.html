@@ -6,6 +6,7 @@
 	<meta name="description" content="Hello, WebVR! • A-Frame">
 	<script src="https://kendo.cdn.telerik.com/2018.3.911/js/jquery.min.js"></script>
 	<script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script>
+	<script src="https://kendo.cdn.telerik.com/2018.3.911/js/kendo.all.min.js"></script>
 </head>
 <body>
 	<a-scene background="color: #ECECEC">
@@ -17,11 +18,18 @@
 					material="color: #888; shader: flat">
 				</a-entity>
 				<a-plane width="12" 
-					   height="3" 
+					   height="2.2" 
 					   position="7.5 0 -40" 
 					   color="#3f5971" 
 					   material="transparent:true; opacity:0.8">
-					<a-text value="test"></a-text>
+				</a-plane>
+				<a-plane width="12" 
+					   height="6.2" 
+					   position="7.5 -4.2 -40" 
+					   color="#3f5971" 
+					   material="transparent:true; opacity:0.8"
+					   visible="false"
+					   id="extended-tooltip">
 				</a-plane>
 			</a-entity>
 			
@@ -47,6 +55,30 @@
 				<a-sphere class="navigation-segment" data-navigation="30 135 -20" theta-length="18" radius="150" rotation="-19 -62 126" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
 				<a-sphere class="navigation-segment" data-navigation="30 -135 20" theta-length="18" radius="150" rotation="-19 -145 126" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
 			</a-entity>
+			<a-entity id="labels">
+				<a-text width="100"
+						position="102 5 1" 
+						color="#3f5971"
+						value="total income 2017"
+						material="side:double">
+				 </a-text>
+				 
+				 <a-text width="100"
+						position="1 5 138" 
+						color="#3f5971"
+						value="income change 2017 vs 2016"
+						rotation="0 90 0"
+						material="side:double">
+				 </a-text>
+				 
+				 <a-text width="100"
+						position="5 100 1" 
+						color="#3f5971"
+						value="profit 2017"
+						rotation="0 0 90"
+						material="side:double">
+				 </a-text>
+			</a-entity>
 		</a-entity>	
 		
 		<a-sky color="#ECECEC"></a-sky>
@@ -56,6 +88,30 @@
 		window.onload = function() {
 			var segments = document.querySelectorAll('.navigation-segment');
 			
+			var createNumbering = function() {
+				var labelsContainer = document.getElementById('labels');
+
+				for(var i = -140; i <= 140; i += 20) {
+					if (i === 0){
+						continue;
+					} else {
+						var xStop = document.createElement('a-text');
+
+						xStop.setAttribute('width', '100');
+						xStop.setAttribute('position', (i - 3).toString() + ', -3, 1');
+						xStop.setAttribute('color', '#3f5971');
+						xStop.setAttribute('value', i.toString());
+
+						labelsContainer.appendChild(xStop);
+
+						var yStop = xStop.cloneNode(true);
+						yStop.setAttribute('rotation', '0 90 0');
+						yStop.setAttribute('position', '1, -3, ' + (i + 3).toString());
+						labelsContainer.appendChild(yStop);
+					}
+				}
+			}
+
 			var createNavigator = function() {
 				for(var i = 0; i < segments.length; i ++) {
 					segments[i].addEventListener('mouseenter', function(e) {
@@ -134,6 +190,12 @@
 						var xMajor = zMajor.cloneNode(true);
 						xMajor.setAttribute('rotation', '0 0 90');
 						container.appendChild(xMajor);
+
+						var zMajor = document.createElement('a-entity');
+						zMajor.setAttribute('height', (greatestValue*multiplicator).toString());
+						zMajor.setAttribute('color', '#000');
+						zMajor.setAttribute('rotation', '90 0 0');
+						container.appendChild(zMajor);
 					} else if(i % 10 === 0) {
 						xy1.setAttribute('line', {
 							start: multiplayedIndex.toString() + ", " + -1*greatestValue + ", 0",
@@ -247,7 +309,7 @@
 
 						element.setAttribute('position', position );
 						element.setAttribute('radius', 0 );
-						element.setAttribute('material', 'transparent:true; opacity:0.7');
+						element.setAttribute('material', 'transparent:true; opacity:0.65');
 
 						for (var name in item) {
 							if (item.hasOwnProperty(name)) {
@@ -262,20 +324,15 @@
 
 						element.appendChild(animation);
 						element.addEventListener('mouseenter', function(e) {
-							console.log('mouseenter')
-
 							var point = e.target;
 							var tooltip = document.querySelector('#camera-entity a-plane');
-							//var textElement = tooltip.firstChild();
 
-							//textElement.setAttribute('value', point.getAttribute('data-company'));
-
-							// var animation = document.createElement('a-animation');
-
-							// animation.setAttribute('attribute', 'transparent:true; opacity:0.0');
-							// animation.setAttribute('to', 'transparent:true; opacity:0.8');
-							// animation.setAttribute('dur', 500);
-							// tooltip.appendChild(animation);
+							tooltip.setAttribute('text', { 
+								color: '#fff', 
+								value: point.getAttribute('data-company'), 
+								width: 20 * 1.5, 
+								xOffset: 21 / 2 - 0.8
+							});
 
 							tooltip.setAttribute('visible', 'true');
 
@@ -283,23 +340,32 @@
 						});
 
 						element.addEventListener('mouseleave', function(e) {
-							console.log('mouseleave')
-
 							var point = e.target;
 							var tooltip = document.querySelector('#camera-entity a-plane');
-							// var animation = document.createElement('a-animation');
-							
-							// animation.setAttribute('attribute', 'material');
-							// animation.setAttribute('to', 'transparent:true; opacity:0.0');
-							// animation.setAttribute('dur', 500);
+							var extendedTooltip = document.querySelector('#extended-tooltip');
+
 							tooltip.setAttribute('visible', 'false');
+							extendedTooltip.setAttribute('visible', 'false');
 
 							point.setAttribute('material', 'transparent:true; opacity:0.7');
 						});
 
 						element.addEventListener('click', function(e) {
 							var point = e.target;
-							console.log(point)
+							var extendedTooltip = document.querySelector('#extended-tooltip');
+
+							extendedTooltip.setAttribute('text', { 
+								color: '#fff',
+								value: 'employees: ' + point.getAttribute('data-employees') + '\n' + 
+									   'income: ' + kendo.toString(Number(point.getAttribute('data-income')), 'c0') + '\n' + 
+									   'income change: ' + point.getAttribute('data-incomeChange') + '%' + '\n' + 
+									   'profit: ' + kendo.toString(Number(point.getAttribute('data-profit')), 'c0'), 
+								width: 14 * 1.5,
+								xOffset: 12/2 - 0.8,
+								lineHeight: 60
+							});
+
+							extendedTooltip.setAttribute('visible', 'true');
 						});
 
 						container.appendChild(element);
@@ -307,8 +373,9 @@
 				});
 			}
 			
-			createNavigator();
 			generateGrid();
+			createNavigator();
+			createNumbering();
 			populateChart();
 		}
 	</script>
