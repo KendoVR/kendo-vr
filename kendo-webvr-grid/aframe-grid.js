@@ -6,7 +6,7 @@ AFRAME.registerComponent('grid', {
         pageSize: {type: 'number', default: 3}
     }, 
     init: function () {
-        this.lineColor = "#bbb5c0";
+        this.lineColor = "#ececec"
         this.gridBackColor = "#ffffff";
         this.gridForeColor = "#29313c";
         this.headerHeight = 12;
@@ -32,7 +32,7 @@ AFRAME.registerComponent('grid', {
         this.rowHeight = opts.height / this.dataSource.length;
         this.totalWidth = sumSettingTo(this.columns, "width", this.columns.length);
         this.totalHeight = opts.height + this.headerHeight; 
-        this.pageCount = this.dataSource.length / this.pageSize;
+        this.pageCount = Math.ceil(this.dataSource.length / opts.pageSize);
 
         this.buildHeaderColumns();
 
@@ -40,6 +40,10 @@ AFRAME.registerComponent('grid', {
         
         this.buildTemplateColumns();
         this.buildColumns();
+        
+        this.el.setAttribute("page", 0);
+        
+        this.el.setAttribute("pageCount", this.pageCount);
     },
     buildHeaderColumns () {
         for (let i = 0; i < this.columns.length; i++) {
@@ -57,6 +61,8 @@ AFRAME.registerComponent('grid', {
                 position: (column.width / 2 + relativePositionX).toString() + " " +
                           -this.headerHeight.toString() + " 0.5"
             });
+
+            aCell.setAttribute("class", "gridHeader");
 
             if (this.sortable && column.field) {
                 let position = aCell.getAttribute("position");
@@ -103,8 +109,7 @@ AFRAME.registerComponent('grid', {
             }
                           
             line = this.buildLine(relativePositionX.toString() + ", " + -this.totalHeight.toString() + ", 0",
-                            relativePositionX.toString() + ", 0, 0", 
-                            this.lineColor);
+                            relativePositionX.toString() + ", 0, 0.1");
 
             //this.el.appendChild(line);
             this.el.appendChild(aCell);
@@ -121,7 +126,7 @@ AFRAME.registerComponent('grid', {
                     width: templateCols[j].width,
                     color: this.gridBackColor,
                     page: Math.floor(i/this.data.pageSize),
-                    visible: i < this.data.pageSize - 1 ? true : false,
+                    visible: i < this.data.pageSize ? true : false,
                     height: this.rowHeight,
                     position: (templateCols[j].width / 2 + relativePositionX).toString() + " " + 
                               (-this.rowHeight / 2 - this.rowHeight * (i + 1  - this.data.pageSize * (Math.floor(i/this.data.pageSize))) - this.headerHeight/2).toString() +
@@ -138,8 +143,7 @@ AFRAME.registerComponent('grid', {
             let row = this.dataSource[j];
 
             let line = this.buildLine("0, " + -(((j + 1) * this.rowHeight) + this.headerHeight / 2).toString() + ", 0",
-                                this.totalWidth.toString() + ", " + -(((j + 1) * this.rowHeight) + this.headerHeight / 2).toString() + ", 0", 
-                                this.lineColor);
+                                this.totalWidth.toString() + ", " + -(((j + 1) * this.rowHeight) + this.headerHeight / 2).toString() + ", 0.1");
             
             for (let column in row) {
                 let columnIndex = this.columns.map(e => e.field).indexOf(column); 
@@ -152,7 +156,7 @@ AFRAME.registerComponent('grid', {
                                 textColor: this.gridForeColor,
                                 field: column,
                                 page: Math.floor(j / this.data.pageSize),
-                                visible: j < this.data.pageSize - 1 ? true : false,
+                                visible: j < this.data.pageSize  ? true : false,
                                 height: this.rowHeight,
                                 position: (width / 2 + relativePositionX).toString() + " " + 
                                           (-this.rowHeight / 2 - this.rowHeight * (j + 1  - this.data.pageSize * (Math.floor(j/this.data.pageSize))) - this.headerHeight/2).toString() +
@@ -163,29 +167,7 @@ AFRAME.registerComponent('grid', {
                             });                          
                 cell.setAttribute("rowIndex", j);
                 //external method
-                cell.addEventListener("mouseenter", function () {
-                    let rowIndex = this.getAttribute("rowIndex");
-                    let cols = this.parentEl.getChildEntities().filter(item => item.getAttribute("rowIndex") == rowIndex);
-
-                    for(let col of cols) {
-                        let position = col.getAttribute("position");
-                        position.z = 1;
-                        col.setAttribute("position", position);
-                        col.setAttribute('material', { transperant: true, opacity: 1 });
-                    }
-                });
-                cell.addEventListener("mouseleave", function () {
-                    let rowIndex = this.getAttribute("rowIndex");
-                    let cols = this.parentEl.getChildEntities().filter(item => item.getAttribute("rowIndex") == rowIndex);
-
-                    for(let col of cols) {
-                        let position = col.getAttribute("position");
-                        position.z = 0;
-                        col.setAttribute("position", position);
-                        col.setAttribute('material', { transperant: true, opacity: 0.9 });
-                    }
-                });
-
+                this.attachCellEvents(cell);
                 this.el.appendChild(cell);
             }
 
@@ -195,11 +177,12 @@ AFRAME.registerComponent('grid', {
                 let footer = this.buildPager({
                     width: this.totalWidth,
                     height: this.rowHeight,
+                    id: "scrollDown",
                     visible: true,
-                    page: 0,
+                    gradient: "#downGradient",
                     icon: "#scrollDown",
                     position: (this.totalWidth / 2).toString() + " " + 
-                              (-this.rowHeight / 2 - this.rowHeight * j - this.headerHeight/2).toString() +
+                              (-this.rowHeight / 2 - this.rowHeight * (j + 1) - this.headerHeight/2).toString() +
                               " 0"
                 });
                 footer.setAttribute("material", {
@@ -207,40 +190,106 @@ AFRAME.registerComponent('grid', {
                 })
                 
                 footer.addEventListener("click", function () {
-                    let oldPage = this.getAttribute("page");
-                    let page = parseInt(oldPage) + 1;                    
-                    let currentPageCells = this.parentEl.getChildEntities().filter(function (item) { return item.getAttribute("page") == oldPage && item.getAttribute("rowIndex") });
-                    let pageCells = this.parentEl.getChildEntities().filter(function (item) { return item.getAttribute("page") == page && item.getAttribute("rowIndex") });
+                    let oldPage = this.parentEl.getAttribute("page");
+                    let page = parseInt(oldPage) + 1;        
+                    let children = this.parentEl.getChildEntities();       
+                    let currentPageCells = children.filter(function (item) { return item.getAttribute("page") == oldPage && item.getAttribute("rowIndex") });
+                    let pageCells = children.filter(function (item) { return item.getAttribute("page") == page && item.getAttribute("rowIndex") });
+                    let headerCells = children.filter(item => item.getAttribute("class") == "gridHeader");
 
-                    this.setAttribute("page", page);
+                    this.parentEl.setAttribute("page", page);
 
                     for (let cell of currentPageCells) {
                         cell.setAttribute("visible", false);
                     }
 
                     for (let cell of pageCells) {
-                        cell.setAttribute("animation", {
-                            property: "visible",
-                            begin: 400,
-                            to: true
-                        });
+                        cell.setAttribute("visible", true);
+                    }
+
+                    if (page + 1 == this.parentEl.getAttribute("pageCount")) {
+                        this.setAttribute("visible", false)
+                    } else if (parseInt(oldPage) == 0) {                    
+                        children.find(item => item.id == "scrollUp").setAttribute("visible", true);
+                        for (let cell of headerCells) {
+                            let position = cell.getAttribute("position");
+                            position.y = position.y + cell.getAttribute("geometry").height;
+                            cell.setAttribute("position", position.toArray().toString().replace(/,/g, ' '));
+                        }
                     }
                 })
-
                 this.el.appendChild(footer);
             } else if (j == 0) {
                 let header = this.buildPager({
                     width: this.totalWidth,
-                    height: this.rowHeight,
+                    height: this.headerHeight,
+                    id: "scrollUp",
                     visible: false,
+                    gradient: "#upGradient",
                     icon: "#scrollUp",
                     position: (this.totalWidth / 2).toString() + " " + 
-                              (-this.rowHeight - this.headerHeight).toString() +
-                              " 0.3"
+                              (-this.headerHeight).toString() +
+                              " 0"
                 });
+                
+                header.setAttribute("material", {
+                    transparent: true
+                })
+                
+                header.addEventListener("click", function () {
+                    let oldPage = this.parentEl.getAttribute("page");
+                    let page = parseInt(oldPage) - 1; 
+                    let children = this.parentEl.getChildEntities();                 
+                    let currentPageCells = children.filter(function (item) { return item.getAttribute("page") == oldPage && item.getAttribute("rowIndex") });
+                    let pageCells = children.filter(function (item) { return item.getAttribute("page") == page && item.getAttribute("rowIndex") });
+                    let headerCells = children.filter(item => item.getAttribute("class") == "gridHeader");
+                    this.parentEl.setAttribute("page", page);
+
+                    for (let cell of currentPageCells) {
+                        cell.setAttribute("visible", false);
+                    }
+
+                    for (let cell of pageCells) {
+                        cell.setAttribute("visible", true);
+                    }
+                     
+                    if (page == 0) {
+                        this.setAttribute("visible", false);
+                        for (let cell of headerCells) {
+                            let position = cell.getAttribute("position");
+                            position.y = position.y - cell.getAttribute("geometry").height;
+                            cell.setAttribute("position", position.toArray().toString().replace(/,/g, ' '));
+                        }
+                    }
+                    children.find(item => item.id == "scrollDown").setAttribute("visible", true);
+
+                })
+
                 this.el.appendChild(header);
             }
         } 
+    },
+    attachCellEvents (cell) {
+        cell.addEventListener("mouseenter", function () {
+            let rowIndex = this.getAttribute("rowIndex");
+            let cols = this.parentEl.getChildEntities().filter(item => item.getAttribute("rowIndex") == rowIndex);
+
+            for(let col of cols) {
+                let position = col.getAttribute("position");
+                position.z = 2;
+                col.setAttribute("position", position);
+            }
+        });
+        cell.addEventListener("mouseleave", function () {
+            let rowIndex = this.getAttribute("rowIndex");
+            let cols = this.parentEl.getChildEntities().filter(item => item.getAttribute("rowIndex") == rowIndex);
+
+            for(let col of cols) {
+                let position = col.getAttribute("position");
+                position.z = 0;
+                col.setAttribute("position", position);
+            }
+        });
     },
     buildContainerLines () {
         this.el.appendChild(this.buildLine("0, 0, 0", this.totalWidth + ", 0, 0", this.lineColor));
@@ -249,7 +298,7 @@ AFRAME.registerComponent('grid', {
         this.el.appendChild(this.buildLine("0, " + -this.totalHeight.toString() + ", 0", this.totalWidth + ", " + -this.totalHeight.toString() + ", 0", this.lineColor));
     },
     buildPager (pager) {
-        let footer = document.createElement('a-entity');
+        let geometry = document.createElement('a-entity');
         let icon = this.buildImage({
             width: 10,
             height: 10,
@@ -258,22 +307,22 @@ AFRAME.registerComponent('grid', {
             position: "0 0 0"
         });
         
-        footer.setAttribute("geometry", {
+        geometry.setAttribute("geometry", {
             primitive: "plane",
             width: pager.width,
             height: pager.height
         });
 
-        footer.setAttribute("material", {
-            src: "#gradient"
+        geometry.setAttribute("material", {
+            src: pager.gradient
         });
-        footer.setAttribute("position", pager.position);
-        footer.setAttribute("visible", pager.visible);
-        footer.setAttribute("page", pager.page);
+        geometry.setAttribute("position", pager.position);
+        geometry.setAttribute("visible", pager.visible);
+        geometry.setAttribute("id", pager.id);
 
-        footer.appendChild(icon);
+        geometry.appendChild(icon);
 
-        return footer;
+        return geometry;
     },
     buildCell (cell) {
         let aCell = document.createElement('a-entity');
@@ -319,7 +368,8 @@ AFRAME.registerComponent('grid', {
         templateCell.setAttribute("page", cell.page);
         templateCell.setAttribute("visible", cell.visible);
         templateCell.appendChild(document.getElementsByClassName(cell.template)[0].cloneNode());
-    
+        
+        this.attachCellEvents(templateCell);
         return templateCell;
     },
     buildImage (image) {
@@ -338,12 +388,12 @@ AFRAME.registerComponent('grid', {
     
         return aImage;
     },
-    buildLine (start, end, color) {
+    buildLine (start, end) {
         let aLine = document.createElement('a-entity');        
         aLine.setAttribute('line', {
             start: start,
             end: end,
-            color: color
+            color: this.lineColor
         });
         return aLine;
     }    
