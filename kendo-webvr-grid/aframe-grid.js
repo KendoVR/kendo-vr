@@ -247,8 +247,7 @@ AFRAME.registerComponent('grid', {
         });
         
         templateCell.setAttribute("position", cell.position);
-        
-        templateCell.appendChild(document.getElementById(cell.template).cloneNode(true));
+        templateCell.appendChild(document.getElementsByClassName(cell.template)[0].cloneNode());
     
         return templateCell;
     },
