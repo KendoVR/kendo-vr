@@ -21,7 +21,7 @@ AFRAME.registerComponent('dropdownlist', {
         this.btn.setAttribute('position', this.data.width / 2 - 0.4 + ' 0 0.02');
         this.btn.setAttribute("width", 0.5);
         this.btn.setAttribute("height", this.data.rowHeight);
-        this.btn.setAttribute("src", "/assets/arrow-chevron-down-active.svg");
+        this.btn.setAttribute("src", "./assets/arrow-chevron-down-active.svg");
         this.btn.setAttribute("transparent", true);
         
         // this.btn.setAttribute('geometry', {primitive: "plane", height: this.data.rowHeight, width: 0.5});
@@ -80,7 +80,12 @@ AFRAME.registerComponent('dropdownlist', {
             }
         });
         
-        
+        this.loadData([
+            "Polychrome",
+            "Monochrome",
+            "Bichrome",
+            "Bihrome Shades"
+        ]);
     },
     update: function () {
         if(this.data.value && this.data.value !== "") {
@@ -134,7 +139,7 @@ AFRAME.registerComponent('dropdownlist', {
         }
     },
     toggle: function () {
-        this.btn.setAttribute('src', this.visible ? "/assets/arrow-chevron-down-active.svg" : "/assets/arrow-chevron-up-active.svg");
+        this.btn.setAttribute('src', this.visible ? "./assets/arrow-chevron-down-active.svg" : "./assets/arrow-chevron-up-active.svg");
         
         if(!this.visible){
             this.popup.setAttribute("visible", true);
