@@ -20,7 +20,7 @@
 
 
 <!-- CHART START -->
-    <a-entity position="0 0 250" scale="0.8 0.8 0.8" rotation="0 0 0" id="camera-wrapper">
+    <a-entity position="0 0 250" scale="0.5 0.5 0.5" rotation="0 0 0" id="camera-wrapper">
         <a-entity camera="fov: 60; far: 10000" id="camera-entity" look-controls wasd-controls>
             <a-entity cursor="fuse: false;"
                 position="0 0 -40"
@@ -47,23 +47,23 @@
 
         <a-entity id="container" rotation="30 -45 -20">
             <a-entity id="navigator">
-                <a-sphere class="navigation-segment" data-front="top" data-navigation="90 0 0" theta-length="18" radius="150" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
-                <a-sphere class="navigation-segment" data-front="left" data-navigation="0 90 0" theta-length="18" radius="150" rotation="0 0 90" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
-                <a-sphere class="navigation-segment" data-front="bottom" data-navigation="-90 0 0" theta-length="18" radius="150" rotation="0 0 180" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
-                <a-sphere class="navigation-segment" data-front="right" data-navigation="0 -90 0" theta-length="18" radius="150" rotation="0 0 -90" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
+                <a-sphere class="navigation-segment" color="#199cad" data-front="top" data-navigation="90 0 0" theta-length="18" radius="150" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
+                <a-sphere class="navigation-segment" color="#199cad" data-front="left" data-navigation="0 90 0" theta-length="18" radius="150" rotation="0 0 90" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
+                <a-sphere class="navigation-segment" color="#199cad" data-front="bottom" data-navigation="-90 0 0" theta-length="18" radius="150" rotation="0 0 180" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
+                <a-sphere class="navigation-segment" color="#199cad" data-front="right" data-navigation="0 -90 0" theta-length="18" radius="150" rotation="0 0 -90" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
 
-                <a-sphere class="navigation-segment" data-front="front" data-navigation="0 0 0" theta-length="18" radius="150" rotation="90 0 0" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
-                <a-sphere class="navigation-segment" data-front="back" data-navigation="0 180 0" theta-length="18" radius="150" rotation="90 180 0" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
+                <a-sphere class="navigation-segment" color="#199cad" data-front="front" data-navigation="0 0 0" theta-length="18" radius="150" rotation="90 0 0" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
+                <a-sphere class="navigation-segment" color="#199cad" data-front="back" data-navigation="0 180 0" theta-length="18" radius="150" rotation="90 180 0" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
 
-                <a-sphere class="navigation-segment" data-navigation="30 -45 -20" theta-length="18" radius="150" rotation="0 132 55" visible="false" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
-                <a-sphere class="navigation-segment" data-navigation="-30 -135 -20" theta-length="18" radius="150" rotation="0 -132 55" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
-                <a-sphere class="navigation-segment" data-navigation="-30 135 20" theta-length="18" radius="150" rotation="0 -48 55" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
-                <a-sphere class="navigation-segment" data-navigation="30 45 20" theta-length="18" radius="150" rotation="0 48 55" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
+                <a-sphere class="navigation-segment" color="#199cad" data-navigation="30 -45 -20" theta-length="18" radius="150" rotation="0 132 55" visible="false" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
+                <a-sphere class="navigation-segment" color="#199cad" data-navigation="-30 -135 -20" theta-length="18" radius="150" rotation="0 -132 55" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
+                <a-sphere class="navigation-segment" color="#199cad" data-navigation="-30 135 20" theta-length="18" radius="150" rotation="0 -48 55" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
+                <a-sphere class="navigation-segment" color="#199cad" data-navigation="30 45 20" theta-length="18" radius="150" rotation="0 48 55" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
 
-                <a-sphere class="navigation-segment" data-navigation="-30 45 -20" theta-length="18" radius="150" rotation="-19 35 126" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
-                <a-sphere class="navigation-segment" data-navigation="-30 -45 20" theta-length="18" radius="150" rotation="-19 118 126" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
-                <a-sphere class="navigation-segment" data-navigation="30 135 -20" theta-length="18" radius="150" rotation="-19 -62 126" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
-                <a-sphere class="navigation-segment" data-navigation="30 -135 20" theta-length="18" radius="150" rotation="-19 -145 126" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
+                <a-sphere class="navigation-segment" color="#199cad" data-navigation="-30 45 -20" theta-length="18" radius="150" rotation="-19 35 126" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
+                <a-sphere class="navigation-segment" color="#199cad" data-navigation="-30 -45 20" theta-length="18" radius="150" rotation="-19 118 126" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
+                <a-sphere class="navigation-segment" color="#199cad" data-navigation="30 135 -20" theta-length="18" radius="150" rotation="-19 -62 126" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
+                <a-sphere class="navigation-segment" color="#199cad" data-navigation="30 -135 20" theta-length="18" radius="150" rotation="-19 -145 126" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
             </a-entity>
             <a-entity id="labels">
                 <a-text width="100"
@@ -138,36 +138,71 @@
 				}
 			};
 
+			var colors = [ 
+				'#1976d2',
+				'#9ab342', 
+				'#fff443',
+				'#11909f', 
+				'#3949ab',
+				'#d7d931',
+				'#7cb342',
+				'#8e24aa',
+				'#5e35b1',
+				'#8d1269',
+				'#00acc1',
+				'#7d0f3b',
+				'#039be5',
+				'#9d0441',
+				'#7f32c1',
+				'#43a047',
+				'#e53935',
+				'#c2185b',
+				'#fb8c00',
+				'#ffb300',
+				'#f4511e',
+				'#00897b',
+				'#c0ca33',
+				'#fdd835',
+				'#afb42b'
+			];
+
+			var loadSingleColorForData = function(color, element) {
+				element.setAttribute('color', color);
+
+				// defaultc color: #199cad
+
+				return element;
+			}
+
+			var loadMultiColorsForData = function(index, element) {
+				element.setAttribute('color', colors[index]);
+
+				return element;
+			}
+
+			var loadGreenRedShadingForData = function(item, element) {
+				if (item.profit > 0) {
+					var profitInMilions = item.profit / 1000000;
+					var green = Math.floor(128 + profitInMilions * 8);
+					var redAndBlue = Math.floor(128 - profitInMilions * 8);
+
+					element.setAttribute('color', 'rgb(' + redAndBlue + ', ' + green + ', ' + redAndBlue + ')');
+				} else {
+					var profitInMilions = item.profit / -1000000;
+					var red = Math.floor(128 + profitInMilions * 8);
+					var greenAndBlue = Math.floor(128 - profitInMilions * 8);
+
+					element.setAttribute('color', 'rgb(' + red + ', ' + greenAndBlue + ', ' + greenAndBlue + ')');
+				}
+
+				return element;
+			}
+
 			var createNumbering = function() {
 				var labelsContainer = document.getElementById('labels');
 				var numberStopsX = document.createElement('a-entity');
 				var numberStopsY = document.createElement('a-entity');
 				var numberStopsZ = document.createElement('a-entity');
-
-				// var labelX = document.createElement('a-text');
-
-				// labelX.setAttribute('width', '100');
-				// labelX.setAttribute('position', '102, 5, 1');
-				// labelX.setAttribute('color', '#3f5971');
-				// labelX.setAttribute('value', 'total income 2017');
-
-				// numberStopsX.appendChild(labelX);
-
-				// var labelY = numberStopsX.cloneNode(true);
-
-				// labelY.setAttribute('position', '1 5 138');
-				// labelY.setAttribute('rotation', '0 0 90');
-				// labelY.setAttribute('value', 'profit 2017');
-
-				// numberStopsY.appendChild(labelY);
-
-				// var labelZ = numberStopsX.cloneNode(true);
-
-				// labelZ.setAttribute('position', '-5 100 1');
-				// labelZ.setAttribute('rotation', '0 90 0');
-				// labelZ.setAttribute('value', 'income change 2017 vs 2016');
-
-				// numberStopsZ.appendChild(labelZ);
 
 				numberStopsX.setAttribute('id', 'number-stops-x');
 				numberStopsY.setAttribute('id', 'number-stops-y');
@@ -212,12 +247,12 @@
 				for(var i = 0; i < segments.length; i ++) {
 					segments[i].addEventListener('mouseenter', function(e) {
 						var segment = e.target;
-						segment.setAttribute('color', '#199cad');
+						segment.setAttribute('material', { side: 'double', transparent: true, opacity: 0.4 });
 					});
 
 					segments[i].addEventListener('mouseleave', function(e) {
 						var segment = e.target;
-						segment.setAttribute('color', '#fff');
+						segment.setAttribute('material', { side: 'double', transparent: true, opacity: 0.2 });
 					});
 
 					segments[i].addEventListener('click', function(e) {
@@ -255,13 +290,13 @@
 							yLabels.setAttribute('rotation', newLabelPositions.y);
 							zLabels.setAttribute('rotation', newLabelPositions.z);
 
-							scaleAnimation.setAttribute('to', '0.8 0.8 0.8');
+							scaleAnimation.setAttribute('to', '0.5 0.5 0.5');
 						} else {
 							xLabels.setAttribute('visible', 'false');
 							yLabels.setAttribute('visible', 'false');
 							zLabels.setAttribute('visible', 'false');
 
-							scaleAnimation.setAttribute('to', '1.2 1.2 1.2');
+							scaleAnimation.setAttribute('to', '0.9 0.9 0.9');
 						}
 
 						chart.appendChild(navigationAnimation);
@@ -406,19 +441,7 @@
 						var zPoint = item.incomeChange;
 						var position = xPoint.toString() + ' ' + yPoint + ' ' + zPoint.toString();
 
-						if (item.profit > 0) {
-							var profitInMilions = item.profit / 1000000;
-							var green = Math.floor(128 + profitInMilions * 8);
-							var redAndBlue = Math.floor(128 - profitInMilions * 8);
-
-							element.setAttribute('color', 'rgb(' + redAndBlue + ', ' + green + ', ' + redAndBlue + ')');
-						} else {
-							var profitInMilions = item.profit / -1000000;
-							var red = Math.floor(128 + profitInMilions * 8);
-							var greenAndBlue = Math.floor(128 - profitInMilions * 8);
-
-							element.setAttribute('color', 'rgb(' + red + ', ' + greenAndBlue + ', ' + greenAndBlue + ')');
-						}
+						element = loadMultiColorsForData(i, element);
 
 						element.setAttribute('position', position );
 						element.setAttribute('radius', 0 );
