@@ -10,8 +10,8 @@ AFRAME.registerComponent('grid', {
         this.gridBackColor = "#ffffff";
         this.gridForeColor = "#29313c";
         this.headerHeight = 12;
-        this.headerBackColor = "#42a9b8";
-        this.headerForeColor = "#ffffff";
+        this.headerBackColor = "#199cad";
+        this.headerForeColor = "#ffffff";       
         this.loader = new THREE.FileLoader();
     },
     update: function () {
@@ -31,7 +31,8 @@ AFRAME.registerComponent('grid', {
         this.sortable = opts.sortable;
         this.rowHeight = opts.height / this.dataSource.length;
         this.totalWidth = sumSettingTo(this.columns, "width", this.columns.length);
-        this.totalHeight = opts.height + this.headerHeight;
+        this.totalHeight = opts.height + this.headerHeight; 
+        this.pageCount = this.dataSource.length / this.pageSize;
 
         this.buildHeaderColumns();
 
@@ -59,11 +60,12 @@ AFRAME.registerComponent('grid', {
 
             if (this.sortable && column.field) {
                 let position = aCell.getAttribute("position");
-                let sortIconWidth = 10;
+                let sortIconWidth = 5;
                 position.x = position.x - sortIconWidth + column.width/ 2;
                 let sortButton = this.buildImage({
-                    height: this.headerHeight,
+                    height: this.headerHeight / 2,
                     position: position,
+                    visible: false,
                     width: sortIconWidth
                 });
 
@@ -118,6 +120,7 @@ AFRAME.registerComponent('grid', {
                     template: templateCols[j].template,
                     width: templateCols[j].width,
                     color: this.gridBackColor,
+                    visible: i < this.data.pageSize - 1 ? true : false,
                     height: this.rowHeight,
                     position: (templateCols[j].width / 2 + relativePositionX).toString() + " " + 
                               (-this.rowHeight / 2 - this.rowHeight * (i+1) - this.headerHeight/2).toString() +
@@ -149,9 +152,10 @@ AFRAME.registerComponent('grid', {
                                 field: column,
                                 visible: j < this.data.pageSize - 1 ? true : false,
                                 height: this.rowHeight,
+                                
                                 position: (width / 2 + relativePositionX).toString() + " " + 
-                                          (-this.rowHeight / 2 - this.rowHeight * (j+1) - this.headerHeight/2).toString() +
-                                          " 0"
+                                              (-this.rowHeight / 2 - this.rowHeight * (j+1) - this.headerHeight/2).toString() +
+                                              " 0"
                             });                          
                 cell.setAttribute("rowIndex", j);
                 //external method
@@ -179,8 +183,38 @@ AFRAME.registerComponent('grid', {
                 this.el.appendChild(cell);
             }
 
-            if (j > 0) {
+            if (j > 0 && j < this.data.pageSize - 1) {
                 this.el.appendChild(line);
+            } else if (j == this.data.pageSize) {
+                let footer = this.buildPager({
+                    width: this.totalWidth,
+                    height: this.rowHeight,
+                    visible: true,
+                    icon: "#scrollDown",
+                    position: (this.totalWidth / 2).toString() + " " + 
+                              (-this.rowHeight / 2 - this.rowHeight * j - this.headerHeight/2).toString() +
+                              " 0"
+                });
+                footer.setAttribute("material", {
+                    transparent: true
+                })
+                
+                footer.addEventListener("click", function () {
+                    
+                })
+
+                this.el.appendChild(footer);
+            } else if (j == 0) {
+                let header = this.buildPager({
+                    width: this.totalWidth,
+                    height: this.rowHeight,
+                    visible: false,
+                    icon: "#scrollUp",
+                    position: (this.totalWidth / 2).toString() + " " + 
+                              (-this.rowHeight - this.headerHeight).toString() +
+                              " 0.3"
+                });
+                this.el.appendChild(header);
             }
         } 
     },
@@ -190,27 +224,31 @@ AFRAME.registerComponent('grid', {
         this.el.appendChild(this.buildLine("0, " + -this.totalHeight.toString() + ", 0", "0, 0, 0", this.lineColor));
         this.el.appendChild(this.buildLine("0, " + -this.totalHeight.toString() + ", 0", this.totalWidth + ", " + -this.totalHeight.toString() + ", 0", this.lineColor));
     },
-    buildCell (cell) {
-        let aCell = document.createElement('a-entity');
-    
-        aCell.setAttribute("geometry", {
+    buildPager (pager) {
+        let footer = document.createElement('a-entity');
+        let icon = this.buildImage({
+            width: 10,
+            height: 10,
+            visible: true,
+            src: pager.icon,
+            position: "0 0 0"
+        });
+        
+        footer.setAttribute("geometry", {
             primitive: "plane",
-            width: cell.width,
-            height: cell.height
+            width: pager.width,
+            height: pager.height
         });
-        aCell.setAttribute("material", {
-            color: cell.color,
+
+        footer.setAttribute("material", {
+            src: "#gradient"
         });
-        aCell.setAttribute("text", {
-            value: cell.text,
-            color: cell.textColor,
-            xOffxOffset: cell.width * 0.7,
-            width: cell.width * 2
-        });
-        aCell.setAttribute("field", cell.field);
-        aCell.setAttribute("position", cell.position);
-    
-        return aCell;
+        footer.setAttribute("position", pager.position);
+        footer.setAttribute("visible", pager.visible);
+
+        footer.appendChild(icon);
+
+        return footer;
     },
     buildCell (cell) {
         let aCell = document.createElement('a-entity');
@@ -230,6 +268,7 @@ AFRAME.registerComponent('grid', {
             width: cell.width * 2
         });
         aCell.setAttribute("field", cell.field);
+        aCell.setAttribute("visible", cell.visible);
         aCell.setAttribute("position", cell.position);
     
         return aCell;
@@ -247,6 +286,7 @@ AFRAME.registerComponent('grid', {
         });
         
         templateCell.setAttribute("position", cell.position);
+        templateCell.setAttribute("visible", cell.visible);
         templateCell.appendChild(document.getElementsByClassName(cell.template)[0].cloneNode());
     
         return templateCell;
@@ -263,8 +303,7 @@ AFRAME.registerComponent('grid', {
             aImage.setAttribute("src", image.src);
         }
 
-        aImage.setAttribute("visible", false);
-        aImage.setAttribute("color", this.gridBackColor);
+        aImage.setAttribute("visible", image.visible);
     
         return aImage;
     },
