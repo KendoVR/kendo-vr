@@ -11,6 +11,7 @@ AFRAME.registerComponent('switch', {
     init: function() {     
         var that = this;
 
+        // Wrapper
         this.el.setAttribute('geometry', {
             primitive: "plane",
             width: this.data.width, 
@@ -27,7 +28,7 @@ AFRAME.registerComponent('switch', {
         this.btn.setAttribute('position', {
              x: this.data.checked ? (this.el.getAttribute("position").x + (this.data.width / 2) - this.data.padding) / 2 : (this.el.getAttribute("position").x - (this.data.width / 2) - this.data.padding) / 2 + this.data.padding, 
              y: 0, 
-             z: 0 
+             z: 0.01 
         });
         this.btn.setAttribute('geometry', {
             primitive: "plane",
