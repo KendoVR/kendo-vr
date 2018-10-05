@@ -20,6 +20,7 @@
                     <a-cursor></a-cursor>
                 </a-camera>
             </a-entity>            
+            <a-circle position="30 -50 -1" material="side: double; color: #EF2D5E;" geometry="primitive:box;height: 50;width:50" radius="2"></a-circle>
             <kendo-webvr-grid id="grid" pageSize="5" position="0 -0.6 -0.1" data="../companies-data.json" height="275" sortable="true">    
             </kendo-webvr-grid>
             <a-sky color="#ECECEC"></a-sky>
@@ -30,7 +31,19 @@
             
             function onSwitchClick(ev) {            
                 var isChecked = ev.components.switch.data.checked;
-                console.log("checked: " + ev.components.switch.data.checked);
+                var rowIndex = ev.parentEl.getAttribute('rowIndex');
+
+                let cols = ev.parentEl.parentEl.getChildEntities().filter(item => item.getAttribute("rowIndex") == rowIndex);
+
+                for(let col of cols) {
+                    if(isChecked) {
+                        col.setAttribute('material', { opacity: 0.7 });
+                    } else {
+                        col.setAttribute('material', { opacity: 0.9 });
+                    }
+                }
+               
+                console.log("checked: " + isChecked);
             }
         </script>
     </body>
