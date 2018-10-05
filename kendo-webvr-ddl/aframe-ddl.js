@@ -16,13 +16,18 @@ AFRAME.registerComponent('dropdownlist', {
         this.wrapper.setAttribute('material', {transperant: true, opacity: this.data.opacity});
         this.el.appendChild(this.wrapper);
 
-        this.btn = document.createElement('a-entity');
+        this.btn = document.createElement('a-image');
         this.btn.setAttribute("class", "k-ddl-toggle-button")
-        this.btn.setAttribute('position', this.data.width / 2 - 0.25 + ' 0 0.02');
-        this.btn.setAttribute('geometry', {primitive: "plane", height: this.data.rowHeight, width: 0.5});
-        this.btn.setAttribute('material', {color: "white"});
-        this.btn.setAttribute('text', {value: "<", color: "black",  wrapCount: "1"});
-        this.btn.setAttribute('material', {transperant: true, opacity: 0});
+        this.btn.setAttribute('position', this.data.width / 2 - 0.4 + ' 0 0.02');
+        this.btn.setAttribute("width", 0.5);
+        this.btn.setAttribute("height", this.data.rowHeight);
+        this.btn.setAttribute("src", "/assets/arrow-chevron-down-active.svg");
+        this.btn.setAttribute("transparent", true);
+        
+        // this.btn.setAttribute('geometry', {primitive: "plane", height: this.data.rowHeight, width: 0.5});
+        // this.btn.setAttribute('material', {color: "white"});
+        // this.btn.setAttribute('text', {value: "<", color: "black",  wrapCount: "1"});
+        // this.btn.setAttribute('material', { transperant: true, opacity: 0, src:"#icon-up"});
         this.el.appendChild(this.btn);
 
         this.popup = document.createElement('a-entity');
@@ -30,7 +35,7 @@ AFRAME.registerComponent('dropdownlist', {
         this.popup.setAttribute('position', '0 -' + (this.data.rowHeight + 0.04) + ' 0.01');
         this.popup.setAttribute('geometry', {primitive: "plane", width: this.data.width});
         this.popup.setAttribute('material', {transperant: true, opacity: 0});
-        this.popup.setAttribute('visible', true);
+        this.popup.setAttribute('visible', false);
         this.el.appendChild(this.popup);
 
         var that = this;
@@ -40,7 +45,7 @@ AFRAME.registerComponent('dropdownlist', {
 
              if(ev.srcElement.className && /k-item/.test(ev.srcElement.className)) {
                 var newValue = ev.srcElement.components.text.data.value;
-                that.el.dispatchEvent( new CustomEvent("change", {detail: {oldValue: that.data.value, newValue: newValue}}) );
+                that.el.dispatchEvent( new CustomEvent("change", {detail: { oldValue: that.data.value, newValue: newValue }}) );
                 that.data.value = newValue;
                 that.selectedItem = ev.srcElement;
                 that.update();
@@ -49,13 +54,13 @@ AFRAME.registerComponent('dropdownlist', {
 
         this.el.addEventListener("mouseenter", function (ev) { 
             if(ev.srcElement.className && /k-item/.test(ev.srcElement.className)){
-                // var origPos = ev.srcElement.getAttribute("position");
+                var origPos = ev.srcElement.getAttribute("position");
                 var origMaterial = ev.srcElement.getAttribute("material");
                 // var origText = ev.srcElement.getAttribute("text");
                 origMaterial.opacity = 1;
-                // origPos.z = 0.1;
+                origPos.z = 0.2;
                 // origText.color = "white";
-                // ev.srcElement.setAttribute("position", origPos);
+                ev.srcElement.setAttribute("position", origPos);
                 ev.srcElement.setAttribute('material', origMaterial);
                 // ev.srcElement.setAttribute('text', origText);
             }
@@ -64,13 +69,13 @@ AFRAME.registerComponent('dropdownlist', {
         this.el.addEventListener("mouseleave", function (ev) { 
             if(ev.srcElement.className &&  /k-item/.test(ev.srcElement.className)){
                 
-                // var origPos = ev.srcElement.getAttribute("position");
+                var origPos = ev.srcElement.getAttribute("position");
                 var origMaterial = ev.srcElement.getAttribute("material");
                 // var origText = ev.srcElement.getAttribute("text");
-                // origPos.z = 0.03;
+                origPos.z = 0.03;
                 origMaterial.opacity = that.data.opacity;
                 // origText.color = "black"
-                // ev.srcElement.setAttribute("position", origPos);
+                ev.srcElement.setAttribute("position", origPos);
                 ev.srcElement.setAttribute('material', origMaterial);
             }
         });
@@ -110,10 +115,9 @@ AFRAME.registerComponent('dropdownlist', {
         for(var i = 0; i < data.length; i++){
             item = document.createElement('a-entity');
             item.setAttribute("class", "k-item");
-            item.setAttribute("position", "0 -" + (height) + " 0.03");
+            item.setAttribute("data-position", "0 -" + (height) + " 0.02");
             item.setAttribute('geometry', {primitive: "plane", height: this.data.rowHeight, width: this.data.width});
             
-
             if(data[i] === this.data.value){
                 item.setAttribute('material', {color: "#199cad", transperant: true, opacity: this.data.opacity});
                 item.setAttribute('text', {value: data[i], color: "white", width: this.data.width * 1.5, xOffset: this.data.width / 2 - 0.8});
@@ -128,8 +132,47 @@ AFRAME.registerComponent('dropdownlist', {
         }
     },
     toggle: function () {
-        this.btn.setAttribute('text', {value: this.visible ? ">" : "<"});
-        this.popup.setAttribute("visible", this.visible ? "false" : "true");
+        this.btn.setAttribute('src', this.visible ? "/assets/arrow-chevron-down-active.svg" : "/assets/arrow-chevron-up-active.svg");
+        
+        if(!this.visible){
+            this.popup.setAttribute("visible", true);
+        }
+        
+        var pos = (this.data.rowHeight + 0.04).toString();
+        // console.log(pos);
+        // this.popup.setAttribute("animation", {
+        //     property: "position",
+        //     // from: 0,
+        //     to: "0 " + (this.visible ? "-" + pos : "0") + " 0",
+        //     dur: 1000
+        // });
+var items = document.querySelectorAll(".k-item");
+        // console.log(document.querySelectorAll(".k-item")[1].getAttribute("position"));
+        for(var i = 0; i < items.length; i++){
+            var originalPos = items[i].getAttribute("data-position");
+            var y = originalPos.split(" ")[1];
+            var z = originalPos.split(" ")[2];
+            // items[i].setAttribute("position", "0 0 0");
+            
+            if(this.visible) {
+                y = 0;
+            }
+
+            var that = this;
+
+            items[i].setAttribute("animation", {
+                property: "position",
+                to: "0 " + y + " " + z,
+                dur: 500
+            });  
+        }
+
+        if(that.visible) {
+            setTimeout(function () {
+                that.popup.setAttribute("visible", false);
+            },500)
+        }
+        
         this.visible = !this.visible;
     }
 });
