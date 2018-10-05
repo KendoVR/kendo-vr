@@ -38,12 +38,15 @@
 
         <script>
             var ddl = document.querySelector("kendo-webvr-dropdownlist");
-            ddl.components.dropdownlist.loadData([
-                "Polychrome",
-                "Monochrome",
-                "Bichrome",
-                "Bihrome Shades"
-            ]);
+            ddl.addEventListener("dataready", function(){
+            debugger
+            });
+            // ddl.components.dropdownlist.loadData([
+            //     "Polychrome",
+            //     "Monochrome",
+            //     "Bichrome",
+            //     "Bihrome Shades"
+            // ]);
             ddl.addEventListener("change", function (ev) {
                 console.log(ev.detail.newValue);
             })

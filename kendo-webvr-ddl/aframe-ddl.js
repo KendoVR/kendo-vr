@@ -79,6 +79,8 @@ AFRAME.registerComponent('dropdownlist', {
                 ev.srcElement.setAttribute('material', origMaterial);
             }
         });
+        
+        
     },
     update: function () {
         if(this.data.value && this.data.value !== "") {
@@ -138,21 +140,12 @@ AFRAME.registerComponent('dropdownlist', {
             this.popup.setAttribute("visible", true);
         }
         
-        var pos = (this.data.rowHeight + 0.04).toString();
-        // console.log(pos);
-        // this.popup.setAttribute("animation", {
-        //     property: "position",
-        //     // from: 0,
-        //     to: "0 " + (this.visible ? "-" + pos : "0") + " 0",
-        //     dur: 1000
-        // });
-var items = document.querySelectorAll(".k-item");
-        // console.log(document.querySelectorAll(".k-item")[1].getAttribute("position"));
+        var items = document.querySelectorAll(".k-item");
+
         for(var i = 0; i < items.length; i++){
             var originalPos = items[i].getAttribute("data-position");
             var y = originalPos.split(" ")[1];
             var z = originalPos.split(" ")[2];
-            // items[i].setAttribute("position", "0 0 0");
             
             if(this.visible) {
                 y = 0;
