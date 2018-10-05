@@ -3,7 +3,8 @@ AFRAME.registerComponent('grid', {
         data: { type: 'asset' },
         sortable: {type: 'boolean', default: true},
         height: {type: 'number', default: 400},
-        pageSize: {type: 'number', default: 3}
+        pageSize: {type: 'number', default: 3},
+        visibleToColumnIndex: {type: 'number', default: 2}
     }, 
     init: function () {
         this.lineColor = "#ececec"
@@ -30,7 +31,7 @@ AFRAME.registerComponent('grid', {
         this.columns = json.columns;
         this.sortable = opts.sortable;
         this.rowHeight = opts.height / this.dataSource.length;
-        this.totalWidth = sumSettingTo(this.columns, "width", this.columns.length);
+        this.totalWidth = sumSettingTo(this.columns, "width", opts.visibleToColumnIndex ? opts.visibleToColumnIndex : this.columns.length);
         this.totalHeight = opts.height + this.headerHeight; 
         this.pageCount = Math.ceil(this.dataSource.length / opts.pageSize);
 
@@ -55,6 +56,7 @@ AFRAME.registerComponent('grid', {
                 text: column.title || "",
                 field: column.field || "",
                 color: this.headerBackColor,
+                visible: this.data.visibleToColumnIndex > i ? true : false,
                 textColor: this.headerForeColor,
                 width: column.width,
                 height: this.headerHeight,
@@ -68,6 +70,7 @@ AFRAME.registerComponent('grid', {
                 let position = aCell.getAttribute("position");
                 let sortIconWidth = 5;
                 position.x = position.x - sortIconWidth + column.width/ 2;
+                position.z = "0.02"
                 let sortButton = this.buildImage({
                     height: this.headerHeight / 2,
                     position: position,
@@ -153,7 +156,7 @@ AFRAME.registerComponent('grid', {
                                 textColor: this.gridForeColor,
                                 field: column,
                                 page: Math.floor(j / this.data.pageSize),
-                                visible: j < this.data.pageSize  ? true : false,
+                                visible: (j < this.data.pageSize && this.data.visibleToColumnIndex > columnIndex  ? true : false),
                                 height: this.rowHeight,
                                 position: (width / 2 + relativePositionX).toString() + " " + 
                                           (-this.rowHeight / 2 - this.rowHeight * (j + 1  - this.data.pageSize * (Math.floor(j/this.data.pageSize))) - this.headerHeight/2).toString() +
@@ -162,7 +165,8 @@ AFRAME.registerComponent('grid', {
                                             (-this.rowHeight / 2 - this.rowHeight * (j+1) - this.headerHeight/2).toString() +
                                             " 0"
                             });                          
-                cell.setAttribute("rowIndex", j);
+                cell.setAttribute("rowIndex", j);      
+                cell.setAttribute("colIndex", columnIndex);
                 //external method
                 this.attachCellEvents(cell);
                 this.el.appendChild(cell);
@@ -171,98 +175,31 @@ AFRAME.registerComponent('grid', {
             if (j > 0 && j < this.data.pageSize - 1) {
                 this.el.appendChild(line);
             } else if (j == this.data.pageSize) {
-                let footer = this.buildPager({
-                    width: this.totalWidth,
-                    height: this.rowHeight,
-                    id: "scrollDown",
-                    visible: true,
-                    gradient: "#downGradient",
-                    icon: "#scrollDown",
-                    position: (this.totalWidth / 2).toString() + " " + 
-                              (-this.rowHeight / 2 - this.rowHeight * (j + 1) - this.headerHeight/2).toString() +
-                              " -0.4"
-                });
-                footer.setAttribute("material", {
-                    transparent: true
-                })
-                
-                footer.addEventListener("click", function () {
-                    let oldPage = this.parentEl.getAttribute("page");
-                    let page = parseInt(oldPage) + 1;        
-                    let children = this.parentEl.getChildEntities();       
-                    let currentPageCells = children.filter(function (item) { return item.getAttribute("page") == oldPage && item.getAttribute("rowIndex") });
-                    let pageCells = children.filter(function (item) { return item.getAttribute("page") == page && item.getAttribute("rowIndex") });
-                    let headerCells = children.filter(item => item.getAttribute("class") == "gridHeader");
-
-                    this.parentEl.setAttribute("page", page);
-
-                    for (let cell of currentPageCells) {
-                        cell.setAttribute("visible", false);
-                    }
-
-                    for (let cell of pageCells) {
-                        cell.setAttribute("visible", true);
-                    }
-
-                    if (page + 1 == this.parentEl.getAttribute("pageCount")) {
-                        this.setAttribute("visible", false)
-                    } else if (parseInt(oldPage) == 0) {                    
-                        children.find(item => item.id == "scrollUp").setAttribute("visible", true);
-                        for (let cell of headerCells) {
-                            let position = cell.getAttribute("position");
-                            position.y = position.y + cell.getAttribute("geometry").height;
-                            cell.setAttribute("position", position.toArray().toString().replace(/,/g, ' '));
-                        }
-                    }
-                })
-                this.el.appendChild(footer);
+                if (this.footer) {
+                    this.footer.setAttribute("geometry", {
+                        width: this.totalWidth,
+                        height: this.rowHeight
+                    });
+                    this.footer.setAttribute("position", (this.totalWidth / 2).toString() + " " + 
+                                                        (-this.rowHeight / 2 - this.rowHeight * (this.data.pageSize + 1) - this.headerHeight/2).toString() +
+                                                        " 0");
+                } else {
+                    this.buildFooter();
+                    this.el.appendChild(this.footer);
+                }                
             } else if (j == 0) {
-                let header = this.buildPager({
-                    width: this.totalWidth,
-                    height: this.headerHeight,
-                    id: "scrollUp",
-                    visible: false,
-                    gradient: "#upGradient",
-                    icon: "#scrollUp",
-                    position: (this.totalWidth / 2).toString() + " " + 
-                              (-this.headerHeight).toString() +
-                              " 0"
-                });
-                
-                header.setAttribute("material", {
-                    transparent: true
-                })
-                
-                header.addEventListener("click", function () {
-                    let oldPage = this.parentEl.getAttribute("page");
-                    let page = parseInt(oldPage) - 1; 
-                    let children = this.parentEl.getChildEntities();                 
-                    let currentPageCells = children.filter(function (item) { return item.getAttribute("page") == oldPage && item.getAttribute("rowIndex") });
-                    let pageCells = children.filter(function (item) { return item.getAttribute("page") == page && item.getAttribute("rowIndex") });
-                    let headerCells = children.filter(item => item.getAttribute("class") == "gridHeader");
-                    this.parentEl.setAttribute("page", page);
-
-                    for (let cell of currentPageCells) {
-                        cell.setAttribute("visible", false);
-                    }
-
-                    for (let cell of pageCells) {
-                        cell.setAttribute("visible", true);
-                    }
-                     
-                    if (page == 0) {
-                        this.setAttribute("visible", false);
-                        for (let cell of headerCells) {
-                            let position = cell.getAttribute("position");
-                            position.y = position.y - cell.getAttribute("geometry").height;
-                            cell.setAttribute("position", position.toArray().toString().replace(/,/g, ' '));
-                        }
-                    }
-                    children.find(item => item.id == "scrollDown").setAttribute("visible", true);
-
-                })
-
-                this.el.appendChild(header);
+                if (this.header) {
+                    this.header.setAttribute("geometry", {
+                        width: this.totalWidth,
+                        height: this.rowHeight
+                    });
+                    this.header.setAttribute("position", (this.totalWidth / 2).toString() + " " + 
+                                                        (-this.headerHeight).toString() +
+                                                        " 0")
+                } else {
+                    this.buildHeader();
+                    this.el.appendChild(this.header);
+                }    
             }
         } 
     },
@@ -273,7 +210,7 @@ AFRAME.registerComponent('grid', {
 
             for(let col of cols) {
                 let position = col.getAttribute("position");
-                position.z = 2;
+                position.z = 1;
                 col.setAttribute("position", position);
             }
         });
@@ -294,6 +231,100 @@ AFRAME.registerComponent('grid', {
         this.el.appendChild(this.buildLine("0, " + -this.totalHeight.toString() + ", 0", "0, 0, 0", this.lineColor));
         this.el.appendChild(this.buildLine("0, " + -this.totalHeight.toString() + ", 0", this.totalWidth + ", " + -this.totalHeight.toString() + ", 0", this.lineColor));
     },
+    buildHeader () {
+        this.header = this.buildPager({
+            width: this.totalWidth,
+            height: this.headerHeight,
+            id: "scrollUp",
+            visible: false,
+            gradient: "#upGradient",
+            icon: "#scrollUp",
+            position: (this.totalWidth / 2).toString() + " " + 
+                      (-this.headerHeight).toString() +
+                      " 0"
+        });
+        
+        this.header.setAttribute("material", {
+            transparent: true
+        })
+        
+        this.header.addEventListener("click", function () {
+            let that = this;
+            let oldPage = that.parentEl.getAttribute("page");
+            let page = parseInt(oldPage) - 1; 
+            let children = that.parentEl.getChildEntities().filter(item => item.getAttribute("visible") || item.id == "scrollDown");               
+            let currentPageCells = children.filter(function (item) { return item.getAttribute("page") == oldPage && item.getAttribute("rowIndex") });
+            let pageCells = that.parentEl.getChildEntities().filter(function (item) { return item.getAttribute("page") == page && item.getAttribute("rowIndex") && item.getAttribute("colIndex") < parseInt(that.parentEl.getAttribute("visibleto"))});
+            let headerCells = children.filter(item => item.getAttribute("class") == "gridHeader");
+            this.parentEl.setAttribute("page", page);
+
+            for (let cell of currentPageCells) {
+                cell.setAttribute("visible", false);
+            }
+
+            for (let cell of pageCells) {
+                cell.setAttribute("visible", true);
+            }
+             
+            if (page == 0) {
+                this.setAttribute("visible", false);
+                for (let cell of headerCells) {
+                    let position = cell.getAttribute("position");
+                    position.y = position.y - cell.getAttribute("geometry").height;
+                    cell.setAttribute("position", position.toArray().toString().replace(/,/g, ' '));
+                }
+            }
+            children.find(item => item.id == "scrollDown").setAttribute("visible", true);
+
+        })
+    },
+    buildFooter () {
+        this.footer = this.buildPager({
+            width: this.totalWidth,
+            height: this.rowHeight,
+            id: "scrollDown",
+            visible: true,
+            gradient: "#downGradient",
+            icon: "#scrollDown",
+            position: (this.totalWidth / 2).toString() + " " + 
+                      (-this.rowHeight / 2 - this.rowHeight * (this.data.pageSize + 1) - this.headerHeight/2).toString() +
+                      " 0"
+        });
+        this.footer.setAttribute("material", {
+            transparent: true
+        })
+        
+        this.footer.addEventListener("click", function () {
+            let that = this;
+            let oldPage = that.parentEl.getAttribute("page");
+            let page = parseInt(oldPage) + 1;        
+            let children = that.parentEl.getChildEntities().filter(item => item.getAttribute("visible") || item.id == "scrollUp");       
+            let currentPageCells = children.filter(function (item) { return item.getAttribute("page") == oldPage && item.getAttribute("rowIndex") });
+            let pageCells = that.parentEl.getChildEntities().filter(function (item) { return item.getAttribute("page") == page && item.getAttribute("rowIndex") && item.getAttribute("colIndex") < parseInt(that.parentEl.getAttribute("visibleto")) });
+            let headerCells = children.filter(item => item.getAttribute("class") == "gridHeader");
+
+            this.parentEl.setAttribute("page", page);
+
+            for (let cell of currentPageCells) {
+                cell.setAttribute("visible", false);
+            }
+
+            for (let cell of pageCells) {
+                cell.setAttribute("visible", true);
+            }
+
+            if (page + 1 == this.parentEl.getAttribute("pageCount")) {
+                this.setAttribute("visible", false)
+            } else if (parseInt(oldPage) == 0) {                    
+                children.find(item => item.id == "scrollUp").setAttribute("visible", true);
+                for (let cell of headerCells) {
+                    let position = cell.getAttribute("position");
+                    position.y = position.y + cell.getAttribute("geometry").height;
+                    cell.setAttribute("position", position.toArray().toString().replace(/,/g, ' '));
+                }
+            }
+        })
+    },
     buildPager (pager) {
         let geometry = document.createElement('a-entity');
         let icon = this.buildImage({
@@ -301,7 +332,7 @@ AFRAME.registerComponent('grid', {
             height: 10,
             visible: true,
             src: pager.icon,
-            position: "0 0 0.1"
+            position: "0 0 0.2"
         });
         
         geometry.setAttribute("geometry", {
@@ -403,7 +434,8 @@ AFRAME.registerPrimitive('kendo-webvr-grid', {
         data: 'grid.data',
         sortable: 'grid.sortable',
         height: 'grid.height',
-        pagesize: 'grid.pageSize'
+        pagesize: 'grid.pageSize',
+        visibleto: 'grid.visibleToColumnIndex'
     }
 });
 
