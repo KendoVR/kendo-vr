@@ -396,7 +396,7 @@
 			var populateChart = function() {
 				var container = document.getElementById('container');
 
-				$.getJSON("../companies-data.json", function(json) {
+				$.getJSON("./companies-data.json", function(json) {
 					for(var i = 0; i < json.data.length; i ++) {
 						var item = json.data[i];
 
