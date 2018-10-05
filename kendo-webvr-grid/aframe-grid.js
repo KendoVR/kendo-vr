@@ -120,10 +120,11 @@ AFRAME.registerComponent('grid', {
                     template: templateCols[j].template,
                     width: templateCols[j].width,
                     color: this.gridBackColor,
+                    page: Math.floor(i/this.data.pageSize),
                     visible: i < this.data.pageSize - 1 ? true : false,
                     height: this.rowHeight,
                     position: (templateCols[j].width / 2 + relativePositionX).toString() + " " + 
-                              (-this.rowHeight / 2 - this.rowHeight * (i+1) - this.headerHeight/2).toString() +
+                              (-this.rowHeight / 2 - this.rowHeight * (i + 1  - this.data.pageSize * (Math.floor(i/this.data.pageSize))) - this.headerHeight/2).toString() +
                               " 0"
                 });                          
                 cell.setAttribute("rowIndex", i);
@@ -150,12 +151,15 @@ AFRAME.registerComponent('grid', {
                                 color: this.gridBackColor,
                                 textColor: this.gridForeColor,
                                 field: column,
+                                page: Math.floor(j / this.data.pageSize),
                                 visible: j < this.data.pageSize - 1 ? true : false,
                                 height: this.rowHeight,
-                                
                                 position: (width / 2 + relativePositionX).toString() + " " + 
-                                              (-this.rowHeight / 2 - this.rowHeight * (j+1) - this.headerHeight/2).toString() +
-                                              " 0"
+                                          (-this.rowHeight / 2 - this.rowHeight * (j + 1  - this.data.pageSize * (Math.floor(j/this.data.pageSize))) - this.headerHeight/2).toString() +
+                                          " -0." + Math.ceil(j/this.data.pageSize).toString(),
+                                posssition: (width / 2 + relativePositionX).toString() + " " + 
+                                            (-this.rowHeight / 2 - this.rowHeight * (j+1) - this.headerHeight/2).toString() +
+                                            " 0"
                             });                          
                 cell.setAttribute("rowIndex", j);
                 //external method
@@ -190,6 +194,7 @@ AFRAME.registerComponent('grid', {
                     width: this.totalWidth,
                     height: this.rowHeight,
                     visible: true,
+                    page: 0,
                     icon: "#scrollDown",
                     position: (this.totalWidth / 2).toString() + " " + 
                               (-this.rowHeight / 2 - this.rowHeight * j - this.headerHeight/2).toString() +
@@ -200,7 +205,24 @@ AFRAME.registerComponent('grid', {
                 })
                 
                 footer.addEventListener("click", function () {
-                    
+                    let oldPage = this.getAttribute("page");
+                    let page = parseInt(oldPage) + 1;                    
+                    let currentPageCells = this.parentEl.getChildEntities().filter(function (item) { return item.getAttribute("page") == oldPage && item.getAttribute("rowIndex") });
+                    let pageCells = this.parentEl.getChildEntities().filter(function (item) { return item.getAttribute("page") == page && item.getAttribute("rowIndex") });
+
+                    this.setAttribute("page", page);
+
+                    for (let cell of currentPageCells) {
+                        cell.setAttribute("visible", false);
+                    }
+
+                    for (let cell of pageCells) {
+                        cell.setAttribute("animation", {
+                            property: "visible",
+                            begin: 400,
+                            to: true
+                        });
+                    }
                 })
 
                 this.el.appendChild(footer);
@@ -245,6 +267,7 @@ AFRAME.registerComponent('grid', {
         });
         footer.setAttribute("position", pager.position);
         footer.setAttribute("visible", pager.visible);
+        footer.setAttribute("page", pager.page);
 
         footer.appendChild(icon);
 
@@ -268,6 +291,7 @@ AFRAME.registerComponent('grid', {
             width: cell.width * 2
         });
         aCell.setAttribute("field", cell.field);
+        aCell.setAttribute("page", cell.page);
         aCell.setAttribute("visible", cell.visible);
         aCell.setAttribute("position", cell.position);
     
@@ -286,6 +310,7 @@ AFRAME.registerComponent('grid', {
         });
         
         templateCell.setAttribute("position", cell.position);
+        templateCell.setAttribute("page", cell.page);
         templateCell.setAttribute("visible", cell.visible);
         templateCell.appendChild(document.getElementsByClassName(cell.template)[0].cloneNode());
     
