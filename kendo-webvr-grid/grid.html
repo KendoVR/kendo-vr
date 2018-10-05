@@ -12,8 +12,11 @@
             <a-entity id="mouseCursor" cursor="rayOrigin: mouse" debug-cursor></a-entity>
             <a-assets>
                 <kendo-webvr-switch onchange="onSwitchClick(this)" class="checkbox" checked="true" width="15" height="7" position="0 0 0.2" padding="0.55"></kendo-webvr-switch>
-                <img id="desc" src="./images/down.png">
-                <img id="asc" src="./images/up.png">
+                <img id="desc" src="../assets/arrow-down.svg" />
+                <img id="asc" src="../assets/arrow-up.svg" />
+                <img id="gradient" src="../assets/scroll_gradient-down.png" />
+                <img id="scrollDown" src="../assets/arrow-chevron-down-active.svg" />
+                <img id="scrollUp" src="../assets/arrow-chevron-up-active.svg" />
             </a-assets>
             <a-entity position="100 -50 100">
                 <a-camera>
@@ -21,7 +24,7 @@
                 </a-camera>
             </a-entity>            
             <a-circle position="30 -50 -1" material="side: double; color: #EF2D5E;" geometry="primitive:box;height: 50;width:50" radius="2"></a-circle>
-            <kendo-webvr-grid id="grid" pageSize="5" position="0 -0.6 -0.1" data="../companies-data.json" height="275" sortable="true">    
+            <kendo-webvr-grid id="grid" pageSize="8" position="0 -0.6 -0.1" data="../companies-data.json" height="275" sortable="true">    
             </kendo-webvr-grid>
             <a-sky color="#ECECEC"></a-sky>
         </a-scene>
