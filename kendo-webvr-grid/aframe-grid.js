@@ -75,33 +75,30 @@ AFRAME.registerComponent('grid', {
                     width: sortIconWidth
                 });
 
+                sortButton.setAttribute("direction", "desc");
+
                 aCell.addEventListener("click", function () {
                     let sortField = this.getAttribute("field");
                     let sortIcon = this.getElementsByTagName("a-image")[0];
                     let sortDirection = sortIcon.getAttribute("direction");
 
-                    for (let element of this.parentEl.getElementsByTagName("a-image")) {
+                    for (let element of this.parentEl.querySelectorAll(".gridHeader a-image")) {
                         element.setAttribute("visible", false);
-                        element.removeAttribute("direction");
+                        sortIcon.setAttribute("direction", "desc");
                     }
 
                     if (sortDirection === "desc") {
-                        sortIcon.setAttribute("visible", false);
-                        sortIcon.removeAttribute("direction");
-
-                        sort.call(this, "");
+                        sortIcon.setAttribute("visible", true);
+                        sortIcon.setAttribute("direction", "asc");
+                        sortIcon.setAttribute("src", "#asc");
+                        
+                        sort.call(this, "asc");
                     } else if (sortDirection === "asc") {
                         sortIcon.setAttribute("visible", true);
                         sortIcon.setAttribute("direction", "desc");
                         sortIcon.setAttribute("src", "#desc");
                         
                         sort.call(this, "desc");
-                    } else {
-                        sortIcon.setAttribute("visible", true);
-                        sortIcon.setAttribute("direction", "asc");
-                        sortIcon.setAttribute("src", "#asc");
-                        
-                        sort.call(this, "asc");
                     }
                 });
 
@@ -183,7 +180,7 @@ AFRAME.registerComponent('grid', {
                     icon: "#scrollDown",
                     position: (this.totalWidth / 2).toString() + " " + 
                               (-this.rowHeight / 2 - this.rowHeight * (j + 1) - this.headerHeight/2).toString() +
-                              " 0"
+                              " -0.4"
                 });
                 footer.setAttribute("material", {
                     transparent: true
@@ -304,7 +301,7 @@ AFRAME.registerComponent('grid', {
             height: 10,
             visible: true,
             src: pager.icon,
-            position: "0 0 0"
+            position: "0 0 0.1"
         });
         
         geometry.setAttribute("geometry", {
@@ -424,14 +421,10 @@ function sumSettingTo (array, setting, index) {
 }
 
 function sort (direction) {
-    let allCells = this.parentEl.getChildEntities().filter(function (item) { return item.getAttribute("rowindex") });
+    let allCells = this.parentEl.getChildEntities().filter(function (item) { return item.getAttribute("rowindex") && item.getAttribute("text") });
     let oldCells = allCells.filter(item => item.getAttribute("field") == this.getAttribute("field"));
     let directionMultiplier = direction === "asc" ? 1 : -1;
     let sortedCells;
-
-    oldCells.sort(function (a, b) {
-        return a.getAttribute("position").y > b.getAttribute("position").y ? -1 : 1;
-    });
 
     if (direction) {
         sortedCells = allCells.filter(item => item.getAttribute("field") == this.getAttribute("field")).sort(function(a, b) {
@@ -445,25 +438,22 @@ function sort (direction) {
                 : (parseInt(a.getAttribute("text").value) > parseInt(b.getAttribute("text").value) ? 1*directionMultiplier : -1*directionMultiplier);
             }
         });
-    } else {
-        sortedCells = allCells.filter(item => item.getAttribute("field") == this.getAttribute("field")).sort(function(a, b) {
-            return a.getAttribute("rowIndex") > b.getAttribute("rowIndex") ? 1 : -1;
-        });
     }
             
     for (let i=0; i< sortedCells.length; i++) {
-        let cellsByRow = allCells.filter(function (cell) {
+        let sortedCellsByRow = allCells.filter(function (cell) {
             return cell.getAttribute("rowIndex") === sortedCells[i].getAttribute("rowIndex");
         });
+        let cellsByRow = allCells.filter(function (cell) {
+            return cell.getAttribute("rowIndex") === oldCells[i].getAttribute("rowIndex");
+        });
 
-        for (let cell of cellsByRow) {
-            let xyz = cell.getAttribute("position").toArray();
-            xyz[1] = oldCells[i].getAttribute("position").toArray()[1];
+        for (let j = 0; j < sortedCellsByRow.length; j ++) {
+            let text = cellsByRow[j].getAttribute("text").value;
+            text = sortedCellsByRow[j].getAttribute("text").value;
 
-            cell.setAttribute("animation", {
-                property: "position",
-                dur: 400,
-                to: xyz.toString().replace(",", " ")
+            cellsByRow[j].setAttribute("text", {
+                value: text
             })
         }
     }
