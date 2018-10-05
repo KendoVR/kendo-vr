@@ -5,9 +5,9 @@ AFRAME.registerComponent('switch', {
         width: { type: 'number', default: 0.72 },
         height: { type: 'number', default: 0.32 },
         checked: { type: 'boolean', default: false },
-        fillColor: { type: 'color', default: '#fff'  },
-        checkedColor: { type: 'color', default: '#42a9b8' },
-        uncheckedColor: { type: 'color', default: '#bebebe' }
+        fillColor: { type: 'color', default: '#199cad'  },
+        fillColorUnchecked: { type: 'color', default: '#bbc5ce' },
+        handleColor: { type: 'color', default: '#fff' }
     },
     init: function() {     
         var that = this;
@@ -20,7 +20,7 @@ AFRAME.registerComponent('switch', {
 
         this.el.setAttribute('material', {
             side: "double",
-            color: this.data.fillColor
+            color: this.data.fillColorUnchecked
         });
 
         // Button Handle
@@ -37,7 +37,7 @@ AFRAME.registerComponent('switch', {
         });
         this.btn.setAttribute('material', {
             side: "double",
-            color: this.data.uncheckedColor
+            color: this.data.handleColor
         });
         this.el.appendChild(this.btn);
 
@@ -50,8 +50,8 @@ AFRAME.registerComponent('switch', {
                     height: that.data.height,
                     checked: that.data.checked,
                     fillColor: that.data.fillColor,
-                    checkedColor: that.data.checkedColor,
-                    uncheckedColor: that.data.uncheckedColor
+                    fillColorUnchecked: that.data.fillColorUnchecked,
+                    handleColor: that.data.handleColor
                 }
             }));
         });
@@ -61,10 +61,10 @@ AFRAME.registerComponent('switch', {
         
         if(isChecked) {
             this.setHandlePosition("right");                       
-            this.btn.setAttribute('material', { color: this.data.uncheckedColor });              
+            this.el.setAttribute('material', { color: this.data.fillColorUnchecked });              
         } else {            
             this.setHandlePosition("left");
-            this.btn.setAttribute('material', { color: this.data.checkedColor });
+            this.el.setAttribute('material', { color: this.data.fillColor });
         }
 
         this.data.checked = !isChecked;
@@ -98,7 +98,7 @@ AFRAME.registerPrimitive('kendo-webvr-switch', {
         height: 'switch.height',
         checked: 'switch.checked',
         'fill-color': 'switch.fillColor',
-        'checked-color': 'switch.checkedColor',
-        'unchecked-color': 'switch.uncheckedColor'
+        'fill-color-unchecked': 'switch.fillColorUnchecked',
+        'handle-color': 'switch.handleColor'
     }
 });
