@@ -3,63 +3,499 @@
 <head>
   <meta charset="utf-8">
   <title>Untitled</title>
+  <script src="https://kendo.cdn.telerik.com/2018.3.911/js/jquery.min.js"></script>
   <script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script>
   <script src="https://unpkg.com/aframe-animation-component@^4.1.2/dist/aframe-animation-component.min.js"></script> 
   <script src="https://unpkg.com/aframe-debug-cursor-component/dist/aframe-debug-cursor-component.min.js"></script>
   <script src="./kendo-webvr-ddl/aframe-ddl.js"></script>
   <script src="./kendo-webvr-grid/aframe-grid.js"></script>
   <script src="./kendo-webvr-switch/aframe-switch.js"></script>
+  <script src="https://kendo.cdn.telerik.com/2018.3.911/js/kendo.all.min.js"></script>
 </head>
 <body>
   <a-scene>
     <a-entity light="type: ambient; color: #FFF"></a-entity>
     <a-entity light="type: directional; color: #FFF; intensity: 0.1" position="-0.5 1 1"></a-entity>
     <a-entity id="mouseCursor" cursor="rayOrigin: mouse"></a-entity>
-    <!-- <a-assets>
-        <img id="icon-down" src="/assets/arrow-down.svg" />
-        <img id="icon-up" src="/assets/arrow-up.svg" />
-    </a-assets> -->
-    <a-entity camera  
-                wasd-controls
-                look-controls
-                position="0 0 0">
 
-                
 
-    <!-- <a-entity cursor="fuse: false;" 
-            position="0 0 -1"
-            geometry="primitive: ring; radiusInner: 0.005; radiusOuter: 0.01;"
-            matlerial="color: #CCC; shader: flat;">
+<!-- CHART START -->
+    <a-entity position="0 0 250" scale="0.8 0.8 0.8" rotation="0 0 0" id="camera-wrapper">
+        <a-entity camera="fov: 60; far: 10000" id="camera-entity" look-controls wasd-controls>
+            <a-entity cursor="fuse: false;"
+                position="0 0 -40"
+                geometry="primitive: ring; radiusInner: 0.3; radiusOuter: 0.5"
+                material="color: #888; shader: flat">
+            </a-entity>
+            <a-plane width="12"
+                height="2.2"
+                position="7.5 0 -40"
+                color="#3f5971"
+                material="transparent:true; opacity:0.8">
+            </a-plane>
+            <a-plane width="12"
+                height="6.2"
+                position="7.5 -4.2 -40"
+                color="#3f5971"
+                material="transparent:true; opacity:0.8"
+                visible="false"
+                id="extended-tooltip">
+            </a-plane>
+        </a-entity>
 
-            
-        </a-entity> -->
     </a-entity>
-<!-- <a-plane width="10" height="10" position="0 1 -8" color="red"></a-plane> -->
-<kendo-webvr-dropdownlist value="Polychrome" position="0 3 -10" width="4" opacity="0.8" row-height="0.64"></kendo-webvr-dropdownlist>
 
-<kendo-webvr-switch width="1" height="0.5" position="0 2 -10"></kendo-webvr-switch>
+        <a-entity id="container" rotation="30 -45 -20">
+            <a-entity id="navigator">
+                <a-sphere class="navigation-segment" data-front="top" data-navigation="90 0 0" theta-length="18" radius="150" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
+                <a-sphere class="navigation-segment" data-front="left" data-navigation="0 90 0" theta-length="18" radius="150" rotation="0 0 90" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
+                <a-sphere class="navigation-segment" data-front="bottom" data-navigation="-90 0 0" theta-length="18" radius="150" rotation="0 0 180" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
+                <a-sphere class="navigation-segment" data-front="right" data-navigation="0 -90 0" theta-length="18" radius="150" rotation="0 0 -90" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
 
+                <a-sphere class="navigation-segment" data-front="front" data-navigation="0 0 0" theta-length="18" radius="150" rotation="90 0 0" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
+                <a-sphere class="navigation-segment" data-front="back" data-navigation="0 180 0" theta-length="18" radius="150" rotation="90 180 0" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
 
+                <a-sphere class="navigation-segment" data-navigation="30 -45 -20" theta-length="18" radius="150" rotation="0 132 55" visible="false" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
+                <a-sphere class="navigation-segment" data-navigation="-30 -135 -20" theta-length="18" radius="150" rotation="0 -132 55" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
+                <a-sphere class="navigation-segment" data-navigation="-30 135 20" theta-length="18" radius="150" rotation="0 -48 55" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
+                <a-sphere class="navigation-segment" data-navigation="30 45 20" theta-length="18" radius="150" rotation="0 48 55" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
 
+                <a-sphere class="navigation-segment" data-navigation="-30 45 -20" theta-length="18" radius="150" rotation="-19 35 126" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
+                <a-sphere class="navigation-segment" data-navigation="-30 -45 20" theta-length="18" radius="150" rotation="-19 118 126" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
+                <a-sphere class="navigation-segment" data-navigation="30 135 -20" theta-length="18" radius="150" rotation="-19 -62 126" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
+                <a-sphere class="navigation-segment" data-navigation="30 -135 20" theta-length="18" radius="150" rotation="-19 -145 126" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
+            </a-entity>
+            <a-entity id="labels">
+                <a-text width="100"
+                        position="102 5 1"
+                        color="#3f5971"
+                        value="total income 2017"
+                        material="side:double">
+                </a-text>
 
-<a-cylinder opacity="0.5" transparent="true" height="250" radius="500" repeat="8" position="0 100 0" rotation="0 0 0" open-ended="true" side="double" src="./assets/city_landscape.svg"></a-cylinder>
-<!-- <a-cylinder opacity="0.4" transparent="true" height="10" radius="10" repeat="11" position="0 0 -5" open-ended="true" side="double" src="/assets/city_landscape.png"></a-cylinder> -->
-<a-plane opacity="0.1" transparent="true" color="gray" height="10000" width="10000" rotation="-90 0 0" position="0 -200 0" side="double" ></a-plane>
-<!-- <a-plane color="#dce3e9" height="10000" width="10000" rotation="-90 0 0" position="0 1400 0" side="double" ></a-plane> -->
+                <a-text width="100"
+                        position="1 5 138"
+                        color="#3f5971"
+                        value="income change 2017 vs 2016"
+                        rotation="0 90 0"
+                        material="side:double">
+                </a-text>
+
+                <a-text width="100"
+                        position="-5 100 1"
+                        color="#3f5971"
+                        value="profit 2017"
+                        rotation="0 0 90"
+                        material="side:double">
+                </a-text>
+            </a-entity>
+        </a-entity>
+<!-- CHART END -->
+
+<a-cylinder opacity="0.5" transparent="true" height="500" radius="500" repeat="8" position="0 100 0" rotation="0 0 0" open-ended="true" side="double" src="./assets/city_landscape.svg"></a-cylinder>
+
+<a-plane opacity="0.1" transparent="true" color="gray" height="10000" width="10000" rotation="-90 0 0" position="0 -175 0" side="double" ></a-plane>
 
 <a-sky color="#eff2f5"></a-sky>
 
 </a-scene>
 
 <script>
+
+		window.onload = function() {
+			var segments = document.querySelectorAll('.navigation-segment');
+
+			var axisNumberingConfigurator = {
+				front: {
+					x: "0 0 0",
+					y: "0 0 0",
+					z: "0 0 0"
+				},
+				right: {
+					x: "0 0 0",
+					y: "0 90 0",
+					z: "-90 0 0"
+				},
+				back: {
+					x: "0 180 0",
+					y: "0 180 0",
+					z: "0 0 0"
+				},
+				left: {
+					x: "0 0 0",
+					y: "0 -90 0",
+					z: "-90 180 0"
+				},
+				top: {
+					x: "-90 0 0",
+					y: "0 0 0",
+					z: "180 -90 -90"
+				},
+				bottom: {
+					x: "90 0 0",
+					y: "0 0 0",
+					z: "0 -90 -90"
+				}
+			};
+
+			var createNumbering = function() {
+				var labelsContainer = document.getElementById('labels');
+				var numberStopsX = document.createElement('a-entity');
+				var numberStopsY = document.createElement('a-entity');
+				var numberStopsZ = document.createElement('a-entity');
+
+				// var labelX = document.createElement('a-text');
+
+				// labelX.setAttribute('width', '100');
+				// labelX.setAttribute('position', '102, 5, 1');
+				// labelX.setAttribute('color', '#3f5971');
+				// labelX.setAttribute('value', 'total income 2017');
+
+				// numberStopsX.appendChild(labelX);
+
+				// var labelY = numberStopsX.cloneNode(true);
+
+				// labelY.setAttribute('position', '1 5 138');
+				// labelY.setAttribute('rotation', '0 0 90');
+				// labelY.setAttribute('value', 'profit 2017');
+
+				// numberStopsY.appendChild(labelY);
+
+				// var labelZ = numberStopsX.cloneNode(true);
+
+				// labelZ.setAttribute('position', '-5 100 1');
+				// labelZ.setAttribute('rotation', '0 90 0');
+				// labelZ.setAttribute('value', 'income change 2017 vs 2016');
+
+				// numberStopsZ.appendChild(labelZ);
+
+				numberStopsX.setAttribute('id', 'number-stops-x');
+				numberStopsY.setAttribute('id', 'number-stops-y');
+				numberStopsZ.setAttribute('id', 'number-stops-z');
+
+				numberStopsX.setAttribute('rotation', '0 0 0');
+				numberStopsY.setAttribute('rotation', '0 90 0');
+				numberStopsZ.setAttribute('rotation', '-90 0 0');
+
+				for(var i = -140; i <= 140; i += 20) {
+					if (i === 0){
+						continue;
+					} else {
+						var xStop = document.createElement('a-text');
+
+						xStop.setAttribute('width', '100');
+						xStop.setAttribute('position', (i - 3).toString() + ', -3, 1');
+						xStop.setAttribute('color', '#3f5971');
+						xStop.setAttribute('value', i.toString());
+
+						numberStopsX.appendChild(xStop);
+
+						var zStop = xStop.cloneNode(true);
+						zStop.setAttribute('position', '1, ' + (i - 3).toString() + ', -3');
+						zStop.setAttribute('rotation', '0 90 90');
+
+						numberStopsZ.appendChild(zStop);
+
+						var yStop = xStop.cloneNode(true);
+						yStop.setAttribute('position', '3, ' + i.toString() + ', 1');
+
+						numberStopsY.appendChild(yStop);
+					}
+				}
+
+				labelsContainer.appendChild(numberStopsX);
+				labelsContainer.appendChild(numberStopsY);
+				labelsContainer.appendChild(numberStopsZ);
+			}
+
+			var createNavigator = function() {
+				for(var i = 0; i < segments.length; i ++) {
+					segments[i].addEventListener('mouseenter', function(e) {
+						var segment = e.target;
+						segment.setAttribute('color', '#199cad');
+					});
+
+					segments[i].addEventListener('mouseleave', function(e) {
+						var segment = e.target;
+						segment.setAttribute('color', '#fff');
+					});
+
+					segments[i].addEventListener('click', function(e) {
+						var segment = e.target;
+						var navigationPosition = segment.getAttribute('data-navigation');
+						var frontPosition = segment.getAttribute('data-front');
+						var chart = document.getElementById('container');
+						var navigationAnimation = document.createElement('a-animation');
+						var scaleAnimation = document.createElement('a-animation');
+						var xLabels = document.getElementById('number-stops-x');
+						var yLabels = document.getElementById('number-stops-y');
+						var zLabels = document.getElementById('number-stops-z');
+
+						for(var i = 0; i < segments.length; i ++) {
+							segments[i].setAttribute('visible', 'true');
+						}
+
+						segment.setAttribute('visible', 'false');
+
+						navigationAnimation.setAttribute('attribute', 'rotation');
+						navigationAnimation.setAttribute('to', navigationPosition);
+						navigationAnimation.setAttribute('dur', 1000);
+
+						scaleAnimation.setAttribute('attribute', 'scale');
+						scaleAnimation.setAttribute('dur', 1000);
+
+						if (!!frontPosition) {
+							var newLabelPositions = axisNumberingConfigurator[frontPosition];
+
+							xLabels.setAttribute('visible', 'true');
+							yLabels.setAttribute('visible', 'true');
+							zLabels.setAttribute('visible', 'true');
+
+							xLabels.setAttribute('rotation', newLabelPositions.x);
+							yLabels.setAttribute('rotation', newLabelPositions.y);
+							zLabels.setAttribute('rotation', newLabelPositions.z);
+
+							scaleAnimation.setAttribute('to', '0.8 0.8 0.8');
+						} else {
+							xLabels.setAttribute('visible', 'false');
+							yLabels.setAttribute('visible', 'false');
+							zLabels.setAttribute('visible', 'false');
+
+							scaleAnimation.setAttribute('to', '1.2 1.2 1.2');
+						}
+
+						chart.appendChild(navigationAnimation);
+						chart.appendChild(scaleAnimation);
+					});
+				}
+			}
+
+			var generateGrid = function() {
+				var container = document.getElementById('container');
+
+				for(var i = -70; i <= 70; i ++) {
+					var xy1 = document.createElement('a-entity');
+					var xz1 = document.createElement('a-entity');
+					var yz1 = document.createElement('a-entity');
+
+					var xy2 = document.createElement('a-entity');
+					var xz2 = document.createElement('a-entity');
+					var yz2 = document.createElement('a-entity');
+
+					var multiplicator = 2;
+					var baseGreatestValue = 70;
+					var greatestValue = baseGreatestValue*multiplicator;
+					var multiplayedIndex = i*multiplicator;
+
+					if (i === 0) {
+						var zMajor = document.createElement('a-cylinder');
+
+						zMajor.setAttribute('radius', '0.2');
+						zMajor.setAttribute('height', (greatestValue*multiplicator).toString());
+						zMajor.setAttribute('color', '#000');
+						zMajor.setAttribute('rotation', '90 0 0');
+						container.appendChild(zMajor);
+
+						var yMajor = zMajor.cloneNode(true);
+						yMajor.setAttribute('rotation', '0 0 0');
+						container.appendChild(yMajor);
+
+						var xMajor = zMajor.cloneNode(true);
+						xMajor.setAttribute('rotation', '0 0 90');
+						container.appendChild(xMajor);
+
+						var zMajor = document.createElement('a-entity');
+						zMajor.setAttribute('height', (greatestValue*multiplicator).toString());
+						zMajor.setAttribute('color', '#000');
+						zMajor.setAttribute('rotation', '90 0 0');
+						container.appendChild(zMajor);
+					} else if(i % 10 === 0) {
+						xy1.setAttribute('line', {
+							start: multiplayedIndex.toString() + ", " + -1*greatestValue + ", 0",
+							end: multiplayedIndex.toString() + ", " + greatestValue + ", 0",
+							color: "#bbb"
+						});
+
+						xz1.setAttribute('line', {
+							start: -1*greatestValue.toString() + ", 0, " + multiplayedIndex,
+							end: greatestValue.toString() + ", 0, " + multiplayedIndex,
+							color: "#bbb"
+						});
+
+						yz1.setAttribute('line', {
+							start: "0, " + multiplayedIndex + ", -140",
+							end: "0, " + multiplayedIndex + ", " + greatestValue,
+							color: "#bbb"
+						});
+
+						xy2.setAttribute('line', {
+							start: -1*greatestValue.toString() + ", " + multiplayedIndex.toString() + ", 0",
+							end: greatestValue.toString() + ", " + multiplayedIndex.toString() + ", 0",
+							color: "#bbb"
+						});
+
+						xz2.setAttribute('line', {
+							start: multiplayedIndex.toString() + ", 0, " + -1*greatestValue.toString(),
+							end: multiplayedIndex.toString() + ", 0, " + greatestValue.toString(),
+							color: "#bbb"
+						});
+
+						yz2.setAttribute('line', {
+							start: "0, " + -1*greatestValue +", " + multiplayedIndex,
+							end: "0, " + greatestValue +", " + multiplayedIndex,
+							color: "#bbb"
+						});
+					}else {
+						xy1.setAttribute('line', {
+							start: multiplayedIndex.toString() + ", " + -1*greatestValue + ", 0",
+							end: multiplayedIndex.toString() + ", " + greatestValue + ", 0",
+							color: "#ddd"
+						});
+
+						xz1.setAttribute('line', {
+							start: -1*greatestValue.toString() + ", 0, " + multiplayedIndex,
+							end: greatestValue.toString() + ", 0, " + multiplayedIndex,
+							color: "#ccc"
+						});
+
+						yz1.setAttribute('line', {
+							start: "0, " + multiplayedIndex + ", " + -1*greatestValue,
+							end: "0, " + multiplayedIndex + ", " + greatestValue,
+							color: "#ddd"
+						});
+
+						xy2.setAttribute('line', {
+							start: -1*greatestValue.toString() + ", " + multiplayedIndex.toString() + ", 0",
+							end: greatestValue.toString() + ", " + multiplayedIndex.toString() + ", 0",
+							color: "#ddd"
+						});
+
+						xz2.setAttribute('line', {
+							start: multiplayedIndex.toString() + ", 0, " + -1*greatestValue,
+							end: multiplayedIndex.toString() + ", 0, " + greatestValue,
+							color: "#ccc"
+						});
+
+						yz2.setAttribute('line', {
+							start: "0, " + -1*greatestValue + ", " + multiplayedIndex,
+							end: "0, " + greatestValue + ", " + multiplayedIndex,
+							color: "#ddd"
+						});
+					}
+
+					container.appendChild(xy1);
+					container.appendChild(xz1);
+					container.appendChild(yz1);
+
+					container.appendChild(xy2);
+					container.appendChild(xz2);
+					container.appendChild(yz2);
+				}
+			}
+
+			var populateChart = function() {
+				var container = document.getElementById('container');
+
+				$.getJSON("../companies-data.json", function(json) {
+					for(var i = 0; i < json.data.length; i ++) {
+						var item = json.data[i];
+
+						var element = document.createElement('a-sphere');
+						var xPoint = item.income / 1000000;
+						var yPoint = item.profit / 100000;
+						var zPoint = item.incomeChange;
+						var position = xPoint.toString() + ' ' + yPoint + ' ' + zPoint.toString();
+
+						if (item.profit > 0) {
+							var profitInMilions = item.profit / 1000000;
+							var green = Math.floor(128 + profitInMilions * 8);
+							var redAndBlue = Math.floor(128 - profitInMilions * 8);
+
+							element.setAttribute('color', 'rgb(' + redAndBlue + ', ' + green + ', ' + redAndBlue + ')');
+						} else {
+							var profitInMilions = item.profit / -1000000;
+							var red = Math.floor(128 + profitInMilions * 8);
+							var greenAndBlue = Math.floor(128 - profitInMilions * 8);
+
+							element.setAttribute('color', 'rgb(' + red + ', ' + greenAndBlue + ', ' + greenAndBlue + ')');
+						}
+
+						element.setAttribute('position', position );
+						element.setAttribute('radius', 0 );
+						element.setAttribute('material', 'transparent:true; opacity:0.65');
+
+						for (var name in item) {
+							if (item.hasOwnProperty(name)) {
+								element.setAttribute('data-' + name, item[name]);
+							}
+						}
+
+						var animation = document.createElement('a-animation');
+						animation.setAttribute('attribute', 'radius');
+						animation.setAttribute('to', item.employees / 70);
+						animation.setAttribute('dur', 1000);
+
+						element.appendChild(animation);
+						element.addEventListener('mouseenter', function(e) {
+							var point = e.target;
+							var tooltip = document.querySelector('#camera-entity a-plane');
+
+							tooltip.setAttribute('text', {
+								color: '#fff',
+								value: point.getAttribute('data-company'),
+								width: 20 * 1.5,
+								xOffset: 21 / 2 - 0.8
+							});
+
+							tooltip.setAttribute('visible', 'true');
+
+							point.setAttribute('material', 'transparent:true; opacity:1');
+						});
+
+						element.addEventListener('mouseleave', function(e) {
+							var point = e.target;
+							var tooltip = document.querySelector('#camera-entity a-plane');
+							var extendedTooltip = document.querySelector('#extended-tooltip');
+
+							tooltip.setAttribute('visible', 'false');
+							extendedTooltip.setAttribute('visible', 'false');
+
+							point.setAttribute('material', 'transparent:true; opacity:0.7');
+						});
+
+						element.addEventListener('click', function(e) {
+							var point = e.target;
+							var extendedTooltip = document.querySelector('#extended-tooltip');
+
+							extendedTooltip.setAttribute('text', {
+								color: '#fff',
+								value: 'employees: ' + point.getAttribute('data-employees') + '\n' +
+									   'income: ' + kendo.toString(Number(point.getAttribute('data-income')), 'c0') + '\n' +
+									   'income change: ' + point.getAttribute('data-incomeChange') + '%' + '\n' +
+									   'profit: ' + kendo.toString(Number(point.getAttribute('data-profit')), 'c0'),
+								width: 14 * 1.5,
+								xOffset: 12/2 - 0.8,
+								lineHeight: 60
+							});
+
+							extendedTooltip.setAttribute('visible', 'true');
+						});
+
+						container.appendChild(element);
+					}
+				});
+			}
+
+			generateGrid();
+			createNavigator();
+			createNumbering();
+			populateChart();
+		}
+	</script>
+
+<script>
 var ddl = document.querySelector("kendo-webvr-dropdownlist");
 
-ddl.components.dropdownlist.loadData([
-    "Polychrome",
-    "Monochrome",
-    "Bichrome",
-    "Bihrome Shades"
-]);
 ddl.addEventListener("change", function (ev) {
     console.log(ev.detail.newValue);
 })
