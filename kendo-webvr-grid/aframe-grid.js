@@ -171,6 +171,7 @@ AFRAME.registerComponent('grid', {
                         let position = col.getAttribute("position");
                         position.z = 1;
                         col.setAttribute("position", position);
+                        col.setAttribute('material', { transperant: true, opacity: 1 });
                     }
                 });
                 cell.addEventListener("mouseleave", function () {
@@ -181,6 +182,7 @@ AFRAME.registerComponent('grid', {
                         let position = col.getAttribute("position");
                         position.z = 0;
                         col.setAttribute("position", position);
+                        col.setAttribute('material', { transperant: true, opacity: 0.9 });
                     }
                 });
 
@@ -283,6 +285,8 @@ AFRAME.registerComponent('grid', {
         });
         aCell.setAttribute("material", {
             color: cell.color,
+            transparent: true,
+            opacity: 0.9
         });
         aCell.setAttribute("text", {
             value: cell.text,
@@ -306,7 +310,9 @@ AFRAME.registerComponent('grid', {
             height: cell.height
         });
         templateCell.setAttribute("material", {
-            color: cell.color
+            color: cell.color,
+            transparent: true,
+            opacity: 0.9
         });
         
         templateCell.setAttribute("position", cell.position);
