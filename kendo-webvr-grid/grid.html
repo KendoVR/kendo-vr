@@ -16,7 +16,9 @@
                 <img id="asc" src="./images/up.png">
             </a-assets>
             <a-entity position="100 -50 100">
-                <a-camera></a-camera>
+                <a-camera>
+                    <a-cursor></a-cursor>
+                </a-camera>
             </a-entity>            
             <kendo-webvr-grid id="grid" pageSize="5" position="0 -0.6 -0.1" data="../companies-data.json" height="275" sortable="true">    
             </kendo-webvr-grid>
