@@ -10,13 +10,21 @@
 <body>
 	<a-scene background="color: #ECECEC">
 		<a-entity position="0 0 250" rotation="0 0 0" id="camera-wrapper">
-			<a-camera fov="60" far="1000" id="camera-entity">
+			<a-entity camera="fov: 60; far: 1000" id="camera-entity" look-controls>
 				<a-entity cursor="fuse: false;"
 					position="0 0 -40"
 					geometry="primitive: ring; radiusInner: 0.3; radiusOuter: 0.5"
 					material="color: #888; shader: flat">
 				</a-entity>
-			</a-camera>
+				<a-plane width="12" 
+					   height="3" 
+					   position="7.5 0 -40" 
+					   color="#3f5971" 
+					   material="transparent:true; opacity:0.8">
+					<a-text value="test"></a-text>
+				</a-plane>
+			</a-entity>
+			
 		</a-entity>
 
 		<a-entity id="container" rotation="30 -45 -20">
@@ -48,62 +56,50 @@
 		window.onload = function() {
 			var segments = document.querySelectorAll('.navigation-segment');
 			
-			for(var i = 0; i < segments.length; i ++) {
-				segments[i].addEventListener('mouseenter', function(e) {
-					var segment = e.target;
-					segment.setAttribute('color', '#199cad');
-				});
+			var createNavigator = function() {
+				for(var i = 0; i < segments.length; i ++) {
+					segments[i].addEventListener('mouseenter', function(e) {
+						var segment = e.target;
+						segment.setAttribute('color', '#199cad');
+					});
 
-				segments[i].addEventListener('mouseleave', function(e) {
-					var segment = e.target;
-					segment.setAttribute('color', '#fff');
-				});
+					segments[i].addEventListener('mouseleave', function(e) {
+						var segment = e.target;
+						segment.setAttribute('color', '#fff');
+					});
 
-				segments[i].addEventListener('click', function(e) {
-					var segment = e.target;
-					var navigationPosition = segment.getAttribute('data-navigation');
-					var isFront = segment.getAttribute('data-front');
-					var chart = document.getElementById('container');
-					var navigationAnimation = document.createElement('a-animation');
-					var scaleAnimation = document.createElement('a-animation');
-					
-					for(var i = 0; i < segments.length; i ++) {
-						segments[i].setAttribute('visible', 'true');
-					}
+					segments[i].addEventListener('click', function(e) {
+						var segment = e.target;
+						var navigationPosition = segment.getAttribute('data-navigation');
+						var isFront = segment.getAttribute('data-front');
+						var chart = document.getElementById('container');
+						var navigationAnimation = document.createElement('a-animation');
+						var scaleAnimation = document.createElement('a-animation');
+						
+						for(var i = 0; i < segments.length; i ++) {
+							segments[i].setAttribute('visible', 'true');
+						}
 
-					segment.setAttribute('visible', 'false');
+						segment.setAttribute('visible', 'false');
 
-					navigationAnimation.setAttribute('attribute', 'rotation');
-					navigationAnimation.setAttribute('to', navigationPosition);
-					navigationAnimation.setAttribute('dur', 1000);
+						navigationAnimation.setAttribute('attribute', 'rotation');
+						navigationAnimation.setAttribute('to', navigationPosition);
+						navigationAnimation.setAttribute('dur', 1000);
 
-					scaleAnimation.setAttribute('attribute', 'scale');
-					scaleAnimation.setAttribute('dur', 1000);
+						scaleAnimation.setAttribute('attribute', 'scale');
+						scaleAnimation.setAttribute('dur', 1000);
 
-					if (isFront) {
-						scaleAnimation.setAttribute('to', '1 1 1');
-					} else {
-						scaleAnimation.setAttribute('to', '2 2 2');
-					}
+						if (isFront) {
+							scaleAnimation.setAttribute('to', '1 1 1');
+						} else {
+							scaleAnimation.setAttribute('to', '1.8 1.8 1.8');
+						}
 
-					// var camera = document.getElementById('camera-entity').object3D;
-					// camera.rotation._x = 0;
-					// camera.rotation._y = 0;
-					//var rotation = document.getElementById('camera-wrapper').getAttribute('rotation');
-					// var position = camera.getAttribute('position');
-					//console.log(rotation)
-					// console.log(position)
-					
-					// camera.setAttribute('rotation', { x: 0, y: 0, z: 0});
-
-					// var rotation2 =  document.getElementById('camera-wrapper').getAttribute('rotation');
-					// console.log(rotation2)
-
-					chart.appendChild(navigationAnimation);
-					chart.appendChild(scaleAnimation);
-				});
+						chart.appendChild(navigationAnimation);
+						chart.appendChild(scaleAnimation);
+					});
+				}
 			}
-			
 
 			var generateGrid = function() {
 				var container = document.getElementById('container');
@@ -253,6 +249,12 @@
 						element.setAttribute('radius', 0 );
 						element.setAttribute('material', 'transparent:true; opacity:0.7');
 
+						for (var name in item) {
+							if (item.hasOwnProperty(name)) {
+								element.setAttribute('data-' + name, item[name]);
+							}
+						}
+
 						var animation = document.createElement('a-animation');
 						animation.setAttribute('attribute', 'radius');
 						animation.setAttribute('to', item.employees / 70);
@@ -260,12 +262,38 @@
 
 						element.appendChild(animation);
 						element.addEventListener('mouseenter', function(e) {
+							console.log('mouseenter')
+
 							var point = e.target;
+							var tooltip = document.querySelector('#camera-entity a-plane');
+							//var textElement = tooltip.firstChild();
+
+							//textElement.setAttribute('value', point.getAttribute('data-company'));
+
+							// var animation = document.createElement('a-animation');
+
+							// animation.setAttribute('attribute', 'transparent:true; opacity:0.0');
+							// animation.setAttribute('to', 'transparent:true; opacity:0.8');
+							// animation.setAttribute('dur', 500);
+							// tooltip.appendChild(animation);
+
+							tooltip.setAttribute('visible', 'true');
+
 							point.setAttribute('material', 'transparent:true; opacity:1');
 						});
 
 						element.addEventListener('mouseleave', function(e) {
+							console.log('mouseleave')
+
 							var point = e.target;
+							var tooltip = document.querySelector('#camera-entity a-plane');
+							// var animation = document.createElement('a-animation');
+							
+							// animation.setAttribute('attribute', 'material');
+							// animation.setAttribute('to', 'transparent:true; opacity:0.0');
+							// animation.setAttribute('dur', 500);
+							tooltip.setAttribute('visible', 'false');
+
 							point.setAttribute('material', 'transparent:true; opacity:0.7');
 						});
 
@@ -279,6 +307,7 @@
 				});
 			}
 			
+			createNavigator();
 			generateGrid();
 			populateChart();
 		}
