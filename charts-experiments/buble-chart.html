@@ -121,36 +121,71 @@
 				}
 			};
 
+			var colors = [ 
+				'#1976d2',
+				'#9ab342', 
+				'#fff443',
+				'#11909f', 
+				'#3949ab',
+				'#d7d931',
+				'#7cb342',
+				'#8e24aa',
+				'#5e35b1',
+				'#8d1269',
+				'#00acc1',
+				'#7d0f3b',
+				'#039be5',
+				'#9d0441',
+				'#7f32c1',
+				'#43a047',
+				'#e53935',
+				'#c2185b',
+				'#fb8c00',
+				'#ffb300',
+				'#f4511e',
+				'#00897b',
+				'#c0ca33',
+				'#fdd835',
+				'#afb42b'
+			];
+
+			var loadSingleColorForData = function(color, element) {
+				element.setAttribute('color', color);
+
+				// defaultc color: #199cad
+
+				return element;
+			}
+
+			var loadMultiColorsForData = function(index, element) {
+				element.setAttribute('color', colors[index]);
+
+				return element;
+			}
+
+			var loadGreenRedShadingForData = function(item, element) {
+				if (item.profit > 0) {
+					var profitInMilions = item.profit / 1000000;
+					var green = Math.floor(128 + profitInMilions * 8);
+					var redAndBlue = Math.floor(128 - profitInMilions * 8);
+
+					element.setAttribute('color', 'rgb(' + redAndBlue + ', ' + green + ', ' + redAndBlue + ')');
+				} else {
+					var profitInMilions = item.profit / -1000000;
+					var red = Math.floor(128 + profitInMilions * 8);
+					var greenAndBlue = Math.floor(128 - profitInMilions * 8);
+
+					element.setAttribute('color', 'rgb(' + red + ', ' + greenAndBlue + ', ' + greenAndBlue + ')');
+				}
+
+				return element;
+			}
+
 			var createNumbering = function() {
 				var labelsContainer = document.getElementById('labels');
 				var numberStopsX = document.createElement('a-entity');
 				var numberStopsY = document.createElement('a-entity');
 				var numberStopsZ = document.createElement('a-entity');
-
-				// var labelX = document.createElement('a-text');
-
-				// labelX.setAttribute('width', '100');
-				// labelX.setAttribute('position', '102, 5, 1');
-				// labelX.setAttribute('color', '#3f5971');
-				// labelX.setAttribute('value', 'total income 2017');
-
-				// numberStopsX.appendChild(labelX);
-
-				// var labelY = numberStopsX.cloneNode(true);
-
-				// labelY.setAttribute('position', '1 5 138');
-				// labelY.setAttribute('rotation', '0 0 90');
-				// labelY.setAttribute('value', 'profit 2017');
-
-				// numberStopsY.appendChild(labelY);
-
-				// var labelZ = numberStopsX.cloneNode(true);
-
-				// labelZ.setAttribute('position', '-5 100 1');
-				// labelZ.setAttribute('rotation', '0 90 0');
-				// labelZ.setAttribute('value', 'income change 2017 vs 2016');
-
-				// numberStopsZ.appendChild(labelZ);
 
 				numberStopsX.setAttribute('id', 'number-stops-x');
 				numberStopsY.setAttribute('id', 'number-stops-y');
@@ -253,7 +288,7 @@
 				}
 			}
 
-			var generateGrid = function() {
+			var generateChrtGrid = function() {
 				var container = document.getElementById('container');
 
 				for(var i = -70; i <= 70; i ++) {
@@ -389,19 +424,7 @@
 						var zPoint = item.incomeChange;
 						var position = xPoint.toString() + ' ' + yPoint + ' ' + zPoint.toString();
 
-						if (item.profit > 0) {
-							var profitInMilions = item.profit / 1000000;
-							var green = Math.floor(128 + profitInMilions * 8);
-							var redAndBlue = Math.floor(128 - profitInMilions * 8);
-
-							element.setAttribute('color', 'rgb(' + redAndBlue + ', ' + green + ', ' + redAndBlue + ')');
-						} else {
-							var profitInMilions = item.profit / -1000000;
-							var red = Math.floor(128 + profitInMilions * 8);
-							var greenAndBlue = Math.floor(128 - profitInMilions * 8);
-
-							element.setAttribute('color', 'rgb(' + red + ', ' + greenAndBlue + ', ' + greenAndBlue + ')');
-						}
+						element = loadMultiColorsForData(i, element)
 
 						element.setAttribute('position', position );
 						element.setAttribute('radius', 0 );
@@ -469,7 +492,7 @@
 				});
 			}
 
-			generateGrid();
+			generateChrtGrid();
 			createNavigator();
 			createNumbering();
 			populateChart();
