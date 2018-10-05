@@ -18,9 +18,8 @@
     <a-entity light="type: directional; color: #FFF; intensity: 0.1" position="-0.5 1 1"></a-entity>
     <a-entity id="mouseCursor" cursor="rayOrigin: mouse"></a-entity>
 
-
-<!-- CHART START -->
-    <a-entity position="0 0 250" scale="0.5 0.5 0.5" rotation="0 0 0" id="camera-wrapper">
+	<!-- CAMERA START -->
+    <a-entity position="0 0 250" rotation="0 0 0" id="camera-wrapper">
         <a-entity camera="fov: 60; far: 10000" id="camera-entity" look-controls wasd-controls>
             <a-entity cursor="fuse: false;"
                 position="0 0 -40"
@@ -42,61 +41,61 @@
                 id="extended-tooltip">
             </a-plane>
         </a-entity>
+	</a-entity>
+	
+	<!-- CHART START -->
+	<a-entity id="container" rotation="30 -45 -20" scale="0.5 0.5 0.5">
+		<a-entity id="navigator">
+			<a-sphere class="navigation-segment" color="#199cad" data-front="top" data-navigation="90 0 0" theta-length="18" radius="150" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
+			<a-sphere class="navigation-segment" color="#199cad" data-front="left" data-navigation="0 90 0" theta-length="18" radius="150" rotation="0 0 90" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
+			<a-sphere class="navigation-segment" color="#199cad" data-front="bottom" data-navigation="-90 0 0" theta-length="18" radius="150" rotation="0 0 180" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
+			<a-sphere class="navigation-segment" color="#199cad" data-front="right" data-navigation="0 -90 0" theta-length="18" radius="150" rotation="0 0 -90" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
 
-    </a-entity>
+			<a-sphere class="navigation-segment" color="#199cad" data-front="front" data-navigation="0 0 0" theta-length="18" radius="150" rotation="90 0 0" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
+			<a-sphere class="navigation-segment" color="#199cad" data-front="back" data-navigation="0 180 0" theta-length="18" radius="150" rotation="90 180 0" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
 
-        <a-entity id="container" rotation="30 -45 -20">
-            <a-entity id="navigator">
-                <a-sphere class="navigation-segment" color="#199cad" data-front="top" data-navigation="90 0 0" theta-length="18" radius="150" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
-                <a-sphere class="navigation-segment" color="#199cad" data-front="left" data-navigation="0 90 0" theta-length="18" radius="150" rotation="0 0 90" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
-                <a-sphere class="navigation-segment" color="#199cad" data-front="bottom" data-navigation="-90 0 0" theta-length="18" radius="150" rotation="0 0 180" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
-                <a-sphere class="navigation-segment" color="#199cad" data-front="right" data-navigation="0 -90 0" theta-length="18" radius="150" rotation="0 0 -90" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
+			<a-sphere class="navigation-segment" color="#199cad" data-navigation="30 -45 -20" theta-length="18" radius="150" rotation="0 132 55" visible="false" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
+			<a-sphere class="navigation-segment" color="#199cad" data-navigation="-30 -135 -20" theta-length="18" radius="150" rotation="0 -132 55" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
+			<a-sphere class="navigation-segment" color="#199cad" data-navigation="-30 135 20" theta-length="18" radius="150" rotation="0 -48 55" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
+			<a-sphere class="navigation-segment" color="#199cad" data-navigation="30 45 20" theta-length="18" radius="150" rotation="0 48 55" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
 
-                <a-sphere class="navigation-segment" color="#199cad" data-front="front" data-navigation="0 0 0" theta-length="18" radius="150" rotation="90 0 0" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
-                <a-sphere class="navigation-segment" color="#199cad" data-front="back" data-navigation="0 180 0" theta-length="18" radius="150" rotation="90 180 0" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
+			<a-sphere class="navigation-segment" color="#199cad" data-navigation="-30 45 -20" theta-length="18" radius="150" rotation="-19 35 126" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
+			<a-sphere class="navigation-segment" color="#199cad" data-navigation="-30 -45 20" theta-length="18" radius="150" rotation="-19 118 126" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
+			<a-sphere class="navigation-segment" color="#199cad" data-navigation="30 135 -20" theta-length="18" radius="150" rotation="-19 -62 126" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
+			<a-sphere class="navigation-segment" color="#199cad" data-navigation="30 -135 20" theta-length="18" radius="150" rotation="-19 -145 126" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
+		</a-entity>
+		<a-entity id="labels">
+			<a-text width="100"
+					position="102 5 1"
+					color="#3f5971"
+					value="total income 2017"
+					material="side:double">
+			</a-text>
 
-                <a-sphere class="navigation-segment" color="#199cad" data-navigation="30 -45 -20" theta-length="18" radius="150" rotation="0 132 55" visible="false" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
-                <a-sphere class="navigation-segment" color="#199cad" data-navigation="-30 -135 -20" theta-length="18" radius="150" rotation="0 -132 55" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
-                <a-sphere class="navigation-segment" color="#199cad" data-navigation="-30 135 20" theta-length="18" radius="150" rotation="0 -48 55" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
-                <a-sphere class="navigation-segment" color="#199cad" data-navigation="30 45 20" theta-length="18" radius="150" rotation="0 48 55" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
+			<a-text width="100"
+					position="1 5 138"
+					color="#3f5971"
+					value="income change 2017 vs 2016"
+					rotation="0 90 0"
+					material="side:double">
+			</a-text>
 
-                <a-sphere class="navigation-segment" color="#199cad" data-navigation="-30 45 -20" theta-length="18" radius="150" rotation="-19 35 126" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
-                <a-sphere class="navigation-segment" color="#199cad" data-navigation="-30 -45 20" theta-length="18" radius="150" rotation="-19 118 126" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
-                <a-sphere class="navigation-segment" color="#199cad" data-navigation="30 135 -20" theta-length="18" radius="150" rotation="-19 -62 126" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
-                <a-sphere class="navigation-segment" color="#199cad" data-navigation="30 -135 20" theta-length="18" radius="150" rotation="-19 -145 126" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
-            </a-entity>
-            <a-entity id="labels">
-                <a-text width="100"
-                        position="102 5 1"
-                        color="#3f5971"
-                        value="total income 2017"
-                        material="side:double">
-                </a-text>
+			<a-text width="100"
+					position="-5 100 1"
+					color="#3f5971"
+					value="profit 2017"
+					rotation="0 0 90"
+					material="side:double">
+			</a-text>
+		</a-entity>
+	</a-entity>
+	<!-- CHART END -->
 
-                <a-text width="100"
-                        position="1 5 138"
-                        color="#3f5971"
-                        value="income change 2017 vs 2016"
-                        rotation="0 90 0"
-                        material="side:double">
-                </a-text>
+	<a-cylinder opacity="0.5" transparent="true" height="500" radius="500" repeat="8" position="0 100 0" rotation="0 0 0" open-ended="true" side="double" src="./assets/city_landscape.svg"></a-cylinder>
 
-                <a-text width="100"
-                        position="-5 100 1"
-                        color="#3f5971"
-                        value="profit 2017"
-                        rotation="0 0 90"
-                        material="side:double">
-                </a-text>
-            </a-entity>
-        </a-entity>
-<!-- CHART END -->
+	<a-plane opacity="0.1" transparent="true" color="gray" height="10000" width="10000" rotation="-90 0 0" position="0 -175 0" side="double" ></a-plane>
 
-<a-cylinder opacity="0.5" transparent="true" height="500" radius="500" repeat="8" position="0 100 0" rotation="0 0 0" open-ended="true" side="double" src="./assets/city_landscape.svg"></a-cylinder>
-
-<a-plane opacity="0.1" transparent="true" color="gray" height="10000" width="10000" rotation="-90 0 0" position="0 -175 0" side="double" ></a-plane>
-
-<a-sky color="#eff2f5"></a-sky>
+	<a-sky color="#eff2f5"></a-sky>
 
 </a-scene>
 
