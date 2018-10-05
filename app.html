@@ -12,7 +12,8 @@
 </head>
 <body>
   <a-scene>
-                
+    <a-entity light="type: ambient; color: #BBB"></a-entity>
+    <a-entity light="type: directional; color: #FFF; intensity: 0.6" position="-0.5 5 1"></a-entity>
     <a-entity id="mouseCursor" cursor="rayOrigin: mouse"></a-entity>
     <!-- <a-assets>
         <img id="icon-down" src="/assets/arrow-down.svg" />
@@ -38,10 +39,12 @@
 <kendo-webvr-dropdownlist value="Polychrome" position="0 1 -5" width="4" opacity="0.8" row-height="0.64"></kendo-webvr-dropdownlist>
 
 <kendo-webvr-switch width="1" height="0.5" position="0 0 -5"></kendo-webvr-switch>
-<a-cylinder height="5000" radius="3500" repeat="2" position="0 2000 0" open-ended="true" side="double" src="/assets/pexels-photo-533930.jpeg"></a-cylinder>
-<a-plane color="gray" height="10000" width="10000" rotation="-90 0 0" position="0 -250 0" side="double" ></a-plane>
+<a-cylinder opacity="0.4" transparent="true" height="150" radius="500" repeat="11" position="0 50 0" open-ended="true" side="double" src="/assets/city_landscape.png"></a-cylinder>
+<!-- <a-cylinder opacity="0.4" transparent="true" height="10" radius="10" repeat="11" position="0 0 -5" open-ended="true" side="double" src="/assets/city_landscape.png"></a-cylinder> -->
+<a-plane color="#e8e8ed" height="10000" width="10000" rotation="-90 0 0" position="0 -250 0" side="double" ></a-plane>
+<!-- <a-plane color="#dce3e9" height="10000" width="10000" rotation="-90 0 0" position="0 1400 0" side="double" ></a-plane> -->
 
-<a-sky color="#ECECEC"></a-sky>
+<a-sky color="#dce3e9"></a-sky>
 
 </a-scene>
 
