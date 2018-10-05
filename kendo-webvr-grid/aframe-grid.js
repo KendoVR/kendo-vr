@@ -4,7 +4,7 @@ AFRAME.registerComponent('grid', {
         sortable: {type: 'boolean', default: true},
         height: {type: 'number', default: 400},
         pageSize: {type: 'number', default: 3},
-        visibleToColumnIndex: {type: 'number', default: 2}
+        visibleToColumnIndex: {type: 'number' }
     }, 
     init: function () {
         this.lineColor = "#ececec"
@@ -34,6 +34,11 @@ AFRAME.registerComponent('grid', {
         this.totalWidth = sumSettingTo(this.columns, "width", opts.visibleToColumnIndex ? opts.visibleToColumnIndex : this.columns.length);
         this.totalHeight = opts.height + this.headerHeight; 
         this.pageCount = Math.ceil(this.dataSource.length / opts.pageSize);
+
+        if (!opts.visibleToColumnIndex) {
+            opts.visibleToColumnIndex = this.columns.length;
+            this.el.setAttribute("visibleTo", opts.visibleToColumnIndex);
+        }
 
         this.buildHeaderColumns();
 
