@@ -8,247 +8,280 @@
 	<script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script>
 </head>
 <body>
-<a-scene background="color: #ECECEC">
-  <a-entity position="0 0 250" rotation="0 0 0">
-	<a-camera fov="60" far="1000" id="camera-entity">
-		<a-entity cursor="fuse: false;"
-            position="0 0 -1"
-            geometry="primitive: ring; radiusInner: 0.005; radiusOuter: 0.01"
-            material="color: #888; shader: flat">
-  		</a-entity>
-	</a-camera>
-  </a-entity>
+	<a-scene background="color: #ECECEC">
+		<a-entity position="0 0 250" rotation="0 0 0" id="camera-wrapper">
+			<a-camera fov="60" far="1000" id="camera-entity">
+				<a-entity cursor="fuse: false;"
+					position="0 0 -40"
+					geometry="primitive: ring; radiusInner: 0.3; radiusOuter: 0.5"
+					material="color: #888; shader: flat">
+				</a-entity>
+			</a-camera>
+		</a-entity>
 
-  <a-entity id="container" rotation="30 -45 -20">
-	
-  </a-entity>	
-  <a-entity id="navigator" rotation="30 -45 -20">
-		<a-sphere class="navigation-segment" data-navigation="90 0 0" theta-length="14" radius="150" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
-		<a-sphere class="navigation-segment" data-navigation="0 90 0" theta-length="14" radius="150" rotation="0 0 90" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
-		<a-sphere class="navigation-segment" data-navigation="-90 0 0" theta-length="14" radius="150" rotation="0 0 180" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
-		<a-sphere class="navigation-segment" data-navigation="0 -90 0" theta-length="14" radius="150" rotation="0 0 -90" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
+		<a-entity id="container" rotation="30 -45 -20">
+			<a-entity id="navigator">
+				<a-sphere class="navigation-segment" data-front="true" data-navigation="90 0 0" theta-length="18" radius="150" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
+				<a-sphere class="navigation-segment" data-front="true" data-navigation="0 90 0" theta-length="18" radius="150" rotation="0 0 90" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
+				<a-sphere class="navigation-segment" data-front="true" data-navigation="-90 0 0" theta-length="18" radius="150" rotation="0 0 180" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
+				<a-sphere class="navigation-segment" data-front="true" data-navigation="0 -90 0" theta-length="18" radius="150" rotation="0 0 -90" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
 
-		<a-sphere class="navigation-segment" data-navigation="0 0 0" theta-length="14" radius="150" rotation="90 0 0" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
-		<a-sphere class="navigation-segment" data-navigation="0 180 0" theta-length="14" radius="150" rotation="90 180 0" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
+				<a-sphere class="navigation-segment" data-front="true" data-navigation="0 0 0" theta-length="18" radius="150" rotation="90 0 0" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
+				<a-sphere class="navigation-segment" data-front="true" data-navigation="0 180 0" theta-length="18" radius="150" rotation="90 180 0" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
 
-		<a-sphere class="navigation-segment" data-navigation="30 -45 -20" theta-length="14" radius="150" rotation="0 132 55" visible="false" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
-		<a-sphere class="navigation-segment" data-navigation="-30 -135 -20" theta-length="14" radius="150" rotation="0 -132 55" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
-		<a-sphere class="navigation-segment" data-navigation="-30 135 20" theta-length="14" radius="150" rotation="0 -48 55" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
-		<a-sphere class="navigation-segment" data-navigation="30 45 20" theta-length="14" radius="150" rotation="0 48 55" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
+				<a-sphere class="navigation-segment" data-navigation="30 -45 -20" theta-length="18" radius="150" rotation="0 132 55" visible="false" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
+				<a-sphere class="navigation-segment" data-navigation="-30 -135 -20" theta-length="18" radius="150" rotation="0 -132 55" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
+				<a-sphere class="navigation-segment" data-navigation="-30 135 20" theta-length="18" radius="150" rotation="0 -48 55" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
+				<a-sphere class="navigation-segment" data-navigation="30 45 20" theta-length="18" radius="150" rotation="0 48 55" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
 
-		<a-sphere class="navigation-segment" data-navigation="-30 45 -20" theta-length="14" radius="150" rotation="-19 35 126" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
-		<a-sphere class="navigation-segment" data-navigation="-30 -45 20" theta-length="14" radius="150" rotation="-19 118 126" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
-		<a-sphere class="navigation-segment" data-navigation="30 135 -20" theta-length="14" radius="150" rotation="-19 -62 126" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
-		<a-sphere class="navigation-segment" data-navigation="30 -135 20" theta-length="14" radius="150" rotation="-19 -145 126" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
-
-	</a-entity>	
-
-  	<a-sky color="#ECECEC"></a-sky>
-</a-scene>
-<script>
-
-	window.onload = function() {
-		var segments = document.querySelectorAll('.navigation-segment');
+				<a-sphere class="navigation-segment" data-navigation="-30 45 -20" theta-length="18" radius="150" rotation="-19 35 126" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
+				<a-sphere class="navigation-segment" data-navigation="-30 -45 20" theta-length="18" radius="150" rotation="-19 118 126" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
+				<a-sphere class="navigation-segment" data-navigation="30 135 -20" theta-length="18" radius="150" rotation="-19 -62 126" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
+				<a-sphere class="navigation-segment" data-navigation="30 -135 20" theta-length="18" radius="150" rotation="-19 -145 126" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
+			</a-entity>
+		</a-entity>	
 		
-		for(var i = 0; i < segments.length; i ++) {
-			segments[i].addEventListener('mouseenter', function(e) {
-				var segment = e.target;
-				segment.setAttribute('color', '#daa');
-			});
+		<a-sky color="#ECECEC"></a-sky>
+	</a-scene>
+	<script>
 
-			segments[i].addEventListener('mouseleave', function(e) {
-				var segment = e.target;
-				segment.setAttribute('color', '#fff');
-			});
+		window.onload = function() {
+			var segments = document.querySelectorAll('.navigation-segment');
+			
+			for(var i = 0; i < segments.length; i ++) {
+				segments[i].addEventListener('mouseenter', function(e) {
+					var segment = e.target;
+					segment.setAttribute('color', '#199cad');
+				});
 
-			segments[i].addEventListener('click', function(e) {
-				var segment = e.target;
-				var navigationPosition = segment.getAttribute('data-navigation');
-				var navigator = document.getElementById('navigator');
-				var chart = document.getElementById('container');
+				segments[i].addEventListener('mouseleave', function(e) {
+					var segment = e.target;
+					segment.setAttribute('color', '#fff');
+				});
 
-				for(var i = 0; i < segments.length; i ++) {
-					segments[i].setAttribute('visible', 'true');
-				}
-
-				segment.setAttribute('visible', 'false');
-				navigator.setAttribute('rotation', navigationPosition);
-				chart.setAttribute('rotation', navigationPosition);
-			});
-		}
-		
-
-		var generateGrid = function() {
-			var container = document.getElementById('container');
-
-			for(var i = -140; i <= 140; i ++) {
-				var xy1 = document.createElement('a-entity');
-				var xz1 = document.createElement('a-entity');
-				var yz1 = document.createElement('a-entity');
-
-				var xy2 = document.createElement('a-entity');
-				var xz2 = document.createElement('a-entity');
-				var yz2 = document.createElement('a-entity');
-				
-				if (i === 0) {
-					var zMajor = document.createElement('a-cylinder');
-					zMajor.setAttribute('radius', '0.2');
-					zMajor.setAttribute('height', '280');
-					zMajor.setAttribute('color', '#000');
-					zMajor.setAttribute('rotation', '90 0 0');
-					container.appendChild(zMajor);
-
-					var yMajor = zMajor.cloneNode(true);
-					yMajor.setAttribute('rotation', '0 0 0');
-					container.appendChild(yMajor);
-
-					var xMajor = zMajor.cloneNode(true);
-					xMajor.setAttribute('rotation', '0 0 90');
-					container.appendChild(xMajor);
-				} else if(i % 20 === 0) {
-					xy1.setAttribute('line', {
-						start: (i).toString() + ", -140, 0",
-						end: (i).toString() + ", 140, 0",
-						color: "#bbb"
-					});
-
-					xz1.setAttribute('line', {
-						start: "-140, 0, " + i,
-						end: "140, 0, " + i,
-						color: "#bbb"
-					});
+				segments[i].addEventListener('click', function(e) {
+					var segment = e.target;
+					var navigationPosition = segment.getAttribute('data-navigation');
+					var isFront = segment.getAttribute('data-front');
+					var chart = document.getElementById('container');
+					var navigationAnimation = document.createElement('a-animation');
+					var scaleAnimation = document.createElement('a-animation');
 					
-					yz1.setAttribute('line', {
-						start: "0, " + i + ", -140",
-						end: "0, " + i + ", 140",
-						color: "#bbb"
-					});
-
-					xy2.setAttribute('line', {
-						start: "-140, " + (i).toString() + ", 0",
-						end: "140, " + (i).toString() + ", 0",
-						color: "#bbb"
-					});
-
-					xz2.setAttribute('line', {
-						start: (i).toString() + ", 0, -140",
-						end: (i).toString() + ", 0, 140",
-						color: "#bbb"
-					});
-					
-					yz2.setAttribute('line', {
-						start: "0, -140, " + i,
-						end: "0, 140, " + i,
-						color: "#bbb"
-					});
-				}else {			
-					xy1.setAttribute('line', {
-						start: (i).toString() + ", -140, 0",
-						end: (i).toString() + ", 140, 0",
-						color: "#ddd"
-					});
-
-					xz1.setAttribute('line', {
-						start: "-140, 0, " + i,
-						end: "140, 0, " + i,
-						color: "#ccc"
-					});
-					
-					yz1.setAttribute('line', {
-						start: "0, " + i + ", -140",
-						end: "0, " + i + ", 140",
-						color: "#ddd"
-					});
-
-					xy2.setAttribute('line', {
-						start: "-140, " + (i).toString() + ", 0",
-						end: "140, " + (i).toString() + ", 0",
-						color: "#ddd"
-					});
-
-					xz2.setAttribute('line', {
-						start: (i).toString() + ", 0, -140",
-						end: (i).toString() + ", 0, 140",
-						color: "#ccc"
-					});
-					
-					yz2.setAttribute('line', {
-						start: "0, -140, " + i,
-						end: "0, 140, " + i,
-						color: "#ddd"
-					});
-				}
-				
-				container.appendChild(xy1);
-				container.appendChild(xz1);
-				container.appendChild(yz1);
-
-				container.appendChild(xy2);
-				container.appendChild(xz2);
-				container.appendChild(yz2);
-			}
-		}
-		
-		var populateChart = function() {
-			var container = document.getElementById('container');
-
-			$.getJSON("../companies-data.json", function(json) {
-				for(var i = 0; i < json.data.length; i ++) {
-					var item = json.data[i];
-					
-					var element = document.createElement('a-sphere');
-					var xPoint = item.income / 1000000;
-					var yPoint = item.profit / 100000;
-					var zPoint = item.incomeChange;
-					var position = xPoint.toString() + ' ' + yPoint + ' ' + zPoint.toString();
-					
-					if (item.profit > 0) {
-						var profitInMilions = item.profit / 1000000;
-						var green = Math.floor(128 + profitInMilions * 8);
-						var redAndBlue = Math.floor(128 - profitInMilions * 8);
-
-						element.setAttribute('color', 'rgb(' + redAndBlue + ', ' + green + ', ' + redAndBlue + ')');
-					} else {
-						var profitInMilions = item.profit / -1000000;
-						var red = Math.floor(128 + profitInMilions * 8);
-						var greenAndBlue = Math.floor(128 - profitInMilions * 8);
-
-						element.setAttribute('color', 'rgb(' + red + ', ' + greenAndBlue + ', ' + greenAndBlue + ')');
+					for(var i = 0; i < segments.length; i ++) {
+						segments[i].setAttribute('visible', 'true');
 					}
 
-					element.setAttribute('position', position );
-					element.setAttribute('radius', 0 );
-					element.setAttribute('material', 'transparent:true; opacity:0.7');
+					segment.setAttribute('visible', 'false');
 
-					var animation = document.createElement('a-animation');
-					animation.setAttribute('attribute', 'radius');
-					animation.setAttribute('to', item.employees / 70);
-					animation.setAttribute('dur', 1000);
+					navigationAnimation.setAttribute('attribute', 'rotation');
+					navigationAnimation.setAttribute('to', navigationPosition);
+					navigationAnimation.setAttribute('dur', 1000);
 
-					element.appendChild(animation);
-					element.addEventListener('mouseenter', function(e) {
-						var point = e.target;
-						point.setAttribute('material', 'transparent:true; opacity:1');
-					});
+					scaleAnimation.setAttribute('attribute', 'scale');
+					scaleAnimation.setAttribute('dur', 1000);
 
-					element.addEventListener('mouseleave', function(e) {
-						var point = e.target;
-						point.setAttribute('material', 'transparent:true; opacity:0.7');
-					});
+					if (isFront) {
+						scaleAnimation.setAttribute('to', '1 1 1');
+					} else {
+						scaleAnimation.setAttribute('to', '2 2 2');
+					}
 
-					element.addEventListener('click', function(e) {
-						var point = e.target;
-						console.log(point)
-					});
+					// var camera = document.getElementById('camera-entity').object3D;
+					// camera.rotation._x = 0;
+					// camera.rotation._y = 0;
+					//var rotation = document.getElementById('camera-wrapper').getAttribute('rotation');
+					// var position = camera.getAttribute('position');
+					//console.log(rotation)
+					// console.log(position)
+					
+					// camera.setAttribute('rotation', { x: 0, y: 0, z: 0});
 
-					container.appendChild(element);
+					// var rotation2 =  document.getElementById('camera-wrapper').getAttribute('rotation');
+					// console.log(rotation2)
+
+					chart.appendChild(navigationAnimation);
+					chart.appendChild(scaleAnimation);
+				});
+			}
+			
+
+			var generateGrid = function() {
+				var container = document.getElementById('container');
+
+				for(var i = -70; i <= 70; i ++) {
+					var xy1 = document.createElement('a-entity');
+					var xz1 = document.createElement('a-entity');
+					var yz1 = document.createElement('a-entity');
+
+					var xy2 = document.createElement('a-entity');
+					var xz2 = document.createElement('a-entity');
+					var yz2 = document.createElement('a-entity');
+
+					var multiplicator = 2;
+					var baseGreatestValue = 70;
+					var greatestValue = baseGreatestValue*multiplicator;
+					var multiplayedIndex = i*multiplicator;
+					
+					if (i === 0) {
+						var zMajor = document.createElement('a-cylinder');
+
+						zMajor.setAttribute('radius', '0.2');
+						zMajor.setAttribute('height', (greatestValue*multiplicator).toString());
+						zMajor.setAttribute('color', '#000');
+						zMajor.setAttribute('rotation', '90 0 0');
+						container.appendChild(zMajor);
+
+						var yMajor = zMajor.cloneNode(true);
+						yMajor.setAttribute('rotation', '0 0 0');
+						container.appendChild(yMajor);
+
+						var xMajor = zMajor.cloneNode(true);
+						xMajor.setAttribute('rotation', '0 0 90');
+						container.appendChild(xMajor);
+					} else if(i % 10 === 0) {
+						xy1.setAttribute('line', {
+							start: multiplayedIndex.toString() + ", " + -1*greatestValue + ", 0",
+							end: multiplayedIndex.toString() + ", " + greatestValue + ", 0",
+							color: "#bbb"
+						});
+
+						xz1.setAttribute('line', {
+							start: -1*greatestValue.toString() + ", 0, " + multiplayedIndex,
+							end: greatestValue.toString() + ", 0, " + multiplayedIndex,
+							color: "#bbb"
+						});
+						
+						yz1.setAttribute('line', {
+							start: "0, " + multiplayedIndex + ", -140",
+							end: "0, " + multiplayedIndex + ", " + greatestValue,
+							color: "#bbb"
+						});
+
+						xy2.setAttribute('line', {
+							start: -1*greatestValue.toString() + ", " + multiplayedIndex.toString() + ", 0",
+							end: greatestValue.toString() + ", " + multiplayedIndex.toString() + ", 0",
+							color: "#bbb"
+						});
+
+						xz2.setAttribute('line', {
+							start: multiplayedIndex.toString() + ", 0, " + -1*greatestValue.toString(),
+							end: multiplayedIndex.toString() + ", 0, " + greatestValue.toString(),
+							color: "#bbb"
+						});
+						
+						yz2.setAttribute('line', {
+							start: "0, " + -1*greatestValue +", " + multiplayedIndex,
+							end: "0, " + greatestValue +", " + multiplayedIndex,
+							color: "#bbb"
+						});
+					}else {			
+						xy1.setAttribute('line', {
+							start: multiplayedIndex.toString() + ", " + -1*greatestValue + ", 0",
+							end: multiplayedIndex.toString() + ", " + greatestValue + ", 0",
+							color: "#ddd"
+						});
+
+						xz1.setAttribute('line', {
+							start: -1*greatestValue.toString() + ", 0, " + multiplayedIndex,
+							end: greatestValue.toString() + ", 0, " + multiplayedIndex,
+							color: "#ccc"
+						});
+						
+						yz1.setAttribute('line', {
+							start: "0, " + multiplayedIndex + ", " + -1*greatestValue,
+							end: "0, " + multiplayedIndex + ", " + greatestValue,
+							color: "#ddd"
+						});
+
+						xy2.setAttribute('line', {
+							start: -1*greatestValue.toString() + ", " + multiplayedIndex.toString() + ", 0",
+							end: greatestValue.toString() + ", " + multiplayedIndex.toString() + ", 0",
+							color: "#ddd"
+						});
+
+						xz2.setAttribute('line', {
+							start: multiplayedIndex.toString() + ", 0, " + -1*greatestValue,
+							end: multiplayedIndex.toString() + ", 0, " + greatestValue,
+							color: "#ccc"
+						});
+						
+						yz2.setAttribute('line', {
+							start: "0, " + -1*greatestValue + ", " + multiplayedIndex,
+							end: "0, " + greatestValue + ", " + multiplayedIndex,
+							color: "#ddd"
+						});
+					}
+					
+					container.appendChild(xy1);
+					container.appendChild(xz1);
+					container.appendChild(yz1);
+
+					container.appendChild(xy2);
+					container.appendChild(xz2);
+					container.appendChild(yz2);
 				}
-			});
+			}
+			
+			var populateChart = function() {
+				var container = document.getElementById('container');
+
+				$.getJSON("../companies-data.json", function(json) {
+					for(var i = 0; i < json.data.length; i ++) {
+						var item = json.data[i];
+						
+						var element = document.createElement('a-sphere');
+						var xPoint = item.income / 1000000;
+						var yPoint = item.profit / 100000;
+						var zPoint = item.incomeChange;
+						var position = xPoint.toString() + ' ' + yPoint + ' ' + zPoint.toString();
+						
+						if (item.profit > 0) {
+							var profitInMilions = item.profit / 1000000;
+							var green = Math.floor(128 + profitInMilions * 8);
+							var redAndBlue = Math.floor(128 - profitInMilions * 8);
+
+							element.setAttribute('color', 'rgb(' + redAndBlue + ', ' + green + ', ' + redAndBlue + ')');
+						} else {
+							var profitInMilions = item.profit / -1000000;
+							var red = Math.floor(128 + profitInMilions * 8);
+							var greenAndBlue = Math.floor(128 - profitInMilions * 8);
+
+							element.setAttribute('color', 'rgb(' + red + ', ' + greenAndBlue + ', ' + greenAndBlue + ')');
+						}
+
+						element.setAttribute('position', position );
+						element.setAttribute('radius', 0 );
+						element.setAttribute('material', 'transparent:true; opacity:0.7');
+
+						var animation = document.createElement('a-animation');
+						animation.setAttribute('attribute', 'radius');
+						animation.setAttribute('to', item.employees / 70);
+						animation.setAttribute('dur', 1000);
+
+						element.appendChild(animation);
+						element.addEventListener('mouseenter', function(e) {
+							var point = e.target;
+							point.setAttribute('material', 'transparent:true; opacity:1');
+						});
+
+						element.addEventListener('mouseleave', function(e) {
+							var point = e.target;
+							point.setAttribute('material', 'transparent:true; opacity:0.7');
+						});
+
+						element.addEventListener('click', function(e) {
+							var point = e.target;
+							console.log(point)
+						});
+
+						container.appendChild(element);
+					}
+				});
+			}
+			
+			generateGrid();
+			populateChart();
 		}
-		
-		generateGrid();
-		populateChart();
-	}
-</script>
+	</script>
 </body>
 </html>
