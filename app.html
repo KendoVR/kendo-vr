@@ -18,87 +18,30 @@
     <a-entity light="type: directional; color: #FFF; intensity: 0.1" position="-0.5 1 1"></a-entity>
     <a-entity id="mouseCursor" cursor="rayOrigin: mouse"></a-entity>
 
-	<!-- CAMERA START -->
-    <a-entity position="0 0 250" rotation="0 0 0" id="camera-wrapper">
-<!-- MultiView START -->
-	<a-entity id="k-view-wrapper" position="-200 500 -600" scale="100 100 100">
+	<!-- MultiView START -->
+	<a-entity id="k-view-wrapper" position="-100 300 -300" scale="50 50 50">
+		<kendo-webvr-dropdownlist id="chart-shade-choser" value="Polychrome View" position="-3 0 0" width="4" opacity="0.8" row-height="0.64"></kendo-webvr-dropdownlist>
+		
 		<a-plane class="k-view-button" width="1" height="1" position="0 0 0" src="./assets/view-chart-normal.svg" data-altsvg="./assets/view-chart-selected.svg" data-selected="false" data-hovered="false" data-val="chart-view"></a-plane>
 		<a-plane class="k-view-button" width="1" height="1" position="1.5 0 0" src="./assets/view-chart-grid-selected.svg" data-altsvg="./assets/view-chart-grid-normal.svg" data-selected="true" data-hovered="false" data-val="chart-grid-view"></a-plane>
 		<a-plane class="k-view-button" width="1" height="1" position="3 0 0" src="./assets/view-grid-normal.svg" data-altsvg="./assets/view-grid-selected.svg" data-selected="false" data-hovered="false" data-val="grid-view"></a-plane>
 	</a-entity>
-<!-- MultiView END -->
+	<!-- MultiView END -->
 
-<!-- CHART START -->
-    <a-entity position="0 0 250" scale="0.5 0.5 0.5" rotation="0 0 0" id="camera-wrapper">
+	<!-- CAMERA START -->
+    <a-entity position="0 0 250" rotation="0 0 0" id="camera-wrapper">
         <a-entity camera="fov: 60; far: 10000" id="camera-entity" look-controls wasd-controls>
             <a-entity cursor="fuse: false;"
                 position="0 0 -40"
                 geometry="primitive: ring; radiusInner: 0.3; radiusOuter: 0.5"
                 material="color: #888; shader: flat">
             </a-entity>
-            <a-plane width="12"
-                height="2.2"
-                position="7.5 0 -40"
-                color="#3f5971"
-                material="transparent:true; opacity:0.8">
-            </a-plane>
-            <a-plane width="12"
-                height="6.2"
-                position="7.5 -4.2 -40"
-                color="#3f5971"
-                material="transparent:true; opacity:0.8"
-                visible="false"
-                id="extended-tooltip">
-            </a-plane>
         </a-entity>
 	</a-entity>
+	<!-- CAMERA END -->
 	
 	<!-- CHART START -->
-	<a-entity id="container" rotation="30 -45 -20" scale="0.5 0.5 0.5">
-		<a-entity id="navigator">
-			<a-sphere class="navigation-segment" color="#199cad" data-front="top" data-navigation="90 0 0" theta-length="18" radius="150" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
-			<a-sphere class="navigation-segment" color="#199cad" data-front="left" data-navigation="0 90 0" theta-length="18" radius="150" rotation="0 0 90" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
-			<a-sphere class="navigation-segment" color="#199cad" data-front="bottom" data-navigation="-90 0 0" theta-length="18" radius="150" rotation="0 0 180" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
-			<a-sphere class="navigation-segment" color="#199cad" data-front="right" data-navigation="0 -90 0" theta-length="18" radius="150" rotation="0 0 -90" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
-
-			<a-sphere class="navigation-segment" color="#199cad" data-front="front" data-navigation="0 0 0" theta-length="18" radius="150" rotation="90 0 0" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
-			<a-sphere class="navigation-segment" color="#199cad" data-front="back" data-navigation="0 180 0" theta-length="18" radius="150" rotation="90 180 0" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
-
-			<a-sphere class="navigation-segment" color="#199cad" data-navigation="30 -45 -20" theta-length="18" radius="150" rotation="0 132 55" visible="false" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
-			<a-sphere class="navigation-segment" color="#199cad" data-navigation="-30 -135 -20" theta-length="18" radius="150" rotation="0 -132 55" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
-			<a-sphere class="navigation-segment" color="#199cad" data-navigation="-30 135 20" theta-length="18" radius="150" rotation="0 -48 55" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
-			<a-sphere class="navigation-segment" color="#199cad" data-navigation="30 45 20" theta-length="18" radius="150" rotation="0 48 55" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
-
-			<a-sphere class="navigation-segment" color="#199cad" data-navigation="-30 45 -20" theta-length="18" radius="150" rotation="-19 35 126" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
-			<a-sphere class="navigation-segment" color="#199cad" data-navigation="-30 -45 20" theta-length="18" radius="150" rotation="-19 118 126" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
-			<a-sphere class="navigation-segment" color="#199cad" data-navigation="30 135 -20" theta-length="18" radius="150" rotation="-19 -62 126" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
-			<a-sphere class="navigation-segment" color="#199cad" data-navigation="30 -135 20" theta-length="18" radius="150" rotation="-19 -145 126" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
-		</a-entity>
-		<a-entity id="labels">
-			<a-text width="100"
-					position="102 5 1"
-					color="#3f5971"
-					value="total income 2017"
-					material="side:double">
-			</a-text>
-
-			<a-text width="100"
-					position="1 5 138"
-					color="#3f5971"
-					value="income change 2017 vs 2016"
-					rotation="0 90 0"
-					material="side:double">
-			</a-text>
-
-			<a-text width="100"
-					position="-5 100 1"
-					color="#3f5971"
-					value="profit 2017"
-					rotation="0 0 90"
-					material="side:double">
-			</a-text>
-		</a-entity>
-	</a-entity>
+	<a-entity id="container" rotation="30 -45 -20" scale="0.7 0.7 0.7"></a-entity>
 	<!-- CHART END -->
 
 	<a-cylinder opacity="0.5" transparent="true" height="500" radius="500" repeat="8" position="0 100 0" rotation="0 0 0" open-ended="true" side="double" src="./assets/city_landscape.svg"></a-cylinder>
@@ -109,37 +52,8 @@
 
 </a-scene>
 
-<!-- MultiView Code START -->
+
 <script>
-	window.onload = function(){
-		var viewWrapper = document.querySelector("#k-view-wrapper");
-		viewWrapper.addEventListener("mouseenter", function(ev){
-			if(ev.srcElement.className === "k-view-button" && ev.srcElement.getAttribute("data-selected") === "false" && ev.srcElement.getAttribute("data-hovered") === "false") {
-				switchImage(ev.srcElement);
-				ev.srcElement.setAttribute("data-hovered", "true");
-			}
-		});
-
-		viewWrapper.addEventListener("mouseleave", function(ev){
-			if(ev.srcElement.className === "k-view-button" && ev.srcElement.getAttribute("data-selected") === "false" && ev.srcElement.getAttribute("data-hovered") === "true") {
-				switchImage(ev.srcElement);
-				ev.srcElement.setAttribute("data-hovered", "false");
-			}
-		});
-
-		viewWrapper.addEventListener("click", function(ev){
-			if(ev.srcElement.className === "k-view-button" && ev.srcElement.getAttribute("data-selected") === "false") {
-				var selectedItem = document.querySelector("[data-selected='true']");
-				switchImage(selectedItem);
-				ev.srcElement.setAttribute("data-selected", "true");
-				ev.srcElement.setAttribute("data-hovered", "false");
-				selectedItem.setAttribute("data-selected", "false");
-
-				window.dispatchEvent(new CustomEvent("viewchanged", {detail: {view: ev.srcElement.getAttribute("data-val")}}));
-			}
-		});
-	}
-
 	function switchImage(src) {
 		var altSvg = src.getAttribute("data-altsvg");
 		src.setAttribute("data-altsvg", src.getAttribute("src"));
@@ -150,12 +64,65 @@
 		alert(ev.detail.view);
 	})
 </script>
-<!-- MultiView Code end -->
 
-<script>
-
+	<!-- Chart code -->
+	<script>
 		window.onload = function() {
-			var segments = document.querySelectorAll('.navigation-segment');
+			// MultiView Code START
+
+			var viewWrapper = document.querySelector("#k-view-wrapper");
+			viewWrapper.addEventListener("mouseenter", function(ev){
+				if(ev.srcElement.className === "k-view-button" && ev.srcElement.getAttribute("data-selected") === "false" && ev.srcElement.getAttribute("data-hovered") === "false") {
+					switchImage(ev.srcElement);
+					ev.srcElement.setAttribute("data-hovered", "true");
+				}
+			});
+
+			viewWrapper.addEventListener("mouseleave", function(ev){
+				if(ev.srcElement.className === "k-view-button" && ev.srcElement.getAttribute("data-selected") === "false" && ev.srcElement.getAttribute("data-hovered") === "true") {
+					switchImage(ev.srcElement);
+					ev.srcElement.setAttribute("data-hovered", "false");
+				}
+			});
+
+			viewWrapper.addEventListener("click", function(ev){
+				if(ev.srcElement.className === "k-view-button" && ev.srcElement.getAttribute("data-selected") === "false") {
+					var selectedItem = document.querySelector("[data-selected='true']");
+					switchImage(selectedItem);
+					ev.srcElement.setAttribute("data-selected", "true");
+					ev.srcElement.setAttribute("data-hovered", "false");
+					selectedItem.setAttribute("data-selected", "false");
+
+					window.dispatchEvent(new CustomEvent("viewchanged", {detail: {view: ev.srcElement.getAttribute("data-val")}}));
+				}
+			});
+
+			var ddl = document.getElementById('chart-shade-choser');
+
+			ddl.addEventListener("change", function (ev) {
+				var selectedShade = ev.detail.newValue;
+				var chartItems = document.getElementsByClassName('chart-item');
+
+				if (selectedShade === 'Polychrome View') {
+					for(var i = 0; i < chartItems.length; i++) {
+						loadMultiColorsForData(i, chartItems[i]);
+					}
+
+				} else if (selectedShade === 'Monochrome View') {
+					for(var i = 0; i < chartItems.length; i++) {
+						loadSingleColorForData('#199cad', chartItems[i]);
+					}
+				} else if (selectedShade === 'Bichrome View') {
+					for(var i = 0; i < chartItems.length; i++) {
+						console.log(chartItems[i].getAttribute('data-profit'))
+						loadGreenRedShadingForData(chartItems[i].getAttribute('data-profit'), chartItems[i]);
+					}
+				}
+			});
+
+			// MultiView Code END
+
+			// Chart Code START
 
 			var axisNumberingConfigurator = {
 				front: {
@@ -218,6 +185,76 @@
 				'#afb42b'
 			];
 
+			var navigatorSegmentsConfiguration = [{
+				dataNavigation: "90 0 0",
+				rotation: "0 0 0",
+				dataFront: "top",
+				visible: "true"
+			},{
+				dataNavigation: "0 90 0",
+				rotation: "0 0 90",
+				dataFront: "left",
+				visible: "true"
+			},{
+				dataNavigation: "-90 0 0",
+				rotation: "0 0 180",
+				dataFront: "bottom",
+				visible: "true"
+			},{
+				dataNavigation: "0 -90 0",
+				rotation: "0 0 -90",
+				dataFront: "right",
+				visible: "true"
+			},{
+				dataNavigation: "0 0 0",
+				rotation: "90 0 0",
+				dataFront: "front",
+				visible: "true"
+			},{
+				dataNavigation: "0 180 0",
+				rotation: "90 180 0",
+				dataFront: "back",
+				visible: "true"
+			},{
+				dataNavigation: "30 -45 -20",
+				rotation: "0 132 55",
+				dataFront: "",
+				visible: "false"
+			},{
+				dataNavigation: "-30 -135 -20",
+				rotation: "0 -132 55",
+				dataFront: ""
+			},{
+				dataNavigation: "-30 135 20",
+				rotation: "0 -48 55",
+				dataFront: "",
+				visible: "true"
+			},{
+				dataNavigation: "30 45 20",
+				rotation: "0 48 55",
+				dataFront: "",
+				visible: "true"
+			},{
+				dataNavigation: "-30 45 -20",
+				rotation: "-19 35 126",
+				dataFront: "",
+				visible: "true"
+			},{
+				dataNavigation: "-30 -45 20",
+				rotation: "-19 118 126",
+				dataFront: "",
+				visible: "true"
+			},{
+				dataNavigation: "30 135 -20",
+				rotation: "-19 -62 126",
+				dataFront: ""
+			},{
+				dataNavigation: "30 -135 20",
+				rotation: "-19 -145 126",
+				dataFront: "",
+				visible: "true"
+			}];
+
 			var loadSingleColorForData = function(color, element) {
 				element.setAttribute('color', color);
 
@@ -232,15 +269,15 @@
 				return element;
 			}
 
-			var loadGreenRedShadingForData = function(item, element) {
-				if (item.profit > 0) {
-					var profitInMilions = item.profit / 1000000;
+			var loadGreenRedShadingForData = function(profit, element) {
+				if (profit > 0) {
+					var profitInMilions = profit / 1000000;
 					var green = Math.floor(128 + profitInMilions * 8);
 					var redAndBlue = Math.floor(128 - profitInMilions * 8);
 
 					element.setAttribute('color', 'rgb(' + redAndBlue + ', ' + green + ', ' + redAndBlue + ')');
 				} else {
-					var profitInMilions = item.profit / -1000000;
+					var profitInMilions = profit / -1000000;
 					var red = Math.floor(128 + profitInMilions * 8);
 					var greenAndBlue = Math.floor(128 - profitInMilions * 8);
 
@@ -250,42 +287,89 @@
 				return element;
 			}
 
+			var createTooltipPlane = function(height, position) {
+				var plane = document.createElement('a-plane');
+
+				plane.setAttribute('color', '#3f5971');
+				plane.setAttribute('material', 'transparent:true; opacity:0.8');
+				plane.setAttribute('width', '12');
+				plane.setAttribute('height', height);
+				plane.setAttribute('position', position);
+				
+				return plane;
+			}
+
+			var createTooltipElements = function() {
+				var camera = document.getElementById('camera-entity');
+				var header = createTooltipPlane('2.2', '7.5 0 -40');
+				var body = createTooltipPlane('6.2', '7.5 -4.2 -40');
+
+				body.setAttribute('visible', 'false');
+				body.setAttribute('id', 'extended-tooltip');
+
+				camera.appendChild(header);
+				camera.appendChild(body);
+			}
+
+			var createAxisLabel = function(position, value, rotation) {
+				var axisLabel = document.createElement('a-text');
+
+				axisLabel.setAttribute('width', '150');
+				axisLabel.setAttribute('color', '#3f5971');
+				axisLabel.setAttribute('position', position);
+				axisLabel.setAttribute('value', value);
+				axisLabel.setAttribute('rotation', rotation);
+
+				return axisLabel;
+			}
+
+			var createNumberStops = function(id, rotation) {
+				var numberStops = document.createElement('a-entity');
+
+				numberStops.setAttribute('id', id);
+				numberStops.setAttribute('rotation', rotation);
+
+				return numberStops;
+			}
+
+			var createSingleStop = function(position, value, rotation) {
+				var stop = document.createElement('a-text');
+
+				stop.setAttribute('width', '150');
+				stop.setAttribute('color', '#3f5971');
+				stop.setAttribute('position', position);
+				stop.setAttribute('value', value.toString());
+				stop.setAttribute('rotation', rotation);
+
+				return stop;
+			}
+
 			var createNumbering = function() {
-				var labelsContainer = document.getElementById('labels');
-				var numberStopsX = document.createElement('a-entity');
-				var numberStopsY = document.createElement('a-entity');
-				var numberStopsZ = document.createElement('a-entity');
+				var labelsContainer = document.createElement('a-entity');
+				var numberStopsX = createNumberStops('number-stops-x', '0 0 0');
+				var numberStopsY = createNumberStops('number-stops-y', '0 90 0');
+				var numberStopsZ = createNumberStops('number-stops-z', '-90 0 0');
 
-				numberStopsX.setAttribute('id', 'number-stops-x');
-				numberStopsY.setAttribute('id', 'number-stops-y');
-				numberStopsZ.setAttribute('id', 'number-stops-z');
+				var axisLabelX = createAxisLabel('79 5 1', 'total income 2017', '0 0 0');
+				numberStopsX.appendChild(axisLabelX);
 
-				numberStopsX.setAttribute('rotation', '0 0 0');
-				numberStopsY.setAttribute('rotation', '0 90 0');
-				numberStopsZ.setAttribute('rotation', '-90 0 0');
+				var axisLabelY = createAxisLabel('-5 100 1', 'profit 2017', '0 0 90');
+				numberStopsY.appendChild(axisLabelY);
+
+				var axisLabelZ = createAxisLabel('1 -128 5', 'income change 2017 vs 2016', '0 90 90');
+				numberStopsZ.appendChild(axisLabelZ);
 
 				for(var i = -140; i <= 140; i += 20) {
 					if (i === 0){
 						continue;
 					} else {
-						var xStop = document.createElement('a-text');
-
-						xStop.setAttribute('width', '100');
-						xStop.setAttribute('position', (i - 3).toString() + ', -3, 1');
-						xStop.setAttribute('color', '#3f5971');
-						xStop.setAttribute('value', i.toString());
-
+						var xStop = createSingleStop((i - 6).toString() + ', -3, 1', i, '0 0 0');
 						numberStopsX.appendChild(xStop);
 
-						var zStop = xStop.cloneNode(true);
-						zStop.setAttribute('position', '1, ' + (i - 3).toString() + ', -3');
-						zStop.setAttribute('rotation', '0 90 90');
-
+						var zStop = createSingleStop('1, ' + (i - 6).toString() + ', -3', i, '0 90 90');
 						numberStopsZ.appendChild(zStop);
 
-						var yStop = xStop.cloneNode(true);
-						yStop.setAttribute('position', '3, ' + i.toString() + ', 1');
-
+						var yStop = createSingleStop('3, ' + i.toString() + ', 1', i, '0 0 0');
 						numberStopsY.appendChild(yStop);
 					}
 				}
@@ -293,22 +377,45 @@
 				labelsContainer.appendChild(numberStopsX);
 				labelsContainer.appendChild(numberStopsY);
 				labelsContainer.appendChild(numberStopsZ);
+
+				document.getElementById('container').appendChild(labelsContainer);
+			}
+
+			var createNavigatorSegment = function(configurationObject) {
+				var element = document.createElement('a-sphere');
+					
+				element.setAttribute('color', '#199cad');
+				element.setAttribute('theta-length', '18');
+				element.setAttribute('radius', '150');
+				element.setAttribute('material', 'side: double; transparent:true; opacity:0.2');
+				element.setAttribute('data-navigation', configurationObject.dataNavigation);
+				element.setAttribute('rotation', configurationObject.rotation);
+				element.setAttribute('data-front', configurationObject.dataFront);
+				element.setAttribute('visible', configurationObject.visible);
+
+				return element;
 			}
 
 			var createNavigator = function() {
-				for(var i = 0; i < segments.length; i ++) {
-					segments[i].addEventListener('mouseenter', function(e) {
+				var navigatorElement = document.createElement('a-entity');
+
+				for(var i = 0; i < navigatorSegmentsConfiguration.length; i ++) {
+					var configurationObject = navigatorSegmentsConfiguration[i];
+					var element = createNavigatorSegment(configurationObject);
+
+					element.addEventListener('mouseenter', function(e) {
 						var segment = e.target;
 						segment.setAttribute('material', { side: 'double', transparent: true, opacity: 0.4 });
 					});
 
-					segments[i].addEventListener('mouseleave', function(e) {
+					element.addEventListener('mouseleave', function(e) {
 						var segment = e.target;
 						segment.setAttribute('material', { side: 'double', transparent: true, opacity: 0.2 });
 					});
 
-					segments[i].addEventListener('click', function(e) {
+					element.addEventListener('click', function(e) {
 						var segment = e.target;
+						var segments = segment.parentElement.children;
 						var navigationPosition = segment.getAttribute('data-navigation');
 						var frontPosition = segment.getAttribute('data-front');
 						var chart = document.getElementById('container');
@@ -331,7 +438,7 @@
 						scaleAnimation.setAttribute('attribute', 'scale');
 						scaleAnimation.setAttribute('dur', 1000);
 
-						if (!!frontPosition) {
+						if (!!frontPosition && frontPosition.length > 0) {
 							var newLabelPositions = axisNumberingConfigurator[frontPosition];
 
 							xLabels.setAttribute('visible', 'true');
@@ -342,7 +449,7 @@
 							yLabels.setAttribute('rotation', newLabelPositions.y);
 							zLabels.setAttribute('rotation', newLabelPositions.z);
 
-							scaleAnimation.setAttribute('to', '0.5 0.5 0.5');
+							scaleAnimation.setAttribute('to', '0.7 0.7 0.7');
 						} else {
 							xLabels.setAttribute('visible', 'false');
 							yLabels.setAttribute('visible', 'false');
@@ -354,7 +461,11 @@
 						chart.appendChild(navigationAnimation);
 						chart.appendChild(scaleAnimation);
 					});
+
+					navigatorElement.appendChild(element);
 				}
+				
+				document.querySelector('#container').appendChild(navigatorElement);
 			}
 
 			var generateGrid = function() {
@@ -498,6 +609,7 @@
 						element.setAttribute('position', position );
 						element.setAttribute('radius', 0 );
 						element.setAttribute('material', 'transparent:true; opacity:0.65');
+						element.setAttribute('class', 'chart-item');
 
 						for (var name in item) {
 							if (item.hasOwnProperty(name)) {
@@ -511,6 +623,7 @@
 						animation.setAttribute('dur', 1000);
 
 						element.appendChild(animation);
+
 						element.addEventListener('mouseenter', function(e) {
 							var point = e.target;
 							var tooltip = document.querySelector('#camera-entity a-plane');
@@ -565,6 +678,7 @@
 			createNavigator();
 			createNumbering();
 			populateChart();
+			createTooltipElements();
 		}
 	</script>
 </body>
