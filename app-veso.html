@@ -55,29 +55,7 @@
 	<!-- CAMERA END -->
 	
 	<!-- CHART START -->
-	<a-entity id="container" rotation="30 -45 -20" scale="0.7 0.7 0.7">
-		<a-entity id="navigator">
-			<a-sphere class="navigation-segment" color="#199cad" data-front="top" data-navigation="90 0 0" theta-length="18" radius="150" material="side: double; transparent:true; opacity:0.4" ></a-sphere>
-			<a-sphere class="navigation-segment" color="#199cad" data-front="left" data-navigation="0 90 0" theta-length="18" radius="150" rotation="0 0 90" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
-			<a-sphere class="navigation-segment" color="#199cad" data-front="bottom" data-navigation="-90 0 0" theta-length="18" radius="150" rotation="0 0 180" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
-			<a-sphere class="navigation-segment" color="#199cad" data-front="right" data-navigation="0 -90 0" theta-length="18" radius="150" rotation="0 0 -90" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
-
-			<a-sphere class="navigation-segment" color="#199cad" data-front="front" data-navigation="0 0 0" theta-length="18" radius="150" rotation="90 0 0" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
-			<a-sphere class="navigation-segment" color="#199cad" data-front="back" data-navigation="0 180 0" theta-length="18" radius="150" rotation="90 180 0" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
-
-			<a-sphere class="navigation-segment" color="#199cad" data-navigation="30 -45 -20" theta-length="18" radius="150" rotation="0 132 55" visible="false" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
-			<a-sphere class="navigation-segment" color="#199cad" data-navigation="-30 -135 -20" theta-length="18" radius="150" rotation="0 -132 55" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
-			<a-sphere class="navigation-segment" color="#199cad" data-navigation="-30 135 20" theta-length="18" radius="150" rotation="0 -48 55" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
-			<a-sphere class="navigation-segment" color="#199cad" data-navigation="30 45 20" theta-length="18" radius="150" rotation="0 48 55" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
-
-			<a-sphere class="navigation-segment" color="#199cad" data-navigation="-30 45 -20" theta-length="18" radius="150" rotation="-19 35 126" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
-			<a-sphere class="navigation-segment" color="#199cad" data-navigation="-30 -45 20" theta-length="18" radius="150" rotation="-19 118 126" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
-			<a-sphere class="navigation-segment" color="#199cad" data-navigation="30 135 -20" theta-length="18" radius="150" rotation="-19 -62 126" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
-			<a-sphere class="navigation-segment" color="#199cad" data-navigation="30 -135 20" theta-length="18" radius="150" rotation="-19 -145 126" material="side: double; transparent:true; opacity:0.2" ></a-sphere>
-		</a-entity>
-		<a-entity id="labels">
-		</a-entity>
-	</a-entity>
+	<a-entity id="container" rotation="30 -45 -20" scale="0.7 0.7 0.7"></a-entity>
 	<!-- CHART END -->
 
 	<a-cylinder opacity="0.5" transparent="true" height="500" radius="500" repeat="8" position="0 100 0" rotation="0 0 0" open-ended="true" side="double" src="./assets/city_landscape.svg"></a-cylinder>
@@ -134,8 +112,6 @@
 <script>
 
 		window.onload = function() {
-			var segments = document.querySelectorAll('.navigation-segment');
-
 			var axisNumberingConfigurator = {
 				front: {
 					x: "0 0 0",
@@ -197,6 +173,76 @@
 				'#afb42b'
 			];
 
+			var navigatorSegmentsConfiguration = [{
+				dataNavigation: "90 0 0",
+				rotation: "0 0 0",
+				dataFront: "top",
+				visible: "true"
+			},{
+				dataNavigation: "0 90 0",
+				rotation: "0 0 90",
+				dataFront: "left",
+				visible: "true"
+			},{
+				dataNavigation: "-90 0 0",
+				rotation: "0 0 180",
+				dataFront: "bottom",
+				visible: "true"
+			},{
+				dataNavigation: "0 -90 0",
+				rotation: "0 0 -90",
+				dataFront: "right",
+				visible: "true"
+			},{
+				dataNavigation: "0 0 0",
+				rotation: "90 0 0",
+				dataFront: "front",
+				visible: "true"
+			},{
+				dataNavigation: "0 180 0",
+				rotation: "90 180 0",
+				dataFront: "back",
+				visible: "true"
+			},{
+				dataNavigation: "30 -45 -20",
+				rotation: "0 132 55",
+				dataFront: "",
+				visible: "false"
+			},{
+				dataNavigation: "-30 -135 -20",
+				rotation: "0 -132 55",
+				dataFront: ""
+			},{
+				dataNavigation: "-30 135 20",
+				rotation: "0 -48 55",
+				dataFront: "",
+				visible: "true"
+			},{
+				dataNavigation: "30 45 20",
+				rotation: "0 48 55",
+				dataFront: "",
+				visible: "true"
+			},{
+				dataNavigation: "-30 45 -20",
+				rotation: "-19 35 126",
+				dataFront: "",
+				visible: "true"
+			},{
+				dataNavigation: "-30 -45 20",
+				rotation: "-19 118 126",
+				dataFront: "",
+				visible: "true"
+			},{
+				dataNavigation: "30 135 -20",
+				rotation: "-19 -62 126",
+				dataFront: ""
+			},{
+				dataNavigation: "30 -135 20",
+				rotation: "-19 -145 126",
+				dataFront: "",
+				visible: "true"
+			}];
+
 			var loadSingleColorForData = function(color, element) {
 				element.setAttribute('color', color);
 
@@ -230,7 +276,7 @@
 			}
 
 			var createNumbering = function() {
-				var labelsContainer = document.getElementById('labels');
+				var labelsContainer = document.createElement('a-entity');
 				var numberStopsX = document.createElement('a-entity');
 				var numberStopsY = document.createElement('a-entity');
 				var numberStopsZ = document.createElement('a-entity');
@@ -297,22 +343,39 @@
 				labelsContainer.appendChild(numberStopsX);
 				labelsContainer.appendChild(numberStopsY);
 				labelsContainer.appendChild(numberStopsZ);
+
+				document.getElementById('container').appendChild(labelsContainer);
 			}
 
 			var createNavigator = function() {
-				for(var i = 0; i < segments.length; i ++) {
-					segments[i].addEventListener('mouseenter', function(e) {
+				var navigatorElement = document.createElement('a-entity');
+
+				for(var i = 0; i < navigatorSegmentsConfiguration.length; i ++) {
+					var configurationObject = navigatorSegmentsConfiguration[i];
+					var element = document.createElement('a-sphere');
+					
+					element.setAttribute('color', '#199cad');
+					element.setAttribute('theta-length', '18');
+					element.setAttribute('radius', '150');
+					element.setAttribute('material', 'side: double; transparent:true; opacity:0.2');
+					element.setAttribute('data-navigation', configurationObject.dataNavigation);
+					element.setAttribute('rotation', configurationObject.rotation);
+					element.setAttribute('data-front', configurationObject.dataFront);
+					element.setAttribute('visible', configurationObject.visible);
+
+					element.addEventListener('mouseenter', function(e) {
 						var segment = e.target;
 						segment.setAttribute('material', { side: 'double', transparent: true, opacity: 0.4 });
 					});
 
-					segments[i].addEventListener('mouseleave', function(e) {
+					element.addEventListener('mouseleave', function(e) {
 						var segment = e.target;
 						segment.setAttribute('material', { side: 'double', transparent: true, opacity: 0.2 });
 					});
 
-					segments[i].addEventListener('click', function(e) {
+					element.addEventListener('click', function(e) {
 						var segment = e.target;
+						var segments = segment.parentElement.children;
 						var navigationPosition = segment.getAttribute('data-navigation');
 						var frontPosition = segment.getAttribute('data-front');
 						var chart = document.getElementById('container');
@@ -335,7 +398,7 @@
 						scaleAnimation.setAttribute('attribute', 'scale');
 						scaleAnimation.setAttribute('dur', 1000);
 
-						if (!!frontPosition) {
+						if (!!frontPosition && frontPosition.length > 0) {
 							var newLabelPositions = axisNumberingConfigurator[frontPosition];
 
 							xLabels.setAttribute('visible', 'true');
@@ -358,7 +421,11 @@
 						chart.appendChild(navigationAnimation);
 						chart.appendChild(scaleAnimation);
 					});
+
+					navigatorElement.appendChild(element);
 				}
+				
+				document.querySelector('#container').appendChild(navigatorElement);
 			}
 
 			var generateGrid = function() {
