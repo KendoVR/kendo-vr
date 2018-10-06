@@ -21,7 +21,9 @@
 	<!-- CAMERA START -->
     <a-entity position="0 0 250" rotation="0 0 0" id="camera-wrapper">
 <!-- MultiView START -->
-	<a-entity id="k-view-wrapper" position="-200 500 -600" scale="100 100 100">
+	<a-entity id="k-view-wrapper" position="-100 300 -300" scale="50 50 50">
+		<kendo-webvr-dropdownlist id="chart-shade-choser" value="Polychrome View" position="-3 0 0" width="4" opacity="0.8" row-height="0.64"></kendo-webvr-dropdownlist>
+		
 		<a-plane class="k-view-button" width="1" height="1" position="0 0 0" src="./assets/view-chart-normal.svg" data-altsvg="./assets/view-chart-selected.svg" data-selected="false" data-hovered="false" data-val="chart-view"></a-plane>
 		<a-plane class="k-view-button" width="1" height="1" position="1.5 0 0" src="./assets/view-chart-grid-selected.svg" data-altsvg="./assets/view-chart-grid-normal.svg" data-selected="true" data-hovered="false" data-val="chart-grid-view"></a-plane>
 		<a-plane class="k-view-button" width="1" height="1" position="3 0 0" src="./assets/view-grid-normal.svg" data-altsvg="./assets/view-grid-selected.svg" data-selected="false" data-hovered="false" data-val="grid-view"></a-plane>
@@ -52,37 +54,8 @@
 
 </a-scene>
 
-<!-- MultiView Code START -->
+
 <script>
-	window.onload = function(){
-		var viewWrapper = document.querySelector("#k-view-wrapper");
-		viewWrapper.addEventListener("mouseenter", function(ev){
-			if(ev.srcElement.className === "k-view-button" && ev.srcElement.getAttribute("data-selected") === "false" && ev.srcElement.getAttribute("data-hovered") === "false") {
-				switchImage(ev.srcElement);
-				ev.srcElement.setAttribute("data-hovered", "true");
-			}
-		});
-
-		viewWrapper.addEventListener("mouseleave", function(ev){
-			if(ev.srcElement.className === "k-view-button" && ev.srcElement.getAttribute("data-selected") === "false" && ev.srcElement.getAttribute("data-hovered") === "true") {
-				switchImage(ev.srcElement);
-				ev.srcElement.setAttribute("data-hovered", "false");
-			}
-		});
-
-		viewWrapper.addEventListener("click", function(ev){
-			if(ev.srcElement.className === "k-view-button" && ev.srcElement.getAttribute("data-selected") === "false") {
-				var selectedItem = document.querySelector("[data-selected='true']");
-				switchImage(selectedItem);
-				ev.srcElement.setAttribute("data-selected", "true");
-				ev.srcElement.setAttribute("data-hovered", "false");
-				selectedItem.setAttribute("data-selected", "false");
-
-				window.dispatchEvent(new CustomEvent("viewchanged", {detail: {view: ev.srcElement.getAttribute("data-val")}}));
-			}
-		});
-	}
-
 	function switchImage(src) {
 		var altSvg = src.getAttribute("data-altsvg");
 		src.setAttribute("data-altsvg", src.getAttribute("src"));
@@ -93,11 +66,66 @@
 		alert(ev.detail.view);
 	})
 </script>
-<!-- MultiView Code end -->
 
-<!-- Chart code -->
-<script>
+	<!-- Chart code -->
+	<script>
 		window.onload = function() {
+			// MultiView Code START
+
+			var viewWrapper = document.querySelector("#k-view-wrapper");
+			viewWrapper.addEventListener("mouseenter", function(ev){
+				if(ev.srcElement.className === "k-view-button" && ev.srcElement.getAttribute("data-selected") === "false" && ev.srcElement.getAttribute("data-hovered") === "false") {
+					switchImage(ev.srcElement);
+					ev.srcElement.setAttribute("data-hovered", "true");
+				}
+			});
+
+			viewWrapper.addEventListener("mouseleave", function(ev){
+				if(ev.srcElement.className === "k-view-button" && ev.srcElement.getAttribute("data-selected") === "false" && ev.srcElement.getAttribute("data-hovered") === "true") {
+					switchImage(ev.srcElement);
+					ev.srcElement.setAttribute("data-hovered", "false");
+				}
+			});
+
+			viewWrapper.addEventListener("click", function(ev){
+				if(ev.srcElement.className === "k-view-button" && ev.srcElement.getAttribute("data-selected") === "false") {
+					var selectedItem = document.querySelector("[data-selected='true']");
+					switchImage(selectedItem);
+					ev.srcElement.setAttribute("data-selected", "true");
+					ev.srcElement.setAttribute("data-hovered", "false");
+					selectedItem.setAttribute("data-selected", "false");
+
+					window.dispatchEvent(new CustomEvent("viewchanged", {detail: {view: ev.srcElement.getAttribute("data-val")}}));
+				}
+			});
+
+			var ddl = document.getElementById('chart-shade-choser');
+
+			ddl.addEventListener("change", function (ev) {
+				var selectedShade = ev.detail.newValue;
+				var chartItems = document.getElementsByClassName('chart-item');
+
+				if (selectedShade === 'Polychrome View') {
+					for(var i = 0; i < chartItems.length; i++) {
+						loadMultiColorsForData(i, chartItems[i]);
+					}
+
+				} else if (selectedShade === 'Monochrome View') {
+					for(var i = 0; i < chartItems.length; i++) {
+						loadSingleColorForData('#199cad', chartItems[i]);
+					}
+				} else if (selectedShade === 'Bichrome View') {
+					for(var i = 0; i < chartItems.length; i++) {
+						console.log(chartItems[i].getAttribute('data-profit'))
+						loadGreenRedShadingForData(chartItems[i].getAttribute('data-profit'), chartItems[i]);
+					}
+				}
+			});
+
+			// MultiView Code END
+
+			// Chart Code START
+
 			var axisNumberingConfigurator = {
 				front: {
 					x: "0 0 0",
@@ -243,15 +271,15 @@
 				return element;
 			}
 
-			var loadGreenRedShadingForData = function(item, element) {
-				if (item.profit > 0) {
-					var profitInMilions = item.profit / 1000000;
+			var loadGreenRedShadingForData = function(profit, element) {
+				if (profit > 0) {
+					var profitInMilions = profit / 1000000;
 					var green = Math.floor(128 + profitInMilions * 8);
 					var redAndBlue = Math.floor(128 - profitInMilions * 8);
 
 					element.setAttribute('color', 'rgb(' + redAndBlue + ', ' + green + ', ' + redAndBlue + ')');
 				} else {
-					var profitInMilions = item.profit / -1000000;
+					var profitInMilions = profit / -1000000;
 					var red = Math.floor(128 + profitInMilions * 8);
 					var greenAndBlue = Math.floor(128 - profitInMilions * 8);
 
@@ -583,6 +611,7 @@
 						element.setAttribute('position', position );
 						element.setAttribute('radius', 0 );
 						element.setAttribute('material', 'transparent:true; opacity:0.65');
+						element.setAttribute('class', 'chart-item');
 
 						for (var name in item) {
 							if (item.hasOwnProperty(name)) {

@@ -81,10 +81,9 @@ AFRAME.registerComponent('dropdownlist', {
         });
         
         this.loadData([
-            "Polychrome",
-            "Monochrome",
-            "Bichrome",
-            "Bihrome Shades"
+            "Polychrome View",
+            "Monochrome View",
+            "Bichrome View"
         ]);
     },
     update: function () {
@@ -95,8 +94,15 @@ AFRAME.registerComponent('dropdownlist', {
             if(oldSelected) {
                 var origText = oldSelected.getAttribute("text");
                 var origMaterial = oldSelected.getAttribute("material");
-                origMaterial.color = "white";
-                origText.color = this.data.textColor;
+
+                if (origMaterial) {
+                    origMaterial.color = "white";
+                }
+
+                if (origText) {
+                    origText.color = this.data.textColor;
+                }
+
                 oldSelected.setAttribute("material", origMaterial);
                 oldSelected.setAttribute("text", origText);
                 oldSelected.setAttribute("class", "k-item");
