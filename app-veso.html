@@ -36,20 +36,6 @@
                 geometry="primitive: ring; radiusInner: 0.3; radiusOuter: 0.5"
                 material="color: #888; shader: flat">
             </a-entity>
-            <a-plane width="12"
-                height="2.2"
-                position="7.5 0 -40"
-                color="#3f5971"
-                material="transparent:true; opacity:0.8">
-            </a-plane>
-            <a-plane width="12"
-                height="6.2"
-                position="7.5 -4.2 -40"
-                color="#3f5971"
-                material="transparent:true; opacity:0.8"
-                visible="false"
-                id="extended-tooltip">
-            </a-plane>
         </a-entity>
 	</a-entity>
 	<!-- CAMERA END -->
@@ -273,6 +259,30 @@
 				}
 
 				return element;
+			}
+
+			var createTooltipPlane = function(height, position) {
+				var plane = document.createElement('a-plane');
+
+				plane.setAttribute('color', '#3f5971');
+				plane.setAttribute('material', 'transparent:true; opacity:0.8');
+				plane.setAttribute('width', '12');
+				plane.setAttribute('height', height);
+				plane.setAttribute('position', position);
+				
+				return plane;
+			}
+
+			var createTooltipElements = function() {
+				var camera = document.getElementById('camera-entity');
+				var header = createTooltipPlane('2.2', '7.5 0 -40');
+				var body = createTooltipPlane('6.2', '7.5 -4.2 -40');
+
+				body.setAttribute('visible', 'false');
+				body.setAttribute('id', 'extended-tooltip');
+
+				camera.appendChild(header);
+				camera.appendChild(body);
 			}
 
 			var createAxisLabel = function(position, value, rotation) {
@@ -641,6 +651,7 @@
 			createNavigator();
 			createNumbering();
 			populateChart();
+			createTooltipElements();
 		}
 	</script>
 </body>
