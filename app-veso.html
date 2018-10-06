@@ -18,9 +18,7 @@
     <a-entity light="type: directional; color: #FFF; intensity: 0.1" position="-0.5 1 1"></a-entity>
     <a-entity id="mouseCursor" cursor="rayOrigin: mouse"></a-entity>
 
-	<!-- CAMERA START -->
-    <a-entity position="0 0 250" rotation="0 0 0" id="camera-wrapper">
-<!-- MultiView START -->
+	<!-- MultiView START -->
 	<a-entity id="k-view-wrapper" position="-100 300 -300" scale="50 50 50">
 		<kendo-webvr-dropdownlist id="chart-shade-choser" value="Polychrome View" position="-3 0 0" width="4" opacity="0.8" row-height="0.64"></kendo-webvr-dropdownlist>
 		
@@ -28,9 +26,9 @@
 		<a-plane class="k-view-button" width="1" height="1" position="1.5 0 0" src="./assets/view-chart-grid-selected.svg" data-altsvg="./assets/view-chart-grid-normal.svg" data-selected="true" data-hovered="false" data-val="chart-grid-view"></a-plane>
 		<a-plane class="k-view-button" width="1" height="1" position="3 0 0" src="./assets/view-grid-normal.svg" data-altsvg="./assets/view-grid-selected.svg" data-selected="false" data-hovered="false" data-val="grid-view"></a-plane>
 	</a-entity>
-<!-- MultiView END -->
+	<!-- MultiView END -->
 
-<!-- CAMERA START -->
+	<!-- CAMERA START -->
     <a-entity position="0 0 250" rotation="0 0 0" id="camera-wrapper">
         <a-entity camera="fov: 60; far: 10000" id="camera-entity" look-controls wasd-controls>
             <a-entity cursor="fuse: false;"
