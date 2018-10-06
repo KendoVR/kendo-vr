@@ -109,8 +109,8 @@
 </script>
 <!-- MultiView Code end -->
 
+<!-- Chart code -->
 <script>
-
 		window.onload = function() {
 			var axisNumberingConfigurator = {
 				front: {
@@ -275,67 +275,65 @@
 				return element;
 			}
 
+			var createAxisLabel = function(position, value, rotation) {
+				var axisLabel = document.createElement('a-text');
+
+				axisLabel.setAttribute('width', '150');
+				axisLabel.setAttribute('color', '#3f5971');
+				axisLabel.setAttribute('position', position);
+				axisLabel.setAttribute('value', value);
+				axisLabel.setAttribute('rotation', rotation);
+
+				return axisLabel;
+			}
+
+			var createNumberStops = function(id, rotation) {
+				var numberStops = document.createElement('a-entity');
+
+				numberStops.setAttribute('id', id);
+				numberStops.setAttribute('rotation', rotation);
+
+				return numberStops;
+			}
+
+			var createSingleStop = function(position, value, rotation) {
+				var stop = document.createElement('a-text');
+
+				stop.setAttribute('width', '150');
+				stop.setAttribute('color', '#3f5971');
+				stop.setAttribute('position', position);
+				stop.setAttribute('value', value.toString());
+				stop.setAttribute('rotation', rotation);
+
+				return stop;
+			}
+
 			var createNumbering = function() {
 				var labelsContainer = document.createElement('a-entity');
-				var numberStopsX = document.createElement('a-entity');
-				var numberStopsY = document.createElement('a-entity');
-				var numberStopsZ = document.createElement('a-entity');
+				var numberStopsX = createNumberStops('number-stops-x', '0 0 0');
+				var numberStopsY = createNumberStops('number-stops-y', '0 90 0');
+				var numberStopsZ = createNumberStops('number-stops-z', '-90 0 0');
 
-				var axisLabelX = document.createElement('a-text');
-				
-				axisLabelX.setAttribute('width', '150');
-				axisLabelX.setAttribute('position', '79 5 1');
-				axisLabelX.setAttribute('color', '#3f5971');
-				axisLabelX.setAttribute('value', 'total income 2017');
-
+				var axisLabelX = createAxisLabel('79 5 1', 'total income 2017', '0 0 0');
 				numberStopsX.appendChild(axisLabelX);
 
-				var axisLabelY = axisLabelX.cloneNode(true);
-
-				axisLabelY.setAttribute('position', '-5 100 1');
-				axisLabelY.setAttribute('value', 'profit 2017');
-				axisLabelY.setAttribute('rotation', '0 0 90');
-
+				var axisLabelY = createAxisLabel('-5 100 1', 'profit 2017', '0 0 90');
 				numberStopsY.appendChild(axisLabelY);
 
-				var axisLabelZ = axisLabelX.cloneNode(true);
-
-				axisLabelZ.setAttribute('position', '1 -128 5');
-				axisLabelZ.setAttribute('value', 'income change 2017 vs 2016');
-				axisLabelZ.setAttribute('rotation', '0 90 90');
-
+				var axisLabelZ = createAxisLabel('1 -128 5', 'income change 2017 vs 2016', '0 90 90');
 				numberStopsZ.appendChild(axisLabelZ);
-
-				numberStopsX.setAttribute('id', 'number-stops-x');
-				numberStopsY.setAttribute('id', 'number-stops-y');
-				numberStopsZ.setAttribute('id', 'number-stops-z');
-
-				numberStopsX.setAttribute('rotation', '0 0 0');
-				numberStopsY.setAttribute('rotation', '0 90 0');
-				numberStopsZ.setAttribute('rotation', '-90 0 0');
 
 				for(var i = -140; i <= 140; i += 20) {
 					if (i === 0){
 						continue;
 					} else {
-						var xStop = document.createElement('a-text');
-
-						xStop.setAttribute('width', '150');
-						xStop.setAttribute('position', (i - 6).toString() + ', -3, 1');
-						xStop.setAttribute('color', '#3f5971');
-						xStop.setAttribute('value', i.toString());
-
+						var xStop = createSingleStop((i - 6).toString() + ', -3, 1', i, '0 0 0');
 						numberStopsX.appendChild(xStop);
 
-						var zStop = xStop.cloneNode(true);
-						zStop.setAttribute('position', '1, ' + (i - 6).toString() + ', -3');
-						zStop.setAttribute('rotation', '0 90 90');
-
+						var zStop = createSingleStop('1, ' + (i - 6).toString() + ', -3', i, '0 90 90');
 						numberStopsZ.appendChild(zStop);
 
-						var yStop = xStop.cloneNode(true);
-						yStop.setAttribute('position', '3, ' + i.toString() + ', 1');
-
+						var yStop = createSingleStop('3, ' + i.toString() + ', 1', i, '0 0 0');
 						numberStopsY.appendChild(yStop);
 					}
 				}
@@ -347,21 +345,27 @@
 				document.getElementById('container').appendChild(labelsContainer);
 			}
 
+			var createNavigatorSegment = function(configurationObject) {
+				var element = document.createElement('a-sphere');
+					
+				element.setAttribute('color', '#199cad');
+				element.setAttribute('theta-length', '18');
+				element.setAttribute('radius', '150');
+				element.setAttribute('material', 'side: double; transparent:true; opacity:0.2');
+				element.setAttribute('data-navigation', configurationObject.dataNavigation);
+				element.setAttribute('rotation', configurationObject.rotation);
+				element.setAttribute('data-front', configurationObject.dataFront);
+				element.setAttribute('visible', configurationObject.visible);
+
+				return element;
+			}
+
 			var createNavigator = function() {
 				var navigatorElement = document.createElement('a-entity');
 
 				for(var i = 0; i < navigatorSegmentsConfiguration.length; i ++) {
 					var configurationObject = navigatorSegmentsConfiguration[i];
-					var element = document.createElement('a-sphere');
-					
-					element.setAttribute('color', '#199cad');
-					element.setAttribute('theta-length', '18');
-					element.setAttribute('radius', '150');
-					element.setAttribute('material', 'side: double; transparent:true; opacity:0.2');
-					element.setAttribute('data-navigation', configurationObject.dataNavigation);
-					element.setAttribute('rotation', configurationObject.rotation);
-					element.setAttribute('data-front', configurationObject.dataFront);
-					element.setAttribute('visible', configurationObject.visible);
+					var element = createNavigatorSegment(configurationObject);
 
 					element.addEventListener('mouseenter', function(e) {
 						var segment = e.target;
@@ -582,6 +586,7 @@
 						animation.setAttribute('dur', 1000);
 
 						element.appendChild(animation);
+
 						element.addEventListener('mouseenter', function(e) {
 							var point = e.target;
 							var tooltip = document.querySelector('#camera-entity a-plane');
