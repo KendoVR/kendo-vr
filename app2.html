@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Untitled</title>
+  <script src="https://kendo.cdn.telerik.com/2018.3.911/js/jquery.min.js"></script>
+  <script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script>
+  <script src="https://unpkg.com/aframe-animation-component@^4.1.2/dist/aframe-animation-component.min.js"></script> 
+  <script src="https://unpkg.com/aframe-debug-cursor-component/dist/aframe-debug-cursor-component.min.js"></script>
+  <script src="./kendo-webvr-ddl/aframe-ddl.js"></script>
+  <script src="./kendo-webvr-grid/aframe-grid.js"></script>
+  <script src="./kendo-webvr-switch/aframe-switch.js"></script>
+  <script src="https://kendo.cdn.telerik.com/2018.3.911/js/kendo.all.min.js"></script>
+</head>
+<body>
+  <a-scene>
+    <a-entity light="type: ambient; color: #FFF"></a-entity>
+    <a-entity light="type: directional; color: #FFF; intensity: 0.1" position="-0.5 1 1"></a-entity>
+    <a-entity id="mouseCursor" cursor="rayOrigin: mouse"  debug-cursor></a-entity>
+
+	<a-entity camera="fov: 60; far: 10000" id="camera-entity" look-controls wasd-controls>
+            <!-- <a-entity cursor="fuse: false;"
+                position="0 0 -40"
+                geometry="primitive: ring; radiusInner: 0.3; radiusOuter: 0.5"
+                material="color: #888; shader: flat">
+            </a-entity> -->
+
+        </a-entity>
+
+	<a-entity id="k-view-wrapper" position="0 2 -45" scale="5 5 5">
+		<a-plane class="k-view-button" width="1" height="1" position="0 0 0" src="./assets/view-chart-normal.svg" data-altsvg="./assets/view-chart-selected.svg" data-selected="false" data-hovered="false" data-val="chart-view"></a-plane>
+		<a-plane class="k-view-button" width="1" height="1" position="1.5 0 0" src="./assets/view-chart-grid-selected.svg" data-altsvg="./assets/view-chart-grid-normal.svg" data-selected="true" data-hovered="false" data-val="chart-grid-view"></a-plane>
+		<a-plane class="k-view-button" width="1" height="1" position="3 0 0" src="./assets/view-grid-normal.svg" data-altsvg="./assets/view-grid-selected.svg" data-selected="false" data-hovered="false" data-val="grid-view"></a-plane>
+	</a-entity>
+	
+	
+
+<a-cylinder opacity="0.5" transparent="true" height="500" radius="500" repeat="8" position="0 100 0" rotation="0 0 0" open-ended="true" side="double" src="./assets/city_landscape.svg"></a-cylinder>
+
+<a-plane opacity="0.1" transparent="true" color="gray" height="10000" width="10000" rotation="-90 0 0" position="0 -175 0" side="double" ></a-plane>
+
+<a-sky color="#eff2f5"></a-sky>
+
+</a-scene>
+
+
+</body>
+<script>
+	// MultiView code
+		window.onload = function(){
+			var viewWrapper = document.querySelector("#k-view-wrapper");
+			viewWrapper.addEventListener("mouseenter", function(ev){
+				if(ev.srcElement.className === "k-view-button" && ev.srcElement.getAttribute("data-selected") === "false" && ev.srcElement.getAttribute("data-hovered") === "false") {
+					switchImage(ev.srcElement);
+					ev.srcElement.setAttribute("data-hovered", "true");
+				}
+			});
+
+			viewWrapper.addEventListener("mouseleave", function(ev){
+				if(ev.srcElement.className === "k-view-button" && ev.srcElement.getAttribute("data-selected") === "false" && ev.srcElement.getAttribute("data-hovered") === "true") {
+					switchImage(ev.srcElement);
+					ev.srcElement.setAttribute("data-hovered", "false");
+				}
+			});
+
+			viewWrapper.addEventListener("click", function(ev){
+				if(ev.srcElement.className === "k-view-button" && ev.srcElement.getAttribute("data-selected") === "false") {
+					var selectedItem = document.querySelector("[data-selected='true']");
+					switchImage(selectedItem);
+					ev.srcElement.setAttribute("data-selected", "true");
+					ev.srcElement.setAttribute("data-hovered", "false");
+					selectedItem.setAttribute("data-selected", "false");
+
+					window.dispatchEvent(new CustomEvent("viewchanged", {detail: {view: ev.srcElement.getAttribute("data-val")}}));
+				}
+			});
+		}
+
+		function switchImage(src) {
+			var altSvg = src.getAttribute("data-altsvg");
+			src.setAttribute("data-altsvg", src.getAttribute("src"));
+			src.setAttribute("src", altSvg);
+		}
+
+		window.addEventListener("viewchanged", function (ev) {
+			console.log(ev)
+			alert(ev.detail.view);
+		})
+	
+</script>
+</html>
