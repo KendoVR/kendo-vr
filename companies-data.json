@@ -160,18 +160,18 @@
     }, {
         "field": "employees",
         "title": "Employees",
-        "width": 50
+        "width": 40
     }, {
         "field": "profit",
         "title": "Profit",
-        "width": 50
+        "width": 40
     }, {
         "field": "income",
         "title": "Income",
-        "width": 50
+        "width": 40
     }, {
         "field": "incomeChange",
         "title": "IncomeCh",
-        "width": 50
+        "width": 40
     }]
 }

@@ -30,7 +30,7 @@
     <a-entity id="mouseCursor" cursor="rayOrigin: mouse"></a-entity>
 
 	<!-- MultiView START -->
-	<a-entity id="k-view-wrapper" position="-100 300 -300" scale="50 50 50">
+	<a-entity id="k-view-wrapper" position="0 25 200" scale="4 4 4" rotation="30 0 0">
 		<kendo-webvr-dropdownlist id="chart-shade-choser" value="Polychrome View" position="-3 0 0" width="4" opacity="0.8" row-height="0.64"></kendo-webvr-dropdownlist>
 		
 		<a-plane class="k-view-button" width="1" height="1" position="0 0 0" src="./assets/view-chart-normal.svg" data-altsvg="./assets/view-chart-selected.svg" data-selected="false" data-hovered="false" data-val="chart-view"></a-plane>
@@ -63,7 +63,8 @@
 					   y-axis-scale="0.00001"
 					   size-scale="0.016"
 					   color="#199cad"
-					   rotation="30 -45 -20"
+					   rotation="30 -35 -20"
+					   position="-50 0 10"
 					   scale="0.6 0.6 0.6"></kendo-webvr-chart>
 	<!-- <a-entity id="container" rotation="30 -45 -20" scale="0.7 0.7 0.7"></a-entity> -->
 	<!-- CHART END -->
@@ -72,11 +73,12 @@
 	<kendo-webvr-grid id="grid" 
 						visibleto="2"
 						pageSize="8"
-						position="50 60 120"
+						position="30 60 130"
 						scale="0.8 0.8 0.8"
 						data="./companies-data.json"
 						height="320"
-						sortable="true">    
+						sortable="true"
+						rotation="0 -11 0">    
 	</kendo-webvr-grid>
 	<!-- GRID END -->
 
@@ -121,6 +123,15 @@
 	<script>
 		window.onload = function() {
 			var viewWrapper = document.querySelector("#k-view-wrapper");
+
+			var createAnimation = function(type) {
+				var animation = document.createElement('a-animation');
+
+				animation.setAttribute('attribute', type);
+				animation.setAttribute('dur', 1000);
+
+				return animation;
+			}
 			
 			viewWrapper.addEventListener("mouseenter", function(ev){
 				if(ev.srcElement.className === "k-view-button" && ev.srcElement.getAttribute("data-selected") === "false" && ev.srcElement.getAttribute("data-hovered") === "false") {
@@ -150,31 +161,66 @@
 					var chart = document.getElementById('chart');
 					var grid = document.getElementById('grid');
 					var dropDownList = document.getElementById('chart-shade-choser');
-					var scaleAnimation = document.createElement('a-animation');
+					var chartScaleAnimation = createAnimation('scale');
+					var chartPositionAnimation = createAnimation('position');
+					var chartRotationAnimation = createAnimation('rotation');
+					var gridPositionAnimation = createAnimation('position');
+					var gridRotationAnimation = createAnimation('rotation');
 
-					scaleAnimation.setAttribute('attribute', 'scale');
-					scaleAnimation.setAttribute('dur', 1000);
+					var gridAnimations = document.querySelectorAll('#grid a-animation');
+
+					for(var i = 0; i < gridAnimations.length; i++) {
+						gridAnimations[i].remove();
+					}
+
 					// window.dispatchEvent(new CustomEvent("viewchanged", {detail: {view: ev.srcElement.getAttribute("data-val")}}));
 
 					switch(selectedValue) {
 						case "grid-view":
-							scaleAnimation.setAttribute('to', '0.6 0.6 0.6');
+							chartScaleAnimation.setAttribute('to', '0.6 0.6 0.6');
+							chartPositionAnimation.setAttribute('to', '-200 0 20');
+							chartRotationAnimation.setAttribute('to', '30 -24 -20');
+							gridPositionAnimation.setAttribute('to', '-80 70 90');
+							gridRotationAnimation.setAttribute('to', '0 0 0');
+
 							navigator.setAttribute('visible', false);
 							dropDownList.setAttribute('visible', false);
+							grid.setAttribute("visibleTo", 6);
 							break;
 						case "chart-grid-view":
-							scaleAnimation.setAttribute('to', '0.6 0.6 0.6');
+							chartScaleAnimation.setAttribute('to', '0.6 0.6 0.6');
+							chartPositionAnimation.setAttribute('to', '-50 0 10');
+							chartRotationAnimation.setAttribute('to', '30 -35 -20');
+							gridPositionAnimation.setAttribute('to', '30 60 130');
+							gridRotationAnimation.setAttribute('to', '0 -11 0');
+
 							navigator.setAttribute('visible', false);
 							dropDownList.setAttribute('visible', true);
+							grid.setAttribute("visibleTo", 2);
 							break;
 						case "chart-view":
-							scaleAnimation.setAttribute('to', '0.7 0.7 0.7');
+							chartScaleAnimation.setAttribute('to', '0.7 0.7 0.7');
+							chartPositionAnimation.setAttribute('to', '0 0 0');
+							chartRotationAnimation.setAttribute('to', '30 -45 -20');
+							gridPositionAnimation.setAttribute('to', '100 60 100');
+							gridRotationAnimation.setAttribute('to', '0 -22 0');
+
 							navigator.setAttribute('visible', true);
 							dropDownList.setAttribute('visible', true);
+							grid.setAttribute("visibleTo", 2);
 							break;
 					}
 
-					chart.appendChild(scaleAnimation);
+					chart.appendChild(chartScaleAnimation);
+					chart.appendChild(chartPositionAnimation);
+
+					console.log(gridRotationAnimation)
+					console.log(gridPositionAnimation)
+
+					setTimeout(function(){
+						grid.appendChild(gridPositionAnimation);
+						grid.appendChild(gridRotationAnimation);
+					}, 0);
 				}
 			});
 
