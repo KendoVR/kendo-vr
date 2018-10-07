@@ -79,13 +79,13 @@ AFRAME.registerComponent('switch', {
             this.btn.setAttribute('position', {
                 x: buttonPosition.x + (this.data.width / 2) - this.data.padding,
                 y: wrapperPosition.y,
-                z: 0
+                z: 0.7
             });
         } else {
             this.btn.setAttribute('position', {
                 x: buttonPosition.x - (this.data.width / 2) + this.data.padding,
                 y: wrapperPosition.y,
-                z: 0
+                z: 0.7
             });
         }
     }
