@@ -7,7 +7,7 @@ AFRAME.registerComponent('grid', {
         visibleToColumnIndex: {type: 'number' }
     }, 
     init: function () {
-        this.lineColor = "#eff2f5"
+        this.lineColor = "#e7ebed";
         this.gridBackColor = "#ffffff";
         this.gridForeColor = "#29313c";
         this.headerHeight = 12;
@@ -35,20 +35,56 @@ AFRAME.registerComponent('grid', {
         this.totalHeight = opts.height + this.headerHeight; 
         this.pageCount = Math.ceil(this.dataSource.length / opts.pageSize);
 
+        let items = this.el.getChildEntities();
+
         if (!opts.visibleToColumnIndex) {
             opts.visibleToColumnIndex = this.columns.length;
             this.el.setAttribute("visibleTo", opts.visibleToColumnIndex);
         }
 
-        this.buildHeaderColumns();
+        if (!items.length) {
+            this.buildHeaderColumns();        
+            this.buildTemplateColumns();
+            this.buildColumns();
+        } else {
+            let cols = items.filter(item => item.getAttribute("colIndex"));
+            let lines = items.filter(item => item.getAttribute("line"));
+            for (let col of cols) {
+                col.setAttribute("visible", col.getAttribute("colIndex") < opts.visibleToColumnIndex ? true : false);
+            }
+            
+            for (let line of lines) {
+                line.setAttribute("line", {
+                    end: {
+                        x: this.totalWidth.toString(),
+                        y: line.getAttribute("line").end.y,
+                        z: line.getAttribute("line").end.z
+                    }
+                });
+            }
+        }
 
-        //this.buildContainerLines();
-        
-        this.buildTemplateColumns();
-        this.buildColumns();
-        
-        this.el.setAttribute("page", 0);
-        
+        if (this.footer) {
+            this.footer.setAttribute("geometry", {
+                width: this.totalWidth,
+                height: this.rowHeight
+            });
+            this.footer.setAttribute("position", (this.totalWidth / 2).toString() + " " + 
+                                                (-this.rowHeight / 2 - this.rowHeight * (this.data.pageSize + 1) - this.headerHeight/2).toString() +
+                                                " 0");
+        }
+
+        if (this.header) {
+            this.header.setAttribute("geometry", {
+                width: this.totalWidth,
+                height: this.rowHeight
+            });
+            this.header.setAttribute("position", (this.totalWidth / 2).toString() + " " + 
+                                                (-this.headerHeight).toString() +
+                                                " 0")
+        }        
+
+        this.el.setAttribute("page", 0);        
         this.el.setAttribute("pageCount", this.pageCount);
     },
     buildHeaderColumns () {
@@ -71,6 +107,7 @@ AFRAME.registerComponent('grid', {
             });
 
             aCell.setAttribute("class", "gridHeader");
+            aCell.setAttribute("colIndex", i);
 
             if (this.sortable && column.field) {
                 let position = aCell.getAttribute("position");
@@ -182,31 +219,11 @@ AFRAME.registerComponent('grid', {
             if (j > 0 && j < this.data.pageSize - 1) {
                 this.el.appendChild(line);
             } else if (j == this.data.pageSize) {
-                if (this.footer) {
-                    this.footer.setAttribute("geometry", {
-                        width: this.totalWidth,
-                        height: this.rowHeight
-                    });
-                    this.footer.setAttribute("position", (this.totalWidth / 2).toString() + " " + 
-                                                        (-this.rowHeight / 2 - this.rowHeight * (this.data.pageSize + 1) - this.headerHeight/2).toString() +
-                                                        " 0");
-                } else {
-                    this.buildFooter();
-                    this.el.appendChild(this.footer);
-                }                
+                this.buildFooter();
+                this.el.appendChild(this.footer);
             } else if (j == 0) {
-                if (this.header) {
-                    this.header.setAttribute("geometry", {
-                        width: this.totalWidth,
-                        height: this.rowHeight
-                    });
-                    this.header.setAttribute("position", (this.totalWidth / 2).toString() + " " + 
-                                                        (-this.headerHeight).toString() +
-                                                        " 0")
-                } else {
-                    this.buildHeader();
-                    this.el.appendChild(this.header);
-                }    
+                this.buildHeader();
+                this.el.appendChild(this.header);
             }
         } 
     },
