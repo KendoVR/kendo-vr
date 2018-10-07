@@ -80,28 +80,18 @@ AFRAME.registerComponent('dropdownlist', {
             }
         });
         
-        this.loadData([
-            "Polychrome View",
-            "Monochrome View",
-            "Bichrome View"
-        ]);
     },
     update: function () {
         if(this.data.value && this.data.value !== "") {
             this.wrapper.setAttribute("text", {value: this.data.value});
-
+           
             var oldSelected = document.querySelector(".k-selected");
+            
             if(oldSelected) {
                 var origText = oldSelected.getAttribute("text");
                 var origMaterial = oldSelected.getAttribute("material");
-
-                if (origMaterial) {
-                    origMaterial.color = "white";
-                }
-
-                if (origText) {
-                    origText.color = this.data.textColor;
-                }
+                origMaterial.color = "white";
+                origText.color = this.data.textColor;
 
                 oldSelected.setAttribute("material", origMaterial);
                 oldSelected.setAttribute("text", origText);
@@ -119,8 +109,17 @@ AFRAME.registerComponent('dropdownlist', {
                 this.selectedItem.setAttribute("class", "k-item k-selected");
             }
         }
+
+        if(!this.dataLoaded){
+            this.loadData([
+                "Polychrome View",
+                "Monochrome View",
+                "Bichrome View"
+            ]);
+        }
     },
     loadData: function (data) {
+        this.dataLoaded = true;
         this.data.dataSource = data;
         var height = 0;
         var item;
