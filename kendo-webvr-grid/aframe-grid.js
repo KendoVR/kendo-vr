@@ -150,10 +150,30 @@ AFRAME.registerComponent('grid', {
 
                 aCell.appendChild(sortButton);
             }
-                          
-            line = this.buildLine(relativePositionX.toString() + ", " + -this.totalHeight.toString() + ", 1",
-                            relativePositionX.toString() + ", 0, 1");
+                   
+            if (i == 0) {
+                let templateCol = this.columns.filter(e => e.template)[0];
+                let tCell = this.buildTemplateCell({
+                    template: templateCol.template,
+                    width: templateCol.width,
+                    color: this.headerBackColor,
+                    preventEvents: true,
+                    opacity: "1",
+                    page: 0,
+                    visible: true,
+                    height: this.headerHeight,
+                    position: (templateCol.width / 2 + relativePositionX).toString() + " " + 
+                              -this.headerHeight.toString() +
+                                " 0.05"
+                });     
+                
+                tCell.setAttribute("class", "gridHeader");
+                tCell.getChildEntities()[0].setAttribute('fill-color', "#fff"); 
+                tCell.getChildEntities()[0].setAttribute('handle-color', "#199cad"); 
 
+                this.el.appendChild(tCell);  
+            }
+              
             //this.el.appendChild(line);
             this.el.appendChild(aCell);
         }
@@ -168,6 +188,7 @@ AFRAME.registerComponent('grid', {
                     template: templateCols[j].template,
                     width: templateCols[j].width,
                     color: this.gridBackColor,
+                    opacity: "0.9",
                     page: Math.floor(i/this.data.pageSize),
                     visible: i < this.data.pageSize ? true : false,
                     height: this.rowHeight,
@@ -412,8 +433,8 @@ AFRAME.registerComponent('grid', {
         });
         templateCell.setAttribute("material", {
             color: cell.color,
-            transparent: true,
-            opacity: 0.9
+            transparent: cell.opacity == "1" ? false : true,
+            opacity: cell.opacity
         });
         
         templateCell.setAttribute("position", cell.position);
@@ -421,7 +442,9 @@ AFRAME.registerComponent('grid', {
         templateCell.setAttribute("visible", cell.visible);
         templateCell.appendChild(document.getElementsByClassName(cell.template)[0].cloneNode());
         
-        this.attachCellEvents(templateCell);
+        if (!cell.preventEvents) {
+            this.attachCellEvents(templateCell);
+        }
         return templateCell;
     },
     buildImage (image) {

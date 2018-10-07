@@ -41,7 +41,7 @@
 
 	<!-- CAMERA START -->
     <a-entity position="0 0 250" rotation="0 0 0" id="camera-wrapper">
-        <a-entity camera="fov: 60; far: 10000" id="camera-entity" look-controls wasd-controls>
+        <a-entity camera="fov: 60; far: 10000" id="camera-entity" look-controls>
             <a-entity cursor="fuse: false;"
                 position="0 0 -40"
                 geometry="primitive: ring; radiusInner: 0.3; radiusOuter: 0.5"
@@ -229,16 +229,16 @@
 
 				if (selectedShade === 'Polychrome View') {
 					for(var i = 0; i < chartItems.length; i++) {
-						loadMultiColorsForData(i, chartItems[i]);
+						chart.loadMultiColorsForData();
 					}
 
 				} else if (selectedShade === 'Monochrome View') {
 					for(var i = 0; i < chartItems.length; i++) {
-						loadSingleColorForData('#199cad', chartItems[i]);
+						chart.loadSingleColorForData();
 					}
 				} else if (selectedShade === 'Bichrome View') {
 					for(var i = 0; i < chartItems.length; i++) {
-						loadGreenRedShadingForData(chartItems[i].getAttribute('data-profit'), chartItems[i]);
+						chart.loadGreenRedShadingForData();
 					}
 				}
 			});
@@ -252,26 +252,36 @@
 			var isChecked = ev.components.switch.data.checked;
 			var rowIndex = ev.parentEl.getAttribute('rowIndex');
 			
-			// Change row opacity
-			var cols = ev.parentEl.parentEl.getChildEntities().filter(item => item.getAttribute("rowIndex") == rowIndex);
-			var colName = cols.find(item => item.getAttribute("field") == "company").getAttribute('text').value;
+			if(rowIndex != null) {
+				// Change opacity based on state
+				var cols = ev.parentEl.parentEl.getChildEntities().filter(item => item.getAttribute("rowIndex") == rowIndex);
+				var colName = cols.find(item => item.getAttribute("field") == "company").getAttribute('text').value;
 
-			for(let col of cols) {
-				if(isChecked) {
-					col.setAttribute('material', { opacity: 0.9 });
-				} else {
-					col.setAttribute('material', { opacity: 0.7 });
+				for(let col of cols) {
+					if(isChecked) {
+						col.setAttribute('material', { opacity: 0.9 });
+					} else {
+						col.setAttribute('material', { opacity: 0.7 });
+					}
 				}
-			}
-			
-			// Show/hide chart bubbles
-			var chart = vChart = document.querySelector('#chart');
-			var triggeredChartEntity = chart.getChildEntities().filter(item => item.getAttribute("data-company") == colName)[0];
-	
-			if(isChecked) {
-				triggeredChartEntity.setAttribute('visible', true);
+				
+				// Show/hide chart bubbles
+				var chart = vChart = document.querySelector('#chart');
+				var triggeredChartEntity = chart.getChildEntities().filter(item => item.getAttribute("data-company") == colName)[0];
+		
+				if(isChecked) {
+					triggeredChartEntity.setAttribute('visible', true);
+				} else {
+					triggeredChartEntity.setAttribute('visible', false);
+				}
 			} else {
-				triggeredChartEntity.setAttribute('visible', false);
+				var cols = ev.parentEl.parentEl.getChildEntities();
+				for(let col of cols) {
+					if(col.getChildEntities().length > 0 && col.className !== "gridHeader") {
+		
+						col.getChildEntities()[0].click();
+					}
+				}
 			}
 		}
 	</script>

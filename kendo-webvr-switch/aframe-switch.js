@@ -23,11 +23,11 @@ AFRAME.registerComponent('switch', {
             color: this.data.checked ? this.data.fillColor : this.data.fillColorUnchecked
         });
         
-        this.el.setAttribute('position', {
-            x: 0, 
-            y: 0, 
-            z: 3 
-       });
+         this.el.setAttribute('position', {
+             x: 0, 
+             y: 0, 
+             z: 3 
+        });
 
         // Button Handle
         this.btn = document.createElement('a-entity');
@@ -36,6 +36,7 @@ AFRAME.registerComponent('switch', {
              y: 0, 
              z: 0.02 
         });
+        
         this.btn.setAttribute('geometry', {
             primitive: "plane",
             width: (this.data.width / 2) - this.data.padding,
