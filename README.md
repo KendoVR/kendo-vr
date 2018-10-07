@@ -1,6 +1,6 @@
 # KendoVR
 
-### [Have a closer loot at our demo app!](https://kendovr.github.io/kendo-vr/app.html)
+### [Have a closer look at our demo app!](https://kendovr.github.io/kendo-vr/app.html)
 
 ### [Vote for us on the Innivation Days portal!](https://innovationdays.progress.com/ideas/PID-I-21)
 
