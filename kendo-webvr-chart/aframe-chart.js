@@ -217,6 +217,7 @@ AFRAME.registerComponent('chart', {
         var header = this.createTooltipPlane('2.2', '7.5 0 -40');
         var body = this.createTooltipPlane('6.2', '7.5 -4.2 -40');
 
+        header.setAttribute('visible', 'false');
         body.setAttribute('visible', 'false');
         body.setAttribute('id', 'extended-tooltip');
 
