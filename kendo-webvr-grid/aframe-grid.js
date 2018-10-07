@@ -167,7 +167,7 @@ AFRAME.registerComponent('grid', {
                                 height: this.rowHeight,
                                 position: (width / 2 + relativePositionX).toString() + " " + 
                                           (-this.rowHeight / 2 - this.rowHeight * (j + 1  - this.data.pageSize * (Math.floor(j/this.data.pageSize))) - this.headerHeight/2).toString() +
-                                          " -0.1" + Math.ceil(j/this.data.pageSize).toString(),
+                                          " -0.0" + Math.ceil(j/this.data.pageSize).toString(),
                                 posssition: (width / 2 + relativePositionX).toString() + " " + 
                                             (-this.rowHeight / 2 - this.rowHeight * (j+1) - this.headerHeight/2).toString() +
                                             " 0"
