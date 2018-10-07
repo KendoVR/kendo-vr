@@ -113,7 +113,7 @@ AFRAME.registerComponent('grid', {
                 opacity: "1",
                 height: this.headerHeight,
                 position: (column.width / 2 + relativePositionX).toString() + " " +
-                          -this.headerHeight.toString() + " 0.05"
+                          -this.headerHeight.toString() + " 0.7"
             });
 
             aCell.setAttribute("class", "gridHeader");
@@ -174,7 +174,7 @@ AFRAME.registerComponent('grid', {
                     height: this.headerHeight,
                     position: (templateCol.width / 2 + relativePositionX).toString() + " " + 
                               -this.headerHeight.toString() +
-                                " 0.05"
+                                " 0.7"
                 });     
                 
                 tCell.setAttribute("class", "gridHeader");
@@ -235,10 +235,7 @@ AFRAME.registerComponent('grid', {
                                 height: this.rowHeight,
                                 position: (width / 2 + relativePositionX).toString() + " " + 
                                           (-this.rowHeight / 2 - this.rowHeight * (j + 1  - this.data.pageSize * (Math.floor(j/this.data.pageSize))) - this.headerHeight/2).toString() +
-                                          " -0.0" + Math.ceil(j/this.data.pageSize).toString(),
-                                posssition: (width / 2 + relativePositionX).toString() + " " + 
-                                            (-this.rowHeight / 2 - this.rowHeight * (j+1) - this.headerHeight/2).toString() +
-                                            " 0"
+                                          " 1"
                             });                          
                 cell.setAttribute("rowIndex", j);      
                 cell.setAttribute("colIndex", columnIndex);

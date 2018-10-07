@@ -22,19 +22,13 @@ AFRAME.registerComponent('switch', {
             side: "double",
             color: this.data.checked ? this.data.fillColor : this.data.fillColorUnchecked
         });
-        
-         this.el.setAttribute('position', {
-             x: 0, 
-             y: 0, 
-             z: 3 
-        });
 
         // Button Handle
         this.btn = document.createElement('a-entity');
         this.btn.setAttribute('position', {
              x: this.data.checked ? (this.el.getAttribute("position").x + (this.data.width / 2) - this.data.padding) / 2 : (this.el.getAttribute("position").x - (this.data.width / 2) - this.data.padding) / 2 + this.data.padding, 
              y: 0, 
-             z: 0.02 
+             z: 0.7
         });
         
         this.btn.setAttribute('geometry', {
