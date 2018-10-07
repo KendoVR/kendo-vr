@@ -13,11 +13,38 @@ AFRAME.registerComponent('chart', {
         color: { type: 'string', default: '#fff' }
     }, 
     init: function () {
-        this.generateGrid();
-		this.createNavigator();
-		this.createNumbering();
-		this.populateChart(this.data.dataSrc);
-		this.createTooltipElements();
+        var that = this;
+
+        that.generateGrid();
+		that.createNavigator();
+		that.createNumbering();
+		that.populateChart(that.data.dataSrc);
+        that.createTooltipElements();
+        
+        that.el.loadMultiColorsForData = function() {
+            var chartItems = that.el.getElementsByClassName('chart-item');
+
+            for(var i = 0; i < chartItems.length; i++) {
+                that.loadMultiColorsForItem(i, chartItems[i]);
+            }
+        };
+
+        that.el.loadSingleColorForData = function(color) {
+            var selectedColor = color || '#199cad';
+            var chartItems = that.el.getElementsByClassName('chart-item');
+
+            for(var i = 0; i < chartItems.length; i++) {
+                that.loadSingleColorForItem(selectedColor, chartItems[i]);
+            }
+        };
+
+        that.el.loadGreenRedShadingForData = function() {
+            var chartItems = that.el.getElementsByClassName('chart-item');
+
+            for(var i = 0; i < chartItems.length; i++) {
+                that.loadGreenRedShadingForItem(chartItems[i].getAttribute('data-' + that.data.yAxis), chartItems[i]);
+            }
+        };        
     },
     axisNumberingConfigurator: {
         front: {
@@ -147,17 +174,17 @@ AFRAME.registerComponent('chart', {
         dataFront: "",
         visible: "true"
     }],
-    loadMultiColorsForData: function(index, element) {
+    loadMultiColorsForItem: function(index, element) {
         element.setAttribute('color', this.colors[index]);
 
         return element;
     },
-    loadSingleColorForData: function(element) {
-        element.setAttribute('color', this.data.color);
+    loadSingleColorForItem: function(color, element) {
+        element.setAttribute('color', color);
 
         return element;
     },
-    loadGreenRedShadingForData: function(profit, element) {
+    loadGreenRedShadingForItem: function(profit, element) {
         if (profit > 0) {
             var profitInMilions = profit / 1000000;
             var green = Math.floor(128 + profitInMilions * 8);
@@ -487,7 +514,7 @@ AFRAME.registerComponent('chart', {
                 var zPoint = item[data.zAxis] * data.zAxisScale;
                 var position = xPoint.toString() + ' ' + yPoint + ' ' + zPoint.toString();
 
-                element = that.loadMultiColorsForData(i, element);
+                element = that.loadMultiColorsForItem(i, element);
 
                 element.setAttribute('position', position );
                 element.setAttribute('radius', 0 );
