@@ -13,7 +13,7 @@ AFRAME.registerComponent('dropdownlist', {
         this.wrapper.setAttribute('geometry', {primitive: "plane", height: this.data.rowHeight, width: this.data.width});
         this.wrapper.setAttribute('material', {color: "white"});
         this.wrapper.setAttribute('text', {color: this.data.textColor, value: "", width: this.data.width * 1.5, xOffset: this.data.width / 2 - 0.8});
-        this.wrapper.setAttribute('material', {transperant: true, opacity: this.data.opacity});
+        this.wrapper.setAttribute('material', {transparant: true, opacity: this.data.opacity});
         this.el.appendChild(this.wrapper);
 
         this.btn = document.createElement('a-image');
@@ -27,14 +27,14 @@ AFRAME.registerComponent('dropdownlist', {
         // this.btn.setAttribute('geometry', {primitive: "plane", height: this.data.rowHeight, width: 0.5});
         // this.btn.setAttribute('material', {color: "white"});
         // this.btn.setAttribute('text', {value: "<", color: "black",  wrapCount: "1"});
-        // this.btn.setAttribute('material', { transperant: true, opacity: 0, src:"#icon-up"});
+        // this.btn.setAttribute('material', { transparant: true, opacity: 0, src:"#icon-up"});
         this.el.appendChild(this.btn);
 
         this.popup = document.createElement('a-entity');
         this.popup.setAttribute("class", "k-ddl-popup");
         this.popup.setAttribute('position', '0 -' + (this.data.rowHeight + 0.04) + ' 0.01');
         this.popup.setAttribute('geometry', {primitive: "plane", width: this.data.width});
-        this.popup.setAttribute('material', {transperant: true, opacity: 0});
+        this.popup.setAttribute('material', {transparant: true, opacity: 0});
         this.popup.setAttribute('visible', false);
         this.el.appendChild(this.popup);
 
@@ -132,11 +132,11 @@ AFRAME.registerComponent('dropdownlist', {
             item.setAttribute('geometry', {primitive: "plane", height: this.data.rowHeight, width: this.data.width});
             
             if(data[i] === this.data.value){
-                item.setAttribute('material', {color: "#199cad", transperant: true, opacity: this.data.opacity});
+                item.setAttribute('material', {color: "#199cad", transparant: true, opacity: this.data.opacity});
                 item.setAttribute('text', {value: data[i], color: "white", width: this.data.width * 1.5, xOffset: this.data.width / 2 - 0.8});
                 item.setAttribute("class", "k-item k-selected")
             }else{
-                item.setAttribute('material', {color: "white", transperant: true, opacity: this.data.opacity});
+                item.setAttribute('material', {color: "white", transparant: true, opacity: this.data.opacity});
                 item.setAttribute("text", {value: data[i], color: this.data.textColor, width: this.data.width * 1.5, xOffset: this.data.width / 2 - 0.8});
             }
 
