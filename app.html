@@ -169,23 +169,37 @@
 					}
 				}
 			});
+		}
+	</script>
 
-			var vSwitch = document.querySelectorAll('.checkbox')[0];
+	<script>
+		var vSwitch = document.querySelectorAll('.checkbox')[0];
             
-            function onSwitchClick(ev) {            
-                var isChecked = ev.components.switch.data.checked;
-                var rowIndex = ev.parentEl.getAttribute('rowIndex');
+		function onSwitchClick(ev) {            
+			var isChecked = ev.components.switch.data.checked;
+			var rowIndex = ev.parentEl.getAttribute('rowIndex');
+			
+			// Change row opacity
+			var cols = ev.parentEl.parentEl.getChildEntities().filter(item => item.getAttribute("rowIndex") == rowIndex);
+			var colName = cols.find(item => item.getAttribute("field") == "company").getAttribute('text').value;
 
-                let cols = ev.parentEl.parentEl.getChildEntities().filter(item => item.getAttribute("rowIndex") == rowIndex);
-
-                for(let col of cols) {
-                    if(isChecked) {
-                        col.setAttribute('material', { opacity: 0.9 });
-                    } else {
-                        col.setAttribute('material', { opacity: 0.7 });
-                    }
-                }
-            }
+			for(let col of cols) {
+				if(isChecked) {
+					col.setAttribute('material', { opacity: 0.9 });
+				} else {
+					col.setAttribute('material', { opacity: 0.7 });
+				}
+			}
+			
+			// Show/hide chart bubbles
+			var chart = vChart = document.querySelector('#chart');
+			var triggeredChartEntity = chart.getChildEntities().filter(item => item.getAttribute("data-company") == colName)[0];
+	
+			if(isChecked) {
+				triggeredChartEntity.setAttribute('visible', true);
+			} else {
+				triggeredChartEntity.setAttribute('visible', false);
+			}
 		}
 	</script>
 </body>
