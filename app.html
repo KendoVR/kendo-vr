@@ -138,12 +138,33 @@
 			viewWrapper.addEventListener("click", function(ev){
 				if(ev.srcElement.className === "k-view-button" && ev.srcElement.getAttribute("data-selected") === "false") {
 					var selectedItem = document.querySelector("[data-selected='true']");
+					
 					switchImage(selectedItem);
 					ev.srcElement.setAttribute("data-selected", "true");
 					ev.srcElement.setAttribute("data-hovered", "false");
 					selectedItem.setAttribute("data-selected", "false");
 
-					window.dispatchEvent(new CustomEvent("viewchanged", {detail: {view: ev.srcElement.getAttribute("data-val")}}));
+					var selectedValue = ev.srcElement.getAttribute("data-val");
+					var navigator = document.querySelector('.navigator');
+					var chart = document.getElementById('chart');
+					var grid = document.getElementById('grid');
+					var dropDownList = document.getElementById('chart-shade-choser');
+					// window.dispatchEvent(new CustomEvent("viewchanged", {detail: {view: ev.srcElement.getAttribute("data-val")}}));
+
+					switch(selectedValue) {
+						case "grid-view":
+							navigator.setAttribute('visible', false);
+							dropDownList.setAttribute('visible', false);
+							break;
+						case "chart-grid-view":
+							navigator.setAttribute('visible', false);
+							dropDownList.setAttribute('visible', true);
+							break;
+						case "chart-view":
+							navigator.setAttribute('visible', true);
+							dropDownList.setAttribute('visible', true);
+							break;
+					}
 				}
 			});
 

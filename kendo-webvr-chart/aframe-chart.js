@@ -308,6 +308,8 @@ AFRAME.registerComponent('chart', {
         var data = that.data;
         var navigatorElement = document.createElement('a-entity');
 
+        navigatorElement.setAttribute('class', 'navigator');
+
         for(var i = 0; i < that.navigatorSegmentsConfiguration.length; i ++) {
             var configurationObject = that.navigatorSegmentsConfiguration[i];
             var element = that.createNavigatorSegment(configurationObject);
@@ -374,6 +376,7 @@ AFRAME.registerComponent('chart', {
             navigatorElement.appendChild(element);
         }
         
+        navigatorElement.setAttribute('visible', false);
         that.el.appendChild(navigatorElement);
     },
     generateGrid: function() {
