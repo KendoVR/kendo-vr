@@ -9,7 +9,7 @@ AFRAME.registerComponent('grid', {
     init: function () {
         this.lineColor = "#e7ebed";
         this.gridBackColor = "#ffffff";
-        this.gridForeColor = "#29313c";
+        this.gridForeColor = "#000000";
         this.headerHeight = 12;
         this.headerBackColor = "#199cad";
         this.headerForeColor = "#ffffff";       
@@ -420,6 +420,7 @@ AFRAME.registerComponent('grid', {
         aCell.setAttribute("text", {
             value: cell.text,
             color: cell.textColor,
+            zOffset: "1",
             xOffset: cell.width * 0.7,
             width: cell.width * 2
         });

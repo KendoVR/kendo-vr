@@ -12,7 +12,7 @@ AFRAME.registerComponent('dropdownlist', {
         this.wrapper.setAttribute('position', '0 0 0.01');
         this.wrapper.setAttribute('geometry', {primitive: "plane", height: this.data.rowHeight, width: this.data.width});
         this.wrapper.setAttribute('material', {color: "white"});
-        this.wrapper.setAttribute('text', {color: this.data.textColor, value: "", width: this.data.width * 1.5, xOffset: this.data.width / 2 - 0.8});
+        this.wrapper.setAttribute('text', {color: this.data.textColor, value: "", zOffset: 0.5, width: this.data.width * 1.5, xOffset: this.data.width / 2 - 0.8});
         this.wrapper.setAttribute('material', {transparant: true, opacity: this.data.opacity});
         this.el.appendChild(this.wrapper);
 
@@ -132,7 +132,7 @@ AFRAME.registerComponent('dropdownlist', {
             
             if(data[i] === this.data.value){
                 item.setAttribute('material', {color: "#199cad", transparant: true, opacity: this.data.opacity});
-                item.setAttribute('text', {value: data[i], color: "white", width: this.data.width * 1.5, xOffset: this.data.width / 2 - 0.8});
+                item.setAttribute('text', {value: data[i], color: "white", zOffset: 0.5, width: this.data.width * 1.5, xOffset: this.data.width / 2 - 0.8});
                 item.setAttribute("class", "k-item k-selected")
             }else{
                 item.setAttribute('material', {color: "white", transparant: true, opacity: this.data.opacity});
