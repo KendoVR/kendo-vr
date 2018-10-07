@@ -461,18 +461,16 @@ function sort (direction) {
     let allCells = this.parentEl.getChildEntities().filter(function (item) { return item.getAttribute("rowindex") && item.getAttribute("text") });
     let oldCells = allCells.filter(item => item.getAttribute("field") == this.getAttribute("field"));
     let directionMultiplier = direction === "asc" ? 1 : -1;
-    let sortedCells;
+    let sortedCells = oldCells.slice();
 
     if (direction) {
-        sortedCells = allCells.filter(item => item.getAttribute("field") == this.getAttribute("field")).sort(function(a, b) {
+        sortedCells = sortedCells.sort(function(a, b) {
             if (isNaN(parseInt(a.getAttribute("text").value))) {
                 return a.getAttribute("text").value == b.getAttribute("text").value
-                ? 0
+                ? 0 
                 : (a.getAttribute("text").value > b.getAttribute("text").value ? 1*directionMultiplier : -1*directionMultiplier);
             } else {
-                return parseInt(a.getAttribute("text").value) == parseInt(b.getAttribute("text").value)
-                ? 0
-                : (parseInt(a.getAttribute("text").value) > parseInt(b.getAttribute("text").value) ? 1*directionMultiplier : -1*directionMultiplier);
+                return a.getAttribute("text").value.localeCompare(b.getAttribute("text").value);
             }
         });
     }
@@ -489,9 +487,14 @@ function sort (direction) {
             let text = cellsByRow[j].getAttribute("text").value;
             text = sortedCellsByRow[j].getAttribute("text").value;
 
-            cellsByRow[j].setAttribute("text", {
-                value: text
-            })
+            cellsByRow[j].setAttribute("sortText", text)
         }
+    }
+
+    for (let cell of allCells) {
+        cell.setAttribute("text", {
+            value: cell.getAttribute("sortText")
+        });
+        cell.removeAttribute("sortText");
     }
 }
