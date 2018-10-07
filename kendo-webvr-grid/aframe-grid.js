@@ -64,9 +64,10 @@ AFRAME.registerComponent('grid', {
                 visible: this.data.visibleToColumnIndex > i ? true : false,
                 textColor: this.headerForeColor,
                 width: column.width,
+                opacity: "1",
                 height: this.headerHeight,
                 position: (column.width / 2 + relativePositionX).toString() + " " +
-                          -this.headerHeight.toString() + " 0.5"
+                          -this.headerHeight.toString() + " 0.05"
             });
 
             aCell.setAttribute("class", "gridHeader");
@@ -75,7 +76,7 @@ AFRAME.registerComponent('grid', {
                 let position = aCell.getAttribute("position");
                 let sortIconWidth = 5;
                 position.x = position.x - sortIconWidth + column.width/ 2;
-                position.z = "0.02"
+                position.z = 0.6;
                 let sortButton = this.buildImage({
                     height: this.headerHeight / 2,
                     position: position,
@@ -113,8 +114,8 @@ AFRAME.registerComponent('grid', {
                 aCell.appendChild(sortButton);
             }
                           
-            line = this.buildLine(relativePositionX.toString() + ", " + -this.totalHeight.toString() + ", 0",
-                            relativePositionX.toString() + ", 0, 0.1");
+            line = this.buildLine(relativePositionX.toString() + ", " + -this.totalHeight.toString() + ", 1",
+                            relativePositionX.toString() + ", 0, 1");
 
             //this.el.appendChild(line);
             this.el.appendChild(aCell);
@@ -147,8 +148,8 @@ AFRAME.registerComponent('grid', {
         for (let j = 0; j < this.dataSource.length; j++) {
             let row = this.dataSource[j];
 
-            let line = this.buildLine("0, " + -(((j + 1) * this.rowHeight) + this.headerHeight / 2).toString() + ", 0",
-                                this.totalWidth.toString() + ", " + -(((j + 1) * this.rowHeight) + this.headerHeight / 2).toString() + ", 0.1");
+            let line = this.buildLine("0, " + -(((j + 1) * this.rowHeight) + this.headerHeight / 2).toString() + ", 1",
+                                this.totalWidth.toString() + ", " + -(((j + 1) * this.rowHeight) + this.headerHeight / 2).toString() + ", 1");
             
             for (let column in row) {
                 let columnIndex = this.columns.map(e => e.field).indexOf(column); 
@@ -160,12 +161,13 @@ AFRAME.registerComponent('grid', {
                                 color: this.gridBackColor,
                                 textColor: this.gridForeColor,
                                 field: column,
+                                opacity: "0.9",
                                 page: Math.floor(j / this.data.pageSize),
                                 visible: (j < this.data.pageSize && this.data.visibleToColumnIndex > columnIndex  ? true : false),
                                 height: this.rowHeight,
                                 position: (width / 2 + relativePositionX).toString() + " " + 
                                           (-this.rowHeight / 2 - this.rowHeight * (j + 1  - this.data.pageSize * (Math.floor(j/this.data.pageSize))) - this.headerHeight/2).toString() +
-                                          " -0." + Math.ceil(j/this.data.pageSize).toString(),
+                                          " -0.1" + Math.ceil(j/this.data.pageSize).toString(),
                                 posssition: (width / 2 + relativePositionX).toString() + " " + 
                                             (-this.rowHeight / 2 - this.rowHeight * (j+1) - this.headerHeight/2).toString() +
                                             " 0"
@@ -246,7 +248,7 @@ AFRAME.registerComponent('grid', {
             icon: "#scrollUp",
             position: (this.totalWidth / 2).toString() + " " + 
                       (-this.headerHeight).toString() +
-                      " 0"
+                      " 0.01"
         });
         
         this.header.setAttribute("material", {
@@ -337,7 +339,7 @@ AFRAME.registerComponent('grid', {
             height: 10,
             visible: true,
             src: pager.icon,
-            position: "0 0 0.2"
+            position: "0 0 0.02"
         });
         
         geometry.setAttribute("geometry", {
@@ -367,8 +369,8 @@ AFRAME.registerComponent('grid', {
         });
         aCell.setAttribute("material", {
             color: cell.color,
-            transparent: true,
-            opacity: 0.9
+            transparent: cell.opacity === "1" ? false : true,
+            opacity: cell.opacity
         });
         aCell.setAttribute("text", {
             value: cell.text,

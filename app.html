@@ -111,7 +111,9 @@
 	}
 
 	window.addEventListener("viewchanged", function (ev) {
-		alert(ev.detail.view);
+		if (ev.detail.view == "grid-view") {
+			document.getElementById("grid").setAttribute("visibleTo", 6)
+		}
 	})
 </script>
 
