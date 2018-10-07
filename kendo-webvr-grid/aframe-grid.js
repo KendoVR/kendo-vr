@@ -40,29 +40,7 @@ AFRAME.registerComponent('grid', {
         if (!opts.visibleToColumnIndex) {
             opts.visibleToColumnIndex = this.columns.length;
             this.el.setAttribute("visibleTo", opts.visibleToColumnIndex);
-        }
-
-        if (!items.length) {
-            this.buildHeaderColumns();        
-            this.buildTemplateColumns();
-            this.buildColumns();
-        } else {
-            let cols = items.filter(item => item.getAttribute("colIndex"));
-            let lines = items.filter(item => item.getAttribute("line"));
-            for (let col of cols) {
-                col.setAttribute("visible", col.getAttribute("colIndex") < opts.visibleToColumnIndex ? true : false);
-            }
-            
-            for (let line of lines) {
-                line.setAttribute("line", {
-                    end: {
-                        x: this.totalWidth.toString(),
-                        y: line.getAttribute("line").end.y,
-                        z: line.getAttribute("line").end.z
-                    }
-                });
-            }
-        }
+        }        
 
         if (this.footer) {
             this.footer.setAttribute("geometry", {
@@ -81,8 +59,40 @@ AFRAME.registerComponent('grid', {
             });
             this.header.setAttribute("position", (this.totalWidth / 2).toString() + " " + 
                                                 (-this.headerHeight).toString() +
-                                                " 0")
-        }        
+                                                " 0");
+            if (this.header.getAttribute("visible")) {
+                let headerCells = items.filter(item => item.getAttribute("class") == "gridHeader");
+                for (let cell of items.filter(item => item.getAttribute("class") == "gridHeader" && !item.getAttribute("visible"))) {
+                    let position = cell.getAttribute("position");
+                    position.y = position.y + cell.getAttribute("geometry").height;
+                    cell.setAttribute("position", position.toArray().toString().replace(/,/g, ' '));
+                }
+            }
+        }  
+
+        if (!items.length) {
+            this.buildHeaderColumns();        
+            this.buildTemplateColumns();
+            this.buildColumns();
+        } else {
+            let cols = items.filter(item => item.getAttribute("colIndex"));
+            let lines = items.filter(item => item.getAttribute("line"));
+            for (let col of cols) {
+                col.setAttribute("visible", col.getAttribute("colIndex") < opts.visibleToColumnIndex && 
+                                            (col.getAttribute("page") == this.el.getAttribute("page") ||
+                                            col.getAttribute("class") == "gridHeader") ? true : false);
+            }
+            
+            for (let line of lines) {
+                line.setAttribute("line", {
+                    end: {
+                        x: this.totalWidth.toString(),
+                        y: line.getAttribute("line").end.y,
+                        z: line.getAttribute("line").end.z
+                    }
+                });
+            }
+        }      
 
         this.el.setAttribute("page", 0);        
         this.el.setAttribute("pageCount", this.pageCount);
@@ -360,7 +370,7 @@ AFRAME.registerComponent('grid', {
 
             if (page + 1 == this.parentEl.getAttribute("pageCount")) {
                 this.setAttribute("visible", false)
-            } else if (parseInt(oldPage) == 0) {                    
+            } else if (parseInt(oldPage) == 0 && !children.find(item => item.id == "scrollUp").getAttribute("visible")) {                    
                 children.find(item => item.id == "scrollUp").setAttribute("visible", true);
                 for (let cell of headerCells) {
                     let position = cell.getAttribute("position");
