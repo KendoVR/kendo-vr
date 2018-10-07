@@ -15,6 +15,16 @@
 </head>
 <body>
   <a-scene>
+	<a-assets>
+			<kendo-webvr-switch onchange="onSwitchClick(this)" class="checkbox" checked="true" width="15" height="7" position="0 0 0.2" padding="0.55"></kendo-webvr-switch>
+			<img id="desc" src="../assets/arrow-down.svg" />
+			<img id="asc" src="../assets/arrow-up.svg" />
+			<img id="upGradient" src="../assets/scroll_gradient-up.png" />
+			<img id="downGradient" src="../assets/scroll_gradient-down.png" />
+			<img id="scrollDown" src="../assets/arrow-chevron-down-active.svg" />
+			<img id="scrollUp" src="../assets/arrow-chevron-up-active.svg" />
+	</a-assets>
+
     <a-entity light="type: ambient; color: #FFF"></a-entity>
     <a-entity light="type: directional; color: #FFF; intensity: 0.1" position="-0.5 1 1"></a-entity>
     <a-entity id="mouseCursor" cursor="rayOrigin: mouse"></a-entity>
@@ -57,6 +67,17 @@
 					   scale="0.7 0.7 0.7"></kendo-webvr-chart>
 	<!-- <a-entity id="container" rotation="30 -45 -20" scale="0.7 0.7 0.7"></a-entity> -->
 	<!-- CHART END -->
+	
+	<!-- GRID START -->
+		<kendo-webvr-grid id="grid" 
+						  visibleto="2"
+						  pageSize="10"
+						  position="160 100 -0.1"
+						  data="./companies-data.json"
+						  height="320"
+						  sortable="true">    
+		</kendo-webvr-grid>
+	<!-- GRID END -->
 
 	<a-cylinder opacity="0.5" transparent="true" height="500" radius="500" repeat="8" position="0 100 0" rotation="0 0 0" open-ended="true" side="double" src="./assets/city_landscape.svg"></a-cylinder>
 
@@ -72,6 +93,21 @@
 		var altSvg = src.getAttribute("data-altsvg");
 		src.setAttribute("data-altsvg", src.getAttribute("src"));
 		src.setAttribute("src", altSvg);
+	}
+
+	function onSwitchClick(ev) {            
+		var isChecked = ev.components.switch.data.checked;
+		var rowIndex = ev.parentEl.getAttribute('rowIndex');
+
+		let cols = ev.parentEl.parentEl.getChildEntities().filter(item => item.getAttribute("rowIndex") == rowIndex);
+
+		for(let col of cols) {
+			if(isChecked) {
+				col.setAttribute('material', { opacity: 0.9 });
+			} else {
+				col.setAttribute('material', { opacity: 0.7 });
+			}
+		}
 	}
 
 	window.addEventListener("viewchanged", function (ev) {

@@ -7,7 +7,7 @@ AFRAME.registerComponent('grid', {
         visibleToColumnIndex: {type: 'number' }
     }, 
     init: function () {
-        this.lineColor = "#ececec"
+        this.lineColor = "#eff2f5"
         this.gridBackColor = "#ffffff";
         this.gridForeColor = "#29313c";
         this.headerHeight = 12;
