@@ -262,7 +262,7 @@ AFRAME.registerComponent('grid', {
 
             for(let col of cols) {
                 let position = col.getAttribute("position");
-                position.z = 1;
+                position.z = 2;
                 col.setAttribute("position", position);
             }
         });
@@ -272,7 +272,7 @@ AFRAME.registerComponent('grid', {
 
             for(let col of cols) {
                 let position = col.getAttribute("position");
-                position.z = 0;
+                position.z = 1;
                 col.setAttribute("position", position);
             }
         });
