@@ -4,6 +4,8 @@
 
 ### [Vote for us on the Innivation Days portal!](https://innovationdays.progress.com/ideas/PID-I-21)
 
+![alt KendoVR](https://github.com/KendoVR/kendo-vr/blob/master/design/KendoVR_1.png)
+
 ## Why KendoVR?
 
 * Because we know how to create the best UI components for the web;
