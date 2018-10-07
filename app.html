@@ -69,14 +69,14 @@
 	<!-- CHART END -->
 	
 	<!-- GRID START -->
-		<kendo-webvr-grid id="grid" 
-						  visibleto="2"
-						  pageSize="10"
-						  position="160 100 -0.1"
-						  data="./companies-data.json"
-						  height="320"
-						  sortable="true">    
-		</kendo-webvr-grid>
+	<kendo-webvr-grid id="grid" 
+						visibleto="2"
+						pageSize="10"
+						position="160 100 -0.1"
+						data="./companies-data.json"
+						height="320"
+						sortable="true">    
+	</kendo-webvr-grid>
 	<!-- GRID END -->
 
 	<a-cylinder opacity="0.5" transparent="true" height="500" radius="500" repeat="8" position="0 100 0" rotation="0 0 0" open-ended="true" side="double" src="./assets/city_landscape.svg"></a-cylinder>
@@ -167,6 +167,23 @@
 					}
 				}
 			});
+
+			var vSwitch = document.querySelectorAll('.checkbox')[0];
+            
+            function onSwitchClick(ev) {            
+                var isChecked = ev.components.switch.data.checked;
+                var rowIndex = ev.parentEl.getAttribute('rowIndex');
+
+                let cols = ev.parentEl.parentEl.getChildEntities().filter(item => item.getAttribute("rowIndex") == rowIndex);
+
+                for(let col of cols) {
+                    if(isChecked) {
+                        col.setAttribute('material', { opacity: 0.9 });
+                    } else {
+                        col.setAttribute('material', { opacity: 0.7 });
+                    }
+                }
+            }
 		}
 	</script>
 </body>
