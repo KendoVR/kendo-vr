@@ -150,22 +150,31 @@
 					var chart = document.getElementById('chart');
 					var grid = document.getElementById('grid');
 					var dropDownList = document.getElementById('chart-shade-choser');
+					var scaleAnimation = document.createElement('a-animation');
+
+					scaleAnimation.setAttribute('attribute', 'scale');
+					scaleAnimation.setAttribute('dur', 1000);
 					// window.dispatchEvent(new CustomEvent("viewchanged", {detail: {view: ev.srcElement.getAttribute("data-val")}}));
 
 					switch(selectedValue) {
 						case "grid-view":
+							scaleAnimation.setAttribute('to', '0.6 0.6 0.6');
 							navigator.setAttribute('visible', false);
 							dropDownList.setAttribute('visible', false);
 							break;
 						case "chart-grid-view":
+							scaleAnimation.setAttribute('to', '0.6 0.6 0.6');
 							navigator.setAttribute('visible', false);
 							dropDownList.setAttribute('visible', true);
 							break;
 						case "chart-view":
+							scaleAnimation.setAttribute('to', '0.7 0.7 0.7');
 							navigator.setAttribute('visible', true);
 							dropDownList.setAttribute('visible', true);
 							break;
 					}
+
+					chart.appendChild(scaleAnimation);
 				}
 			});
 
