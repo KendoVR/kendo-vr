@@ -2,7 +2,7 @@
 
 ### [Have a closer look at our demo app!](https://kendovr.github.io/kendo-vr/app.html)
 
-### [Vote for us on the Innivation Days portal!](https://innovationdays.progress.com/ideas/PID-I-21)
+### [Vote for us on the Innovation Days portal!](https://innovationdays.progress.com/ideas/PID-I-21)
 
 ![alt KendoVR](https://github.com/KendoVR/kendo-vr/blob/master/design/KendoVR_1.png)
 
@@ -10,28 +10,28 @@
 
 * Because we know how to create the best UI components for the web;
 
-* Because we believe that VR will be one of the key aspects of future web developemnt;
+* Because we believe that VR will be one of the key aspects of future web development;
 
 ## What problem does KendoVR solve?
 
-* A coplete UI suite that would considerably speed-up WebVR developement is yet not available on the market;
+* A complete UI suite that would considerably speed-up WebVR development is yet not available on the market;
 
 * VR poses a number of serious questions about UX, which can be also answered based on the considerable knowledge we have on traditional web development;
 
 ## How did we approached this topic?
 
-* We have carefully examinied the current state of WebVR and we decided to base our proof of concept on the most popular frameworks at this time - [A-Frame](https://aframe.io/) and [three.js](https://threejs.org/)
+* We have carefully examined the current state of WebVR and we decided to base our proof of concept on the most popular frameworks at this time - [A-Frame](https://aframe.io/) and [three.js](https://threejs.org/)
 
 * We decided to explore the possibilities to develop fully featured components using the above platforms;
 
 ## What is the final result?
 
-* We have proved that development of VR components for the web is absolutely feasable;
+* We have proved that development of VR components for the web is absolutely feasible;
 
 * We have created a Grid, featuring data paging, sorting and templates;
 
-* we have developed a Buble chart visualizing 4 values for each of its data points and a complete navigation functionality;
+* we have developed a Bubble chart visualizing 4 values for each of its data points and a complete navigation functionality;
 
 * We have implemented a fully featured DropDownList;
 
-* We have eplored and offered a Switch functionality, also embedded in another component (Grid);
+* We have explored and offered a Switch functionality, also embedded in another component (Grid);
